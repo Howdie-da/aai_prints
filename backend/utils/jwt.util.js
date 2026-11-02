@@ -1,21 +1,46 @@
 const jwt = require('jsonwebtoken');
 
-const signToken = (payload) => {
-  return jwt.sign(payload, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES_IN || '7d'
-  });
+const getAccessSecret = () => process.env.JWT_ACCESS_SECRET || process.env.JWT_SECRET || 'dev_access_secret';
+const getRefreshSecret = () => process.env.JWT_REFRESH_SECRET || 'dev_refresh_secret';
+
+const generateAccessToken = (user) => {
+  return jwt.sign(
+    {
+      id: user._id,
+      role: user.role
+    },
+    getAccessSecret(),
+    {
+      expiresIn: process.env.JWT_ACCESS_EXPIRES_IN || '15m'
+    }
+  );
 };
 
-const verifyToken = (token) => {
-  return jwt.verify(token, process.env.JWT_SECRET);
+const generateRefreshToken = (user) => {
+  return jwt.sign(
+    {
+      id: user._id
+    },
+    getRefreshSecret(),
+    {
+      expiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '7d'
+    }
+  );
 };
 
-const getCookieOptions = () => {
+const verifyAccessToken = (token) => {
+  return jwt.verify(token, getAccessSecret());
+};
+
+const verifyRefreshToken = (token) => {
+  return jwt.verify(token, getRefreshSecret());
+};
+
+const getCookieOptions = (maxAgeMs) => {
   const isProduction = process.env.NODE_ENV === 'production';
-  const cookieExpiresDays = parseInt(process.env.COOKIE_EXPIRES_DAYS, 10) || 7;
-
   return {
-    expires: new Date(Date.now() + cookieExpiresDays * 24 * 60 * 60 * 1000),
+    expires: new Date(Date.now() + maxAgeMs),
+    maxAge: maxAgeMs,
     httpOnly: true,
     secure: isProduction,
     sameSite: isProduction ? 'none' : 'lax',
@@ -23,51 +48,37 @@ const getCookieOptions = () => {
   };
 };
 
-const sendTokenResponse = (user, statusCode, res, message = 'Success') => {
-  const token = signToken({
-    id: user._id,
-    role: user.role
-  });
+const setAuthCookies = (res, accessToken, refreshToken) => {
+  const ACCESS_TOKEN_EXPIRY_MS = 15 * 60 * 1000; // 15 minutes
+  const REFRESH_TOKEN_EXPIRY_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 
-  const cookieOptions = getCookieOptions();
-  res.cookie('token', token, cookieOptions);
-
-  // Exclude password from user object
-  const userSafe = {
-    _id: user._id,
-    name: user.name,
-    email: user.email,
-    role: user.role,
-    phone: user.phone || null,
-    addresses: user.addresses || [],
-    createdAt: user.createdAt
-  };
-
-  return res.status(statusCode).json({
-    success: true,
-    message,
-    token, // Also provided in payload for clients/tools that prefer header auth
-    data: {
-      user: userSafe
-    }
-  });
+  res.cookie('accessToken', accessToken, getCookieOptions(ACCESS_TOKEN_EXPIRY_MS));
+  if (refreshToken) {
+    res.cookie('refreshToken', refreshToken, getCookieOptions(REFRESH_TOKEN_EXPIRY_MS));
+  }
 };
 
-const clearAuthCookie = (res) => {
+const clearAuthCookies = (res) => {
   const isProduction = process.env.NODE_ENV === 'production';
-  res.cookie('token', '', {
+  const clearOptions = {
     httpOnly: true,
     secure: isProduction,
     sameSite: isProduction ? 'none' : 'lax',
     path: '/',
     expires: new Date(0)
-  });
+  };
+
+  res.cookie('accessToken', '', clearOptions);
+  res.cookie('refreshToken', '', clearOptions);
+  // Also clear legacy cookie name if present
+  res.cookie('token', '', clearOptions);
 };
 
 module.exports = {
-  signToken,
-  verifyToken,
-  getCookieOptions,
-  sendTokenResponse,
-  clearAuthCookie
+  generateAccessToken,
+  generateRefreshToken,
+  verifyAccessToken,
+  verifyRefreshToken,
+  setAuthCookies,
+  clearAuthCookies
 };
