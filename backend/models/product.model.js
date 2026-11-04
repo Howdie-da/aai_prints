@@ -12,6 +12,10 @@ const variantSchema = new mongoose.Schema(
       required: [true, 'Variant name is required'],
       trim: true
     },
+    label: {
+      type: String,
+      trim: true
+    },
     attributes: {
       size: { type: String, trim: true },
       finish: { type: String, trim: true },
@@ -33,6 +37,10 @@ const variantSchema = new mongoose.Schema(
       default: 0,
       min: [0, 'Stock cannot be negative']
     },
+    inStock: {
+      type: Boolean,
+      default: true
+    },
     image: {
       type: String,
       default: null
@@ -43,6 +51,14 @@ const variantSchema = new mongoose.Schema(
     timestamps: true
   }
 );
+
+// Pre-save for variant to auto-populate label & inStock
+variantSchema.pre('save', function () {
+  if (!this.label) {
+    this.label = this.name;
+  }
+  this.inStock = this.stock > 0;
+});
 
 const productSchema = new mongoose.Schema(
   {
@@ -68,6 +84,17 @@ const productSchema = new mongoose.Schema(
       ref: 'Category',
       required: [true, 'Product category is required'],
       index: true
+    },
+    subcategory: {
+      type: String,
+      default: '',
+      trim: true,
+      index: true
+    },
+    tag: {
+      type: String,
+      default: '',
+      trim: true
     },
     badges: {
       type: [String],
@@ -101,6 +128,11 @@ const productSchema = new mongoose.Schema(
       type: Number,
       default: 10,
       min: [0, 'Stock cannot be negative']
+    },
+    specifications: {
+      type: Map,
+      of: String,
+      default: {}
     },
     dispatchTimeInfo: {
       type: String,
@@ -144,6 +176,31 @@ const productSchema = new mongoose.Schema(
   }
 );
 
+// Virtuals for 1:1 Frontend Contract Compatibility
+productSchema.virtual('price').get(function () {
+  return String(this.basePrice);
+});
+
+productSchema.virtual('image').get(function () {
+  return (this.images && this.images.length > 0) ? this.images[0] : '';
+});
+
+productSchema.virtual('availability').get(function () {
+  return this.inStock ? 'in_stock' : 'out_of_stock';
+});
+
+productSchema.virtual('stockCount').get(function () {
+  return this.stock;
+});
+
+productSchema.virtual('rating').get(function () {
+  return this.ratingAverage;
+});
+
+productSchema.virtual('reviews').get(function () {
+  return this.reviewCount;
+});
+
 // Indexes for fast querying & search
 productSchema.index({ category: 1, isActive: 1, isDeleted: 1 });
 productSchema.index({ basePrice: 1, isActive: 1 });
@@ -159,9 +216,22 @@ productSchema.pre('save', function () {
     this.discountPercent = 0;
   }
 
+  // Sync tag with badges
+  if (this.tag && !this.badges.includes(this.tag)) {
+    this.badges.push(this.tag);
+  } else if (!this.tag && this.badges.length > 0) {
+    this.tag = this.badges[0];
+  }
+
   // Set defaultVariantId if variants exist and not set
-  if (this.hasVariants && this.variants.length > 0 && !this.defaultVariantId) {
-    this.defaultVariantId = this.variants[0]._id;
+  if (this.hasVariants && this.variants.length > 0) {
+    this.variants.forEach((v) => {
+      if (!v.label) v.label = v.name;
+      v.inStock = v.stock > 0;
+    });
+    if (!this.defaultVariantId) {
+      this.defaultVariantId = this.variants[0]._id;
+    }
   }
 });
 
