@@ -1,0 +1,62 @@
+/* PromoBanner – full-width teal strip with shipping offers matching reference */
+.promo-banner {
+  background: var(--teal-dark);
+  overflow: hidden;
+}
+
+.promo-banner-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 0 60px;
+  gap: 20px;
+  min-height: 120px;
+}
+
+.promo-left,
+.promo-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.promo-text {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.promo-highlight {
+  color: #ffd54f;  /* yellow accent – matches reference "SHIPPING" and "₹100 OFF" in yellow */
+  font-weight: 800;
+}
+
+/* Centre gift & promo badge */
+.promo-center-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 80px;
+  height: 80px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+  border: 1.5px dashed rgba(255, 213, 79, 0.5);
+  margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  .promo-banner-inner { padding: 20px 24px; flex-direction: column; align-items: center; min-height: auto; gap: 16px; }
+  .promo-center-badge { order: -1; margin-bottom: 0; width: 64px; height: 64px; }
+  .promo-text { font-size: 22px; }
+}
+@media (max-width: 440px) {
+  .promo-text { font-size: 18px; }
+  .promo-center-imgs { width: 220px; }
+}

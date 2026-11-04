@@ -1,0 +1,347 @@
+/* ─────────────────────────────────────────────────────────────
+   Account Drawer Styles – Aai Prints
+   ───────────────────────────────────────────────────────────── */
+
+.account-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.48);
+  backdrop-filter: blur(2px);
+  z-index: 9999;
+  display: flex;
+  justify-content: flex-end;
+  animation: accountFadeIn 0.22s ease;
+}
+
+@keyframes accountFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.account-drawer {
+  width: 100%;
+  max-width: 420px;
+  height: 100%;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  box-shadow: -4px 0 28px rgba(0, 0, 0, 0.2);
+  animation: accountSlideLeft 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+}
+
+@keyframes accountSlideLeft {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+/* Header */
+.account-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 22px;
+  border-bottom: 1px solid #e9e3d7;
+  background: #faf7f2;
+}
+
+.account-header-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.account-header-title h2 {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
+.account-close-btn {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #666;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.account-close-btn:hover {
+  background: #eae3d5;
+  color: #111;
+}
+
+/* Body */
+.account-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px 22px;
+  background: #fff;
+}
+
+/* Tabs */
+.account-tabs {
+  display: flex;
+  border-bottom: 1px solid #e9e3d7;
+  margin-bottom: 20px;
+}
+
+.account-tab {
+  flex: 1;
+  background: none;
+  border: none;
+  padding: 12px;
+  font-family: 'Jost', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #777;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.18s;
+  text-align: center;
+}
+
+.account-tab.active {
+  color: var(--teal);
+  border-bottom-color: var(--teal);
+}
+
+/* Forms */
+.account-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.account-form-desc {
+  font-family: 'Jost', sans-serif;
+  font-size: 13.5px;
+  color: #666;
+  line-height: 1.5;
+  margin: 0 0 4px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-family: 'Jost', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+}
+
+.form-group input {
+  padding: 10px 12px;
+  border: 1px solid #dcd4c6;
+  border-radius: 2px;
+  font-family: 'Jost', sans-serif;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.18s;
+}
+
+.form-group input:focus {
+  border-color: var(--teal);
+}
+
+.form-extra-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: 'Jost', sans-serif;
+  font-size: 12.5px;
+  color: #555;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.forgot-link {
+  color: var(--teal);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.forgot-link:hover {
+  text-decoration: underline;
+}
+
+.account-submit-btn {
+  background: var(--teal);
+  color: #fff;
+  border: none;
+  padding: 12px;
+  font-family: 'Jost', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  border-radius: 2px;
+  cursor: pointer;
+  margin-top: 6px;
+  transition: background 0.18s;
+}
+
+.account-submit-btn:hover {
+  background: var(--teal-dark);
+}
+
+.account-dev-notice {
+  font-family: 'Jost', sans-serif;
+  font-size: 12px;
+  color: #777;
+  background: #faf7f2;
+  border: 1px dashed #dcd4c6;
+  padding: 10px;
+  border-radius: 3px;
+  line-height: 1.4;
+  margin-top: 8px;
+}
+
+.account-dev-notice span {
+  font-weight: 600;
+  color: var(--teal);
+}
+
+/* Logged-in Profile View */
+.account-profile-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-top: 10px;
+}
+
+.account-avatar-circle {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: var(--teal);
+  color: #fff;
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.account-user-name {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #222;
+  margin: 0 0 2px;
+}
+
+.account-user-email {
+  font-family: 'Jost', sans-serif;
+  font-size: 13px;
+  color: #777;
+  margin: 0 0 16px;
+}
+
+.account-status-banner {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #e8f5e9;
+  color: #2e7d32;
+  font-family: 'Jost', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+}
+
+.account-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #2e7d32;
+}
+
+.account-menu-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+  text-align: left;
+}
+
+.account-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: #faf7f2;
+  border: 1px solid #ece4d8;
+  border-radius: 3px;
+}
+
+.account-menu-icon {
+  font-size: 18px;
+}
+
+.account-menu-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.account-menu-text strong {
+  font-family: 'Jost', sans-serif;
+  font-size: 13.5px;
+  color: #222;
+}
+
+.account-menu-text span {
+  font-family: 'Jost', sans-serif;
+  font-size: 11.5px;
+  color: #777;
+}
+
+.account-signout-btn {
+  background: transparent;
+  color: #c62828;
+  border: 1px solid #c62828;
+  font-family: 'Jost', sans-serif;
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 9px 24px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.18s;
+  width: 100%;
+}
+
+.account-signout-btn:hover {
+  background: #c62828;
+  color: #fff;
+}
+
+@media (max-width: 480px) {
+  .account-drawer {
+    max-width: 100%;
+  }
+}
+

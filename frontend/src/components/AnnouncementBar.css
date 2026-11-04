@@ -1,0 +1,34 @@
+.ann-bar {
+  background: #1c1c1c;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 7px 16px;
+  font-size: 12.5px;
+  font-weight: 400;
+  letter-spacing: 0.3px;
+  width: 100%;
+}
+.ann-text {
+  flex: 1;
+  text-align: center;
+  margin: 0;
+  min-width: 0;
+}
+.ann-btn {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.65);
+  font-size: 20px;
+  cursor: pointer;
+  padding: 0 8px;
+  line-height: 1;
+  transition: color 0.2s;
+  flex-shrink: 0;
+}
+.ann-btn:hover { color: #fff; }
+@media (max-width: 480px) {
+  .ann-bar { font-size: 11.5px; padding: 6px 8px; }
+}
