@@ -30,7 +30,8 @@ const errorHandler = (err, req, res, next) => {
       field: val.path,
       message: val.message
     }));
-    error = new ApiError(400, 'Database validation error', messages);
+    const message = messages.map((m) => m.message).join('. ') || 'Database validation error';
+    error = new ApiError(400, message, messages);
   }
 
   // Handle JWT Malformed / Signature errors
