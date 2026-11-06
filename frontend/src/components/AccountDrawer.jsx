@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import './AccountDrawer.css';
 
-export default function AccountDrawer({ isOpen, onClose }) {
+export default function AccountDrawer({ isOpen, onClose, onNavigate }) {
   const { user, isAuthenticated, login, register, logout, authError } = useAuth();
   const [activeTab, setActiveTab] = useState('login'); // 'login' | 'register'
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -150,6 +150,43 @@ export default function AccountDrawer({ isOpen, onClose }) {
               </div>
 
               <div className="account-menu-list">
+                {user.role === 'admin' && (
+                  <div
+                    className="account-menu-item account-menu-item--admin"
+                    onClick={() => {
+                      onClose();
+                      if (onNavigate) {
+                        onNavigate('admin-add-product');
+                      }
+                    }}
+                    style={{
+                      backgroundColor: '#f0fdf4',
+                      border: '1px solid #86efac',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    <span className="account-menu-icon">✨</span>
+                    <div className="account-menu-text">
+                      <strong style={{ color: '#166534', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        Add New Product{' '}
+                        <span
+                          style={{
+                            fontSize: '10px',
+                            backgroundColor: '#166534',
+                            color: '#ffffff',
+                            padding: '2px 6px',
+                            borderRadius: '4px',
+                            fontWeight: '700'
+                          }}
+                        >
+                          ADMIN
+                        </span>
+                      </strong>
+                      <span style={{ color: '#15803d' }}>Open catalog manager to add products</span>
+                    </div>
+                  </div>
+                )}
+
                 <div className="account-menu-item">
                   <span className="account-menu-icon">📦</span>
                   <div className="account-menu-text">

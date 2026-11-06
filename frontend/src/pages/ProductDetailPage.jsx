@@ -1,5 +1,9 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useWishlist } from '../context/WishlistContext';
+import { useAuth } from '../context/AuthContext';
+import AdminEditProductModal from '../components/AdminEditProductModal';
+import { api } from '../services/api';
+import { normalizeProduct } from '../services/productService';
 import './ProductDetailPage.css';
 
 function StarRating({ rating, count }) {
@@ -28,13 +32,55 @@ function StarRating({ rating, count }) {
 }
 
 export default function ProductDetailPage({
-  product,
+  product: initialProduct,
   allProducts = [],
   onNavigateHome,
   onNavigateShop,
   onSelectProduct,
+  onProductUpdated,
+  onProductDeleted
 }) {
   const { isInWishlist, toggleWishlist, addToCart } = useWishlist();
+  const { user, isAuthenticated } = useAuth();
+  const isAdmin = isAuthenticated && user?.role === 'admin';
+
+  const [product, setProduct] = useState(initialProduct);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  useEffect(() => {
+    setProduct(initialProduct);
+  }, [initialProduct]);
+
+  const handleProductUpdated = (updated) => {
+    const normalized = normalizeProduct(updated);
+    setProduct(normalized);
+    if (onProductUpdated) {
+      onProductUpdated(normalized);
+    }
+  };
+
+  const handleDirectDelete = async () => {
+    const confirmed = window.confirm(
+      `Are you sure you want to permanently delete "${product.name}" from the database? This action cannot be undone.`
+    );
+    if (!confirmed) return;
+
+    try {
+      setIsDeleting(true);
+      const targetId = product._id || product.id;
+      await api.delete(`/products/${targetId}?hard=true`);
+      if (onProductDeleted) {
+        onProductDeleted(targetId);
+      } else if (onNavigateShop) {
+        onNavigateShop('All');
+      }
+    } catch (err) {
+      alert(`Delete failed: ${err.data?.message || err.message}`);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   // Selected quantity
   const [quantity, setQuantity] = useState(1);
@@ -201,7 +247,33 @@ export default function ProductDetailPage({
 
       {/* ── 2. Main Product Section (2-Column Desktop Layout) ── */}
       <section className="pdp-main-section">
-        <div className="pdp-container pdp-grid">
+        <div className="pdp-container">
+          {isAdmin && (
+            <div className="pdp-admin-bar">
+              <div className="pdp-admin-badge">
+                <span>🛡️ ADMIN ACCESS: Live Product Controls</span>
+              </div>
+              <div className="pdp-admin-actions">
+                <button
+                  type="button"
+                  className="pdp-admin-btn pdp-admin-btn--edit"
+                  onClick={() => setIsEditModalOpen(true)}
+                >
+                  ✏️ Edit Product &amp; Photos
+                </button>
+                <button
+                  type="button"
+                  className="pdp-admin-btn pdp-admin-btn--delete"
+                  onClick={handleDirectDelete}
+                  disabled={isDeleting}
+                >
+                  {isDeleting ? 'Deleting...' : '🗑️ Delete Product'}
+                </button>
+              </div>
+            </div>
+          )}
+
+          <div className="pdp-grid">
 
           {/* ── LEFT COLUMN: Product Gallery ── */}
           <div className="pdp-gallery-wrap">
@@ -487,6 +559,7 @@ export default function ProductDetailPage({
 
           </div>
         </div>
+        </div>
       </section>
 
       {/* ── 3. Expandable Accordions: Details, Specifications, Delivery ── */}
@@ -727,6 +800,20 @@ export default function ProductDetailPage({
             <p className="pdp-zoom-caption">{product.name}</p>
           </div>
         </div>
+      )}
+
+      {/* ── 6. Admin Edit Product Modal ── */}
+      {isAdmin && (
+        <AdminEditProductModal
+          isOpen={isEditModalOpen}
+          onClose={() => setIsEditModalOpen(false)}
+          product={product}
+          onProductUpdated={handleProductUpdated}
+          onProductDeleted={(deletedId) => {
+            if (onProductDeleted) onProductDeleted(deletedId);
+            else if (onNavigateShop) onNavigateShop('All');
+          }}
+        />
       )}
     </div>
   );

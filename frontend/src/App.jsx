@@ -15,6 +15,8 @@ import ShopPage from './pages/ShopPage';
 import ProductDetailPage from './pages/ProductDetailPage';
 import CartPage from './pages/CartPage';
 import WishlistPage from './pages/WishlistPage';
+import AdminGuard from './components/AdminGuard';
+import AdminAddProductPage from './pages/AdminAddProductPage';
 import { WishlistProvider } from './context/WishlistContext';
 import { AuthProvider } from './context/AuthContext';
 import {
@@ -71,6 +73,9 @@ function App() {
     if (typeof window !== 'undefined') {
       const hash = window.location.hash;
       const path = window.location.pathname;
+      if (hash.startsWith('#/admin/add-product') || path.startsWith('/admin/add-product')) {
+        return 'admin-add-product';
+      }
       if (hash.startsWith('#/product/') || path.startsWith('/product/')) {
         return 'product';
       }
@@ -126,7 +131,9 @@ function App() {
       const hash = window.location.hash;
       const path = window.location.pathname;
       const search = window.location.search;
-      if (hash.startsWith('#/product/') || path.startsWith('/product/')) {
+      if (hash.startsWith('#/admin/add-product') || path.startsWith('/admin/add-product')) {
+        setCurrentPage('admin-add-product');
+      } else if (hash.startsWith('#/product/') || path.startsWith('/product/')) {
         const slug = hash.startsWith('#/product/')
           ? hash.replace('#/product/', '').split('?')[0]
           : path.replace('/product/', '').split('?')[0];
@@ -184,6 +191,8 @@ function App() {
       window.history.pushState(null, '', '#/cart');
     } else if (page === 'wishlist') {
       window.history.pushState(null, '', '#/wishlist');
+    } else if (page === 'admin-add-product') {
+      window.history.pushState(null, '', '#/admin/add-product');
     } else if (page === 'home' && (param === 'reviews' || param === '#reviews')) {
       setSelectedCategory('reviews');
       window.history.pushState(null, '', '#/reviews');
@@ -226,10 +235,12 @@ function App() {
           onOpenAccount={() => setIsAccountOpen(true)}
         />
 
-        {/* ── 3. Horizontal category circle icons ── */}
-        <CategoryScrollbar
-          onSelectCategory={(cat) => navigateTo('shop', cat)}
-        />
+        {/* ── 3. Horizontal category circle icons (Restricted to Home page /#/) ── */}
+        {currentPage === 'home' && (
+          <CategoryScrollbar
+            onSelectCategory={(cat) => navigateTo('shop', cat)}
+          />
+        )}
 
         {/* ── 4. Main Page View ── */}
         {currentPage === 'product' ? (
@@ -239,6 +250,18 @@ function App() {
             onNavigateHome={() => navigateTo('home')}
             onNavigateShop={(cat) => navigateTo('shop', cat || 'All')}
             onSelectProduct={handleSelectProduct}
+            onProductUpdated={(updatedProd) => {
+              fetchAllProducts().then((live) => {
+                if (live && live.length > 0) setAllProducts([...live]);
+              });
+              handleSelectProduct(updatedProd);
+            }}
+            onProductDeleted={(deletedId) => {
+              fetchAllProducts().then((live) => {
+                if (live && live.length > 0) setAllProducts([...live]);
+              });
+              navigateTo('shop', 'All');
+            }}
           />
         ) : currentPage === 'shop' ? (
           <ShopPage
@@ -260,6 +283,20 @@ function App() {
             onNavigateShop={() => navigateTo('shop', 'All')}
             onSelectProduct={handleSelectProduct}
           />
+        ) : currentPage === 'admin-add-product' ? (
+          <AdminGuard onNavigateHome={() => navigateTo('home')}>
+            <AdminAddProductPage
+              onNavigateHome={() => navigateTo('home')}
+              onProductCreated={(createdProd) => {
+                fetchAllProducts().then((live) => {
+                  if (live && live.length > 0) {
+                    setAllProducts([...live]);
+                  }
+                });
+                handleSelectProduct(createdProd);
+              }}
+            />
+          </AdminGuard>
         ) : (
           <main>
             {/* Hero banner slider */}
@@ -317,6 +354,7 @@ function App() {
         <AccountDrawer
           isOpen={isAccountOpen}
           onClose={() => setIsAccountOpen(false)}
+          onNavigate={navigateTo}
         />
       </div>
     </WishlistProvider>
