@@ -45,7 +45,10 @@ export default function AccountDrawer({ isOpen, onClose }) {
       await login({ email: loginForm.email.trim(), password: loginForm.password });
       setLoginForm({ email: '', password: '' });
     } catch (err) {
-      setLocalError(err.message || 'Login failed. Please check your credentials.');
+      const detailedMsg = err.data?.errors?.length
+        ? err.data.errors.map((e) => e.message).join('. ')
+        : (err.data?.message || err.message || 'Login failed. Please check your credentials.');
+      setLocalError(detailedMsg);
     } finally {
       setIsSubmitting(false);
     }
@@ -66,7 +69,10 @@ export default function AccountDrawer({ isOpen, onClose }) {
       });
       setRegisterForm({ name: '', email: '', phone: '', password: '' });
     } catch (err) {
-      setLocalError(err.message || 'Registration failed. Please try again.');
+      const detailedMsg = err.data?.errors?.length
+        ? err.data.errors.map((e) => e.message).join('. ')
+        : (err.data?.message || err.message || 'Registration failed. Please try again.');
+      setLocalError(detailedMsg);
     } finally {
       setIsSubmitting(false);
     }
