@@ -118,7 +118,17 @@ const productSchema = new mongoose.Schema(
     },
     images: {
       type: [String],
-      default: []
+      required: [true, 'At least one product photo is required'],
+      validate: {
+        validator: function (v) {
+          return (
+            Array.isArray(v) &&
+            v.length > 0 &&
+            v.some((img) => typeof img === 'string' && img.trim().length > 0)
+          );
+        },
+        message: 'At least one product photo is required'
+      }
     },
     inStock: {
       type: Boolean,

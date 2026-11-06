@@ -57,7 +57,16 @@ const authorize = (...roles) => {
   };
 };
 
+// Specialized middleware for administrator-only routes
+const requireAdmin = (req, res, next) => {
+  if (!req.user || req.user.role !== 'admin') {
+    return next(new ApiError(403, 'Access denied. Administrator privileges required.'));
+  }
+  next();
+};
+
 module.exports = {
   protect,
-  authorize
+  authorize,
+  requireAdmin
 };

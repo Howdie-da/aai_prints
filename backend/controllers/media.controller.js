@@ -60,20 +60,29 @@ const uploadMultiple = async (req, res, next) => {
 // @access  Private/Admin
 const deleteMedia = async (req, res, next) => {
   try {
-    const publicId = req.query.publicId || req.body.publicId;
-    const resourceType = req.query.resourceType || req.body.resourceType || 'image';
+    let publicId = req.query.publicId || req.body?.publicId;
+    const resourceType = req.query.resourceType || req.body?.resourceType || 'image';
+
+    // If a full Cloudinary URL was provided instead of publicId, extract publicId
+    if (!publicId && (req.query.url || req.body?.url)) {
+      const url = req.query.url || req.body?.url;
+      const matches = url.match(/\/upload\/(?:v\d+\/)?([^\.]+)/);
+      if (matches && matches[1]) {
+        publicId = matches[1];
+      }
+    }
 
     if (!publicId) {
-      return next(new ApiError(400, 'Cloudinary public_id is required'));
+      return next(new ApiError(400, 'Cloudinary public_id or valid image URL is required'));
     }
 
     const result = await deleteAsset(publicId, resourceType);
 
     if (result.result !== 'ok' && result.result !== 'not found') {
-      return next(new ApiError(400, `Failed to delete asset: ${result.result}`));
+      return next(new ApiError(400, `Failed to delete asset from Cloudinary: ${result.result}`));
     }
 
-    return ApiResponse.send(res, 200, { result }, 'Asset deleted from Cloudinary');
+    return ApiResponse.send(res, 200, { result, publicId }, 'Asset deleted from Cloudinary');
   } catch (error) {
     next(error);
   }

@@ -1,13 +1,18 @@
+require('dotenv').config();
 const cloudinary = require('cloudinary').v2;
-const streamifier = require('stream');
+const { Readable } = require('stream');
+const ApiError = require('./apiError.util');
 
 // Configure Cloudinary from environment variables
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-  secure: true
-});
+const configureCloudinary = () => {
+  cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+    secure: true
+  });
+};
+configureCloudinary();
 
 /**
  * Upload a file buffer directly to Cloudinary using upload_stream
@@ -17,7 +22,22 @@ cloudinary.config({
  */
 const uploadStream = (fileBuffer, options = {}) => {
   return new Promise((resolve, reject) => {
-    const defaultFolder = process.env.CLOUDINARY_FOLDER || 'aai_prints';
+    configureCloudinary();
+
+    if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
+      return reject(
+        new ApiError(
+          500,
+          'Cloudinary configuration missing. Please verify CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET in backend/.env'
+        )
+      );
+    }
+
+    if (!fileBuffer || !Buffer.isBuffer(fileBuffer) || fileBuffer.length === 0) {
+      return reject(new ApiError(400, 'Invalid or empty file buffer provided for upload.'));
+    }
+
+    const defaultFolder = process.env.CLOUDINARY_FOLDER || 'aai_prints/products';
     const uploadOptions = {
       folder: options.folder || defaultFolder,
       resource_type: options.resource_type || 'auto',
@@ -26,7 +46,8 @@ const uploadStream = (fileBuffer, options = {}) => {
 
     const stream = cloudinary.uploader.upload_stream(uploadOptions, (error, result) => {
       if (error) {
-        return reject(error);
+        const statusCode = error.http_code || (error.message?.includes('File size') ? 400 : 500);
+        return reject(new ApiError(statusCode, `Cloudinary upload failed: ${error.message}`));
       }
       resolve({
         publicId: result.public_id,
@@ -40,11 +61,7 @@ const uploadStream = (fileBuffer, options = {}) => {
       });
     });
 
-    const readable = new streamifier.Readable();
-    readable._read = () => {};
-    readable.push(fileBuffer);
-    readable.push(null);
-    readable.pipe(stream);
+    Readable.from(fileBuffer).pipe(stream);
   });
 };
 

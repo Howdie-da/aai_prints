@@ -5,9 +5,15 @@ const errorHandler = (err, req, res, next) => {
 
   // If error is not an instance of ApiError, normalize it
   if (!(error instanceof ApiError)) {
-    const statusCode = error.statusCode || (error.status && !isNaN(error.status) ? error.status : 500);
+    const statusCode = error.statusCode || err.http_code || (error.status && !isNaN(error.status) ? error.status : 500);
     const message = error.message || 'Internal Server Error';
     error = new ApiError(statusCode, message, error.errors || [], err.stack);
+  }
+
+  // Always log 500 errors to console for rapid debugging
+  if (error.statusCode >= 500) {
+    console.error(`[Error 500 on ${req.method} ${req.originalUrl}]:`, err.message);
+    if (err.stack) console.error(err.stack);
   }
 
   // Handle Mongoose Bad ObjectId (CastError)

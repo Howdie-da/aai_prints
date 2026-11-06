@@ -7,20 +7,26 @@ const storage = multer.memoryStorage();
 // Allowed MIME types
 const ALLOWED_MIME_TYPES = [
   'image/jpeg',
+  'image/jpg',
+  'image/pjpeg',
   'image/png',
+  'image/x-png',
   'image/webp',
+  'image/gif',
   'image/avif',
-  'image/svg+xml'
+  'image/svg+xml',
+  'image/jfif'
 ];
 
 const fileFilter = (req, file, cb) => {
-  if (ALLOWED_MIME_TYPES.includes(file.mimetype)) {
+  const mime = (file.mimetype || '').toLowerCase();
+  if (ALLOWED_MIME_TYPES.includes(mime)) {
     cb(null, true);
   } else {
     cb(
       new ApiError(
         400,
-        `Unsupported file type: ${file.mimetype}. Allowed types: JPEG, PNG, WebP, AVIF, SVG.`
+        `Unsupported file type: ${file.mimetype}. Allowed types: JPEG, PNG, WebP, GIF, AVIF, SVG.`
       ),
       false
     );
