@@ -1,5 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useWishlist } from '../context/WishlistContext';
+import { useAuth } from '../context/AuthContext';
+import { fetchInstantSearch } from '../services/productService';
 import { navLinks, getActiveNavLabel } from '../data/navigationConfig';
 import './Navbar.css';
 
@@ -20,6 +22,7 @@ export default function Navbar({
   onOpenAccount,
 }) {
   const { wishlistCount, cartCount, setIsWishlistOpen, setIsCartOpen } = useWishlist();
+  const { isAuthenticated, user } = useAuth();
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
@@ -28,7 +31,24 @@ export default function Navbar({
   // Search feature states
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [liveSearchResults, setLiveSearchResults] = useState([]);
   const searchInputRef = useRef(null);
+
+  // Debounced live instant search
+  useEffect(() => {
+    if (!searchQuery.trim()) {
+      setLiveSearchResults([]);
+      return;
+    }
+    const timer = setTimeout(() => {
+      fetchInstantSearch(searchQuery).then((results) => {
+        if (results && results.length > 0) {
+          setLiveSearchResults(results);
+        }
+      });
+    }, 150);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
 
   // Auto-focus input when search opens
   useEffect(() => {
@@ -58,13 +78,16 @@ export default function Navbar({
   const closeSearch = () => {
     setSearchOpen(false);
     setSearchQuery('');
+    setLiveSearchResults([]);
   };
 
-  // Filter products by name using case-insensitive matching
+  // Filter products: prefer live backend results, fallback to client-side matching
   const filteredProducts = searchQuery.trim()
-    ? products.filter((p) =>
-      p.name.toLowerCase().includes(searchQuery.trim().toLowerCase())
-    )
+    ? (liveSearchResults.length > 0
+        ? liveSearchResults
+        : products.filter((p) =>
+            p.name.toLowerCase().includes(searchQuery.trim().toLowerCase())
+          ))
     : [];
 
   // Navigate to matching product on click or enter
@@ -220,15 +243,29 @@ export default function Navbar({
               </svg>
             </button>
             <button
-              className="icon-btn"
-              aria-label="My Account"
-              title="My Account"
+              className="icon-btn pos-rel"
+              aria-label={isAuthenticated ? `My Account (${user?.name || user?.email})` : "My Account"}
+              title={isAuthenticated ? `Logged in as ${user?.name || user?.email}` : "My Account"}
               onClick={onOpenAccount}
             >
               <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                 <circle cx="12" cy="7" r="4" />
               </svg>
+              {isAuthenticated && (
+                <span
+                  style={{
+                    position: 'absolute',
+                    top: '6px',
+                    right: '6px',
+                    width: '7px',
+                    height: '7px',
+                    borderRadius: '50%',
+                    backgroundColor: '#10b981',
+                    border: '1.5px solid #fff'
+                  }}
+                />
+              )}
             </button>
             <button
               className={`icon-btn pos-rel ${currentPage === 'wishlist' ? 'icon-btn--active' : ''}`}

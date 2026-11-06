@@ -16,19 +16,52 @@ import ProductDetailPage from './pages/ProductDetailPage';
 import CartPage from './pages/CartPage';
 import WishlistPage from './pages/WishlistPage';
 import { WishlistProvider } from './context/WishlistContext';
+import { AuthProvider } from './context/AuthContext';
 import {
   getAllProducts,
+  fetchAllProducts,
   getProductBySlugOrId,
-  getDevotionalProducts,
-  getWallAndCarProducts,
 } from './services/productService';
 import './App.css';
 
 function App() {
-  // Fetch product catalogues from product service layer
-  const allProducts = useMemo(() => getAllProducts(), []);
-  const devotionalProducts = useMemo(() => getDevotionalProducts(), []);
-  const wallAndCarProducts = useMemo(() => getWallAndCarProducts(), []);
+  // Live product catalogue state with immediate local fallback
+  const [allProducts, setAllProducts] = useState(() => getAllProducts());
+
+  useEffect(() => {
+    let isMounted = true;
+    fetchAllProducts().then((live) => {
+      if (isMounted && live && live.length > 0) {
+        setAllProducts([...live]);
+      }
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const devotionalProducts = useMemo(
+    () =>
+      allProducts.filter(
+        (p) =>
+          p.category === 'Backlit LED Frames' ||
+          p.category === 'Desk Standees' ||
+          p.category === 'Wall Hangings'
+      ),
+    [allProducts]
+  );
+
+  const wallAndCarProducts = useMemo(
+    () =>
+      allProducts.filter(
+        (p) =>
+          p.category === 'Metal Wall Art' ||
+          p.category === 'Dashboard Idols' ||
+          p.category === 'Car Hangings' ||
+          p.category === 'Wall Clocks'
+      ),
+    [allProducts]
+  );
 
   // UI state for account drawer
   const [isAccountOpen, setIsAccountOpen] = useState(false);
@@ -177,7 +210,8 @@ function App() {
     getProductBySlugOrId(activeProductSlug) || allProducts[0];
 
   return (
-    <WishlistProvider>
+    <AuthProvider>
+      <WishlistProvider>
       <div className="app">
         {/* ── 1. Announcement bar ── */}
         <AnnouncementBar />
@@ -286,6 +320,7 @@ function App() {
         />
       </div>
     </WishlistProvider>
+    </AuthProvider>
   );
 }
 

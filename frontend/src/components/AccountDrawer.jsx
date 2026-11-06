@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
+import { useAuth } from '../context/AuthContext';
 import './AccountDrawer.css';
 
 export default function AccountDrawer({ isOpen, onClose }) {
+  const { user, isAuthenticated, login, register, logout, authError } = useAuth();
   const [activeTab, setActiveTab] = useState('login'); // 'login' | 'register'
-  const [isDemoLoggedIn, setIsDemoLoggedIn] = useState(false);
-  const [userEmail, setUserEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [localError, setLocalError] = useState(null);
+
   const [loginForm, setLoginForm] = useState({ email: '', password: '' });
   const [registerForm, setRegisterForm] = useState({ name: '', email: '', phone: '', password: '' });
 
@@ -23,6 +26,7 @@ export default function AccountDrawer({ isOpen, onClose }) {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
+      setLocalError(null);
     } else {
       document.body.style.overflow = '';
     }
@@ -31,30 +35,58 @@ export default function AccountDrawer({ isOpen, onClose }) {
     };
   }, [isOpen]);
 
-  const handleLoginSubmit = (e) => {
+  const handleLoginSubmit = async (e) => {
     e.preventDefault();
-    if (loginForm.email.trim()) {
-      setUserEmail(loginForm.email);
-      setIsDemoLoggedIn(true);
+    if (!loginForm.email.trim() || !loginForm.password) return;
+
+    try {
+      setIsSubmitting(true);
+      setLocalError(null);
+      await login({ email: loginForm.email.trim(), password: loginForm.password });
+      setLoginForm({ email: '', password: '' });
+    } catch (err) {
+      setLocalError(err.message || 'Login failed. Please check your credentials.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-  const handleRegisterSubmit = (e) => {
+  const handleRegisterSubmit = async (e) => {
     e.preventDefault();
-    if (registerForm.email.trim()) {
-      setUserEmail(registerForm.email);
-      setIsDemoLoggedIn(true);
+    if (!registerForm.email.trim() || !registerForm.password || !registerForm.name.trim()) return;
+
+    try {
+      setIsSubmitting(true);
+      setLocalError(null);
+      await register({
+        name: registerForm.name.trim(),
+        email: registerForm.email.trim(),
+        password: registerForm.password,
+        phone: registerForm.phone.trim() || undefined,
+      });
+      setRegisterForm({ name: '', email: '', phone: '', password: '' });
+    } catch (err) {
+      setLocalError(err.message || 'Registration failed. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-  const handleSignOut = () => {
-    setIsDemoLoggedIn(false);
-    setUserEmail('');
-    setLoginForm({ email: '', password: '' });
-    setRegisterForm({ name: '', email: '', phone: '', password: '' });
+  const handleSignOut = async () => {
+    try {
+      setIsSubmitting(true);
+      await logout();
+      setLoginForm({ email: '', password: '' });
+      setRegisterForm({ name: '', email: '', phone: '', password: '' });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (!isOpen) return null;
+
+  const displayEmail = user?.email || '';
+  const displayName = user?.name || displayEmail.split('@')[0] || 'User';
 
   return (
     <div className="account-overlay" onClick={onClose} role="presentation">
@@ -96,17 +128,19 @@ export default function AccountDrawer({ isOpen, onClose }) {
 
         {/* ── Body ── */}
         <div className="account-body">
-          {isDemoLoggedIn ? (
+          {isAuthenticated && user ? (
             <div className="account-profile-view">
               <div className="account-avatar-circle">
-                {userEmail ? userEmail.charAt(0).toUpperCase() : 'U'}
+                {displayName.charAt(0).toUpperCase()}
               </div>
-              <h3 className="account-user-name">Welcome, {userEmail.split('@')[0]}</h3>
-              <p className="account-user-email">{userEmail}</p>
+              <h3 className="account-user-name">Welcome, {displayName}</h3>
+              <p className="account-user-email">{displayEmail}</p>
 
               <div className="account-status-banner">
-                <span className="account-status-dot" />
-                <span>Frontend Profile Mode (Ready for Backend Auth API)</span>
+                <span className="account-status-dot" style={{ backgroundColor: '#10b981' }} />
+                <span>
+                  Connected to Live Backend {user.role === 'admin' ? '(Admin Mode)' : '(Customer)'}
+                </span>
               </div>
 
               <div className="account-menu-list">
@@ -114,7 +148,7 @@ export default function AccountDrawer({ isOpen, onClose }) {
                   <span className="account-menu-icon">📦</span>
                   <div className="account-menu-text">
                     <strong>My Orders</strong>
-                    <span>No orders placed yet</span>
+                    <span>Track and review your purchases</span>
                   </div>
                 </div>
 
@@ -122,7 +156,11 @@ export default function AccountDrawer({ isOpen, onClose }) {
                   <span className="account-menu-icon">📍</span>
                   <div className="account-menu-text">
                     <strong>Saved Addresses</strong>
-                    <span>Manage shipping &amp; billing addresses</span>
+                    <span>
+                      {user.addresses && user.addresses.length > 0
+                        ? `${user.addresses.length} saved address${user.addresses.length > 1 ? 'es' : ''}`
+                        : 'No saved address yet'}
+                    </span>
                   </div>
                 </div>
 
@@ -130,7 +168,7 @@ export default function AccountDrawer({ isOpen, onClose }) {
                   <span className="account-menu-icon">❤️</span>
                   <div className="account-menu-text">
                     <strong>Wishlist &amp; Saved Items</strong>
-                    <span>Syncs with your browser preferences</span>
+                    <span>Synchronized with your account</span>
                   </div>
                 </div>
               </div>
@@ -139,8 +177,9 @@ export default function AccountDrawer({ isOpen, onClose }) {
                 type="button"
                 className="account-signout-btn"
                 onClick={handleSignOut}
+                disabled={isSubmitting}
               >
-                Sign Out
+                {isSubmitting ? 'Signing Out...' : 'Sign Out'}
               </button>
             </div>
           ) : (
@@ -150,18 +189,40 @@ export default function AccountDrawer({ isOpen, onClose }) {
                 <button
                   type="button"
                   className={`account-tab ${activeTab === 'login' ? 'active' : ''}`}
-                  onClick={() => setActiveTab('login')}
+                  onClick={() => {
+                    setActiveTab('login');
+                    setLocalError(null);
+                  }}
                 >
                   Sign In
                 </button>
                 <button
                   type="button"
                   className={`account-tab ${activeTab === 'register' ? 'active' : ''}`}
-                  onClick={() => setActiveTab('register')}
+                  onClick={() => {
+                    setActiveTab('register');
+                    setLocalError(null);
+                  }}
                 >
                   Create Account
                 </button>
               </div>
+
+              {(localError || authError) && (
+                <div
+                  style={{
+                    backgroundColor: '#fee2e2',
+                    border: '1px solid #ef4444',
+                    color: '#b91c1c',
+                    padding: '10px 14px',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    marginBottom: '16px',
+                  }}
+                >
+                  ⚠️ {localError || authError}
+                </div>
+              )}
 
               {/* Login Form */}
               {activeTab === 'login' ? (
@@ -179,6 +240,7 @@ export default function AccountDrawer({ isOpen, onClose }) {
                       placeholder="you@example.com"
                       value={loginForm.email}
                       onChange={(e) => setLoginForm({ ...loginForm, email: e.target.value })}
+                      disabled={isSubmitting}
                     />
                   </div>
 
@@ -191,6 +253,7 @@ export default function AccountDrawer({ isOpen, onClose }) {
                       placeholder="••••••••"
                       value={loginForm.password}
                       onChange={(e) => setLoginForm({ ...loginForm, password: e.target.value })}
+                      disabled={isSubmitting}
                     />
                   </div>
 
@@ -204,12 +267,12 @@ export default function AccountDrawer({ isOpen, onClose }) {
                     </a>
                   </div>
 
-                  <button type="submit" className="account-submit-btn">
-                    SIGN IN
+                  <button type="submit" className="account-submit-btn" disabled={isSubmitting}>
+                    {isSubmitting ? 'SIGNING IN...' : 'SIGN IN'}
                   </button>
 
                   <div className="account-dev-notice">
-                    <span>💡 Note for Developer:</span> Frontend authentication UI is wired and ready for API endpoints.
+                    <span>💡 Live Auth Active:</span> Uses secure dual-token httpOnly cookies.
                   </div>
                 </form>
               ) : (
@@ -227,6 +290,7 @@ export default function AccountDrawer({ isOpen, onClose }) {
                       placeholder="Your full name"
                       value={registerForm.name}
                       onChange={(e) => setRegisterForm({ ...registerForm, name: e.target.value })}
+                      disabled={isSubmitting}
                     />
                   </div>
 
@@ -239,6 +303,7 @@ export default function AccountDrawer({ isOpen, onClose }) {
                       placeholder="you@example.com"
                       value={registerForm.email}
                       onChange={(e) => setRegisterForm({ ...registerForm, email: e.target.value })}
+                      disabled={isSubmitting}
                     />
                   </div>
 
@@ -250,6 +315,7 @@ export default function AccountDrawer({ isOpen, onClose }) {
                       placeholder="+91 98765 43210"
                       value={registerForm.phone}
                       onChange={(e) => setRegisterForm({ ...registerForm, phone: e.target.value })}
+                      disabled={isSubmitting}
                     />
                   </div>
 
@@ -262,11 +328,12 @@ export default function AccountDrawer({ isOpen, onClose }) {
                       placeholder="At least 6 characters"
                       value={registerForm.password}
                       onChange={(e) => setRegisterForm({ ...registerForm, password: e.target.value })}
+                      disabled={isSubmitting}
                     />
                   </div>
 
-                  <button type="submit" className="account-submit-btn">
-                    CREATE ACCOUNT
+                  <button type="submit" className="account-submit-btn" disabled={isSubmitting}>
+                    {isSubmitting ? 'CREATING ACCOUNT...' : 'CREATE ACCOUNT'}
                   </button>
                 </form>
               )}
@@ -277,4 +344,3 @@ export default function AccountDrawer({ isOpen, onClose }) {
     </div>
   );
 }
-
