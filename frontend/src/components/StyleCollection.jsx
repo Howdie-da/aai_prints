@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import './StyleCollection.css';
 
 /* "Your Style, Your Collection" – horizontal scrollable home décor collections */
@@ -45,21 +46,35 @@ export default function StyleCollection({ onSelectCategory }) {
   return (
     <section className="style-section" id="collections" aria-label="Your Style, Your Collection">
       <div className="section-wrap">
-        <h2 className="sec-title">Your Style, Your Collection</h2>
+        <motion.h2
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.45 }}
+          className="sec-title"
+        >
+          Your Style, Your Collection
+        </motion.h2>
 
         <div className="style-scroll-wrap">
           <div className="style-scroll-inner">
-            {collections.map((col) => {
+            {collections.map((col, idx) => {
               const targetCategory = col.category || col.label;
               const href = `#/shop?category=${encodeURIComponent(targetCategory)}`;
 
               return (
-                <a
+                <motion.a
                   key={col.label}
                   href={href}
                   className="style-card"
                   aria-label={col.label}
                   onClick={(e) => handleCardClick(e, targetCategory)}
+                  initial={{ opacity: 0, y: 18 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.35, delay: idx * 0.06 }}
+                  whileHover={{ y: -6, scale: 1.02 }}
+                  whileTap={{ scale: 0.97 }}
                 >
                   <div className="style-card-img-wrap">
                     {col.image && !col.image.includes('placeholder') ? (
@@ -77,7 +92,7 @@ export default function StyleCollection({ onSelectCategory }) {
                     )}
                   </div>
                   <span className="style-card-label">{col.label}</span>
-                </a>
+                </motion.a>
               );
             })}
           </div>

@@ -1,18 +1,43 @@
-/* PromoBanner – full-width teal strip with shipping offers matching reference */
+/* ========================================================
+   PromoBanner – Full-width Heritage Teal & Sacred Gold Strip
+   Elevated high-conversion luxury banner
+   ======================================================== */
+
 .promo-banner {
-  background: var(--teal-dark);
+  background: linear-gradient(135deg, #0a1f22 0%, #164043 45%, #0e2a2d 100%);
+  border-top: 2px solid rgba(197, 155, 39, 0.4);
+  border-bottom: 2px solid rgba(197, 155, 39, 0.4);
   overflow: hidden;
+  position: relative;
+  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.promo-banner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(197, 155, 39, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.promo-banner:hover {
+  border-color: var(--gold);
 }
 
 .promo-banner-inner {
   max-width: var(--max-w);
   margin: 0 auto;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
-  padding: 0 60px;
-  gap: 20px;
-  min-height: 120px;
+  padding: 24px 60px;
+  gap: 24px;
+  position: relative;
+  z-index: 1;
 }
 
 .promo-left,
@@ -24,17 +49,23 @@
 }
 
 .promo-text {
-  font-family: 'Big Shoulders Display', sans-serif;
-  font-size: 28px;
-  font-weight: 700;
-  color: #fff;
-  line-height: 1.2;
+  font-family: 'Cinzel', serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: #fdfbf7;
+  line-height: 1.35;
   text-align: center;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
 .promo-highlight {
-  color: #ffd54f;  /* yellow accent – matches reference "SHIPPING" and "₹100 OFF" in yellow */
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 /* Centre gift & promo badge */
@@ -43,20 +74,39 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  width: 80px;
-  height: 80px;
-  background: rgba(255, 255, 255, 0.08);
+  width: 76px;
+  height: 76px;
+  background: radial-gradient(circle, rgba(197, 155, 39, 0.15) 0%, rgba(10, 31, 34, 0.8) 100%);
   border-radius: 50%;
-  border: 1.5px dashed rgba(255, 213, 79, 0.5);
-  margin-bottom: 20px;
+  border: 1.5px solid var(--gold);
+  box-shadow: 0 0 20px rgba(197, 155, 39, 0.25);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.promo-banner:hover .promo-center-badge {
+  transform: scale(1.08) rotate(5deg);
+  box-shadow: 0 0 30px rgba(197, 155, 39, 0.4);
 }
 
 @media (max-width: 768px) {
-  .promo-banner-inner { padding: 20px 24px; flex-direction: column; align-items: center; min-height: auto; gap: 16px; }
-  .promo-center-badge { order: -1; margin-bottom: 0; width: 64px; height: 64px; }
-  .promo-text { font-size: 22px; }
+  .promo-banner-inner {
+    padding: 24px 20px;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+  .promo-center-badge {
+    order: -1;
+    width: 60px;
+    height: 60px;
+  }
+  .promo-text {
+    font-size: 17px;
+  }
 }
+
 @media (max-width: 440px) {
-  .promo-text { font-size: 18px; }
-  .promo-center-imgs { width: 220px; }
+  .promo-text {
+    font-size: 15px;
+  }
 }

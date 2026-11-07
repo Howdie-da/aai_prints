@@ -1,80 +1,103 @@
+import { motion } from 'framer-motion';
 import './CategorySection.css';
 
 const categories = [
   {
     id: 'cat-1',
     title: 'Wall Hangings',
-    count: '120+ Designs',
+    count: '120+ Sacred Designs',
     image: '/new-images/cat-wall-hangings.jpg',
-    href: '#devotional',
+    href: '#/shop?category=Wall%20Hangings',
     tag: 'Bestseller',
   },
   {
     id: 'cat-2',
     title: 'Backlit LED Frames',
-    count: '80+ Designs',
+    count: '80+ Divine Frames',
     image: '/new-images/cat-backlit-led-frames.jpg',
-    href: '#devotional',
-    tag: 'New Arrivals',
+    href: '#/shop?category=Backlit%20LED%20Frames',
+    tag: 'Illuminated',
   },
   {
     id: 'cat-3',
     title: 'Dashboard Idols',
-    count: '60+ Designs',
+    count: '60+ Sacred Idols',
     image: '/new-images/cat-dashboard-idols.jpg',
-    href: '#car-decor',
-    tag: 'Popular',
+    href: '#/shop?category=Dashboard%20Idols',
+    tag: 'Car Sanctuary',
   },
   {
     id: 'cat-4',
     title: 'Car Hangings',
-    count: '40+ Designs',
+    count: '40+ Graceful Pieces',
     image: '/new-images/cat-car-hangings.jpg',
-    href: '#car-decor',
-    tag: '',
+    href: '#/shop?category=Car%20Hangings',
+    tag: 'Protection',
   },
   {
     id: 'cat-5',
     title: 'Framed Wall Art',
-    count: '95+ Designs',
+    count: '95+ Masterpieces',
     image: '/new-images/cat-framed-wall-art.jpg',
-    href: '#wall-decor',
-    tag: '',
+    href: '#/shop?category=Framed%20Wall%20Art',
+    tag: 'Handcrafted',
   },
   {
     id: 'cat-6',
     title: 'Metal Wall Art',
-    count: '50+ Designs',
+    count: '50+ Modern Craft',
     image: '/new-images/cat-metal-wall-art.jpg',
-    href: '#wall-decor',
-    tag: 'New',
+    href: '#/shop?category=Metal%20Wall%20Art',
+    tag: 'Artisan',
   },
 ];
 
 export default function CategorySection() {
   return (
     <section className="category-section" id="shop" aria-label="Shop by category">
-      <div className="section-inner">
-        <div className="section-header">
-          <span className="section-label">Browse Collections</span>
-          <h2 className="section-title">Shop by Category</h2>
-          <p className="section-desc">Explore our curated collection of handcrafted decor pieces for home and car.</p>
-        </div>
+      <div className="section-inner section-wrap">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.45 }}
+          className="sec-header"
+        >
+          <span className="sec-eyebrow">CURATED SACRED DECOR</span>
+          <h2 className="sec-title">Shop by Sacred Category</h2>
+          <p className="sec-subtitle">
+            Explore handcrafted temple-grade artwork, illuminated backlit sanctums, and artisanal decor designed for discerning homes.
+          </p>
+        </motion.div>
+
         <div className="category-grid">
-          {categories.map((cat) => (
-            <a key={cat.id} href={cat.href} className="category-card" id={cat.id} aria-label={cat.title}>
+          {categories.map((cat, idx) => (
+            <motion.a
+              key={cat.id}
+              href={cat.href}
+              className="category-card"
+              id={cat.id}
+              aria-label={cat.title}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.35, delay: idx * 0.06 }}
+              whileHover={{ y: -6 }}
+            >
               <div className="category-image-wrap">
                 <img src={cat.image} alt={cat.title} className="category-image" loading="lazy" />
                 {cat.tag && <span className="category-tag">{cat.tag}</span>}
                 <div className="category-overlay">
-                  <span className="category-shop-btn">Shop Now →</span>
+                  <span className="category-shop-btn">
+                    EXPLORE COLLECTION <span>→</span>
+                  </span>
                 </div>
               </div>
               <div className="category-info">
                 <h3 className="category-name">{cat.title}</h3>
                 <p className="category-count">{cat.count}</p>
               </div>
-            </a>
+            </motion.a>
           ))}
         </div>
       </div>

@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
 import './CategoryScrollbar.css';
 
 /* 
@@ -135,7 +136,12 @@ export default function CategoryScrollbar({ onSelectCategory }) {
               }
             }}
           >
-            <div className="catbar-circle">
+            <motion.div
+              whileHover={{ scale: 1.07 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+              className="catbar-circle"
+            >
               <img
                 src={category.img}
                 alt={category.label}
@@ -143,7 +149,7 @@ export default function CategoryScrollbar({ onSelectCategory }) {
                 loading="lazy"
                 draggable="false"
               />
-            </div>
+            </motion.div>
             <span className="catbar-label">{category.label}</span>
           </a>
         ))}

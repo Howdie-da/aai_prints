@@ -44,7 +44,7 @@
 }
 
 .wishlist-breadcrumb .breadcrumb-link:hover {
-  color: var(--teal, #2d7379);
+  color: var(--teal, #235f64);
 }
 
 .wishlist-breadcrumb .breadcrumb-separator {
@@ -54,7 +54,7 @@
 }
 
 .wishlist-breadcrumb .breadcrumb-current {
-  color: var(--teal, #2d7379);
+  color: var(--teal, #235f64);
   font-weight: 600;
 }
 
@@ -113,7 +113,7 @@
   align-items: center;
   justify-content: center;
   background: rgba(45, 115, 121, 0.1);
-  color: var(--teal, #2d7379);
+  color: var(--teal, #235f64);
   font-family: 'Jost', sans-serif;
   font-size: 13px;
   font-weight: 600;
@@ -220,7 +220,7 @@
 }
 
 .wishlist-empty-btn--primary {
-  background: var(--teal, #2d7379);
+  background: var(--teal, #235f64);
   color: var(--white, #ffffff);
   border: none;
 }
@@ -239,7 +239,7 @@
 
 .wishlist-empty-btn--secondary:hover {
   background: rgba(45, 115, 121, 0.06);
-  border-color: var(--teal, #2d7379);
+  border-color: var(--teal, #235f64);
 }
 
 /* ── 4. Responsive Product Grid ── */
@@ -302,7 +302,7 @@
   top: 10px;
   left: 10px;
   z-index: 2;
-  background: var(--teal, #2d7379);
+  background: var(--teal, #235f64);
   color: var(--white, #ffffff);
   font-family: 'Jost', sans-serif;
   font-size: 11px;
@@ -319,7 +319,7 @@
 }
 
 .wishlist-card-tag--new-arrival {
-  background: var(--teal, #2d7379);
+  background: var(--teal, #235f64);
 }
 
 /* 1:1 Image Container */
@@ -386,7 +386,7 @@
 }
 
 .wishlist-card-title:hover {
-  color: var(--teal, #2d7379);
+  color: var(--teal, #235f64);
 }
 
 /* Price Row */
@@ -430,9 +430,9 @@
 
 .wishlist-card-cart-btn {
   width: 100%;
-  background: var(--teal, #2d7379);
+  background: var(--teal, #235f64);
   color: var(--white, #ffffff);
-  border: 1px solid var(--teal, #2d7379);
+  border: 1px solid var(--teal, #235f64);
   font-family: 'Jost', sans-serif;
   font-size: 13px;
   font-weight: 600;

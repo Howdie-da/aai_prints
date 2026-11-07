@@ -1,92 +1,350 @@
 /* ==============================================
-   aai Prints – Global Base Styles
-   Home Décor Store
-   Fonts: Big Shoulders Display (headings) + Jost (body)
-   Colors: Teal #2d7379, Cream #f5f0ea
+   Aai Prints – Luxury Spiritual & Home Décor Design System
+   Brand: Ananta Art International
+   Fonts: Cinzel (royal accents) + Big Shoulders Display (headings) + Jost (body)
+   Palette: Heritage Teal #235f64 • Sacred Temple Gold #c59b27 • Temple Cream #fdfbf7
    ============================================== */
-@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;600;700;800&family=Jost:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
 
-/* Reset */
-*, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;600;700;800;900&family=Cinzel:wght@500;600;700;800;900&family=Jost:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
+
+/* Reset & Box Sizing */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+}
 
 body {
   margin: 0;
-  font-family: 'Jost', system-ui, -apple-system, sans-serif;
+  padding: 0;
+  font-family: 'Jost', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-size: 15px;
   line-height: 1.6;
-  color: #333;
-  background-color: #f5f0ea; /* warm cream – matches reference */
+  color: #17191a;
+  background-color: var(--cream);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  text-rendering: optimizeLegibility;
 }
 
-#root { width: 100%; max-width: 100%; margin: 0; overflow-x: hidden; }
-
-h1, h2, h3, h4, h5, h6 { margin: 0; line-height: 1.2; }
-p { margin: 0; }
-a { color: inherit; text-decoration: none; }
-img { max-width: 100%; height: auto; display: block; }
-button { font-family: inherit; cursor: pointer; border: none; background: none; }
-ul, ol { margin: 0; padding: 0; list-style: none; }
-
-/* Design tokens */
-:root {
-  --teal:         #2d7379;
-  --teal-dark:    #1e5257;
-  --teal-light:   #e8f4f5;
-  --teal-border:  rgba(45,115,121,0.35);
-  --cream:        #f5f0ea;
-  --cream-2:      #faf7f4;
-  --white:        #ffffff;
-  --text-dark:    #1a1a1a;
-  --text-mid:     #444;
-  --text-muted:   #777;
-  --star-gold:    #f5a623;
-  --red-badge:    #e05a5a;
-  --max-w:        1300px;
+#root {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  overflow-x: hidden;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Shared section wrapper */
-.section-wrap { max-width: var(--max-w); margin: 0 auto; padding: 0 20px; }
-
-/* Shared section headings used across multiple sections */
-.sec-title {
-  font-family: 'Big Shoulders Display', 'Jost', sans-serif;
-  font-size: 34px;
-  font-weight: 700;
-  color: var(--teal);
-  text-align: center;
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  line-height: 1.18;
+  color: var(--teal-deep);
+  font-family: 'Big Shoulders Display', sans-serif;
   letter-spacing: 0.5px;
-  margin-bottom: 6px;
 }
+
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  outline: none;
+}
+
+/* Page View Instant Snappy Fade-in */
+.page-view-fade {
+  animation: pageFadeIn 0.16s ease-out forwards;
+  will-change: opacity;
+}
+@keyframes pageFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+ul, ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ==============================================
+   DESIGN TOKENS
+   ============================================== */
+:root {
+  /* Brand Heritage Teal */
+  --teal:              #235f64;
+  --teal-dark:         #164044;
+  --teal-deep:         #0e2a2d;
+  --teal-light:        #eef7f8;
+  --teal-surface:      #f2f8f9;
+  --teal-border:       rgba(35, 95, 100, 0.22);
+  --teal-border-light: rgba(35, 95, 100, 0.12);
+  --teal-glow:         rgba(35, 95, 100, 0.18);
+
+  /* Sacred Temple Gold Accents */
+  --gold:              #c59b27;
+  --gold-light:        #dfbe59;
+  --gold-dark:         #9c7717;
+  --gold-pale:         #fcf8eb;
+  --gold-border:       rgba(197, 155, 39, 0.35);
+  --gold-border-light: rgba(197, 155, 39, 0.18);
+  --gold-gradient:     linear-gradient(135deg, #dfbe59 0%, #c59b27 50%, #9c7717 100%);
+  --gold-shimmer:      linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%);
+
+  /* Warm Temple Cream & Stone */
+  --cream:             #fdfbf7;
+  --cream-surface:     #f8f4ee;
+  --cream-card:        #ffffff;
+  --cream-border:      #ede6dc;
+
+  /* Editorial Typography Colors */
+  --text-primary:      #17191a;
+  --text-secondary:    #4a5154;
+  --text-muted:        #7a8286;
+  --text-inverse:      #ffffff;
+
+  /* Functional Status */
+  --star-gold:         #f59e0b;
+  --badge-discount:    #dc2626;
+  --badge-discount-bg: #fef2f2;
+  --badge-bestseller:  #c59b27;
+  --badge-new:         #235f64;
+  --badge-success:     #15803d;
+
+  /* Layout & Geometry */
+  --max-w:             1340px;
+  --radius-xs:         4px;
+  --radius-sm:         8px;
+  --radius-md:         14px;
+  --radius-lg:         20px;
+  --radius-xl:         28px;
+  --radius-full:       9999px;
+
+  /* Layered Shadows (Soft luxury elevation) */
+  --shadow-subtle:     0 2px 8px -2px rgba(17, 24, 39, 0.05);
+  --shadow-card:       0 4px 20px -4px rgba(22, 64, 68, 0.08), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+  --shadow-hover:      0 18px 40px -8px rgba(22, 64, 68, 0.16), 0 6px 14px -2px rgba(0, 0, 0, 0.06);
+  --shadow-drawer:     -12px 0 45px -10px rgba(14, 42, 45, 0.28);
+  --shadow-gold:       0 6px 20px -4px rgba(197, 155, 39, 0.35);
+
+  /* Transitions */
+  --transition-fast:   150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: 350ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ==============================================
+   SHARED LAYOUT & CONTAINER
+   ============================================== */
+.section-wrap {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 24px;
+  width: 100%;
+}
+
+@media (max-width: 640px) {
+  .section-wrap {
+    padding: 0 16px;
+  }
+}
+
+/* ==============================================
+   EDITORIAL SECTION HEADINGS
+   ============================================== */
+.sec-header {
+  text-align: center;
+  margin-bottom: 36px;
+  position: relative;
+}
+
+.sec-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2.6px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+
+.sec-eyebrow::before,
+.sec-eyebrow::after {
+  content: '✦';
+  font-size: 9px;
+  color: var(--gold-light);
+}
+
+.sec-title {
+  font-family: 'Big Shoulders Display', 'Cinzel', sans-serif;
+  font-size: 38px;
+  font-weight: 700;
+  color: var(--teal-deep);
+  text-align: center;
+  letter-spacing: 0.8px;
+  line-height: 1.15;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+  .sec-title {
+    font-size: 30px;
+  }
+}
+
 .sec-subtitle {
-  font-size: 13px;
+  font-family: 'Jost', sans-serif;
+  font-size: 14px;
   color: var(--text-muted);
   text-align: center;
-  margin-bottom: 28px;
-  line-height: 1.5;
+  margin-bottom: 0;
+  line-height: 1.6;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-/* VIEW MORE button – shared */
+/* ==============================================
+   LUXURY BUTTONS & MICRO-INTERACTIONS
+   ============================================== */
 .btn-view-more {
-  display: block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
   width: fit-content;
-  margin: 32px auto 0;
+  margin: 40px auto 0;
   background: var(--teal);
-  color: #fff;
+  color: #ffffff;
+  font-family: 'Jost', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 14px 40px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--teal-border);
+  cursor: pointer;
+  box-shadow: 0 4px 14px -2px rgba(35, 95, 100, 0.3);
+  transition: all var(--transition-normal);
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-view-more:hover {
+  background: var(--teal-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px -4px rgba(22, 64, 68, 0.4);
+  color: #ffffff;
+}
+
+.btn-view-more:active {
+  transform: translateY(0);
+}
+
+/* Gold Shimmer Button Variant */
+.btn-gold {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: var(--gold-gradient);
+  color: #ffffff;
+  font-family: 'Jost', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  padding: 14px 36px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: var(--shadow-gold);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+}
+
+.btn-gold:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 26px -2px rgba(197, 155, 39, 0.5);
+}
+
+.btn-gold:active {
+  transform: translateY(0);
+}
+
+/* Outline Luxury Button */
+.btn-outline-teal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: transparent;
+  color: var(--teal);
   font-family: 'Jost', sans-serif;
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 1.8px;
   text-transform: uppercase;
-  padding: 13px 36px;
-  border: none;
+  padding: 13px 32px;
+  border-radius: var(--radius-full);
+  border: 1.5px solid var(--teal);
   cursor: pointer;
-  transition: background 0.2s;
-  text-decoration: none;
+  transition: all var(--transition-normal);
 }
-.btn-view-more:hover { background: var(--teal-dark); }
 
-:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+.btn-outline-teal:hover {
+  background: var(--teal);
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+/* Accessible focus visible */
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+/* Custom Scrollbar for smooth horizontal scrolling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--cream-surface);
+}
+::-webkit-scrollbar-thumb {
+  background: #d4ccbf;
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--teal);
+}

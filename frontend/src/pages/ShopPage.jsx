@@ -1,4 +1,6 @@
 import { useState, useMemo, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Search, Heart, X, SlidersHorizontal, Filter, Check, ShoppingBag } from 'lucide-react';
 import { useWishlist } from '../context/WishlistContext';
 import './ShopPage.css';
 
@@ -418,27 +420,14 @@ export default function ShopPage({
             onClick={() => setMobileFilterOpen(true)}
             aria-label="Open filter sidebar"
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <line x1="4" y1="21" x2="4" y2="14" />
-              <line x1="4" y1="10" x2="4" y2="3" />
-              <line x1="12" y1="21" x2="12" y2="12" />
-              <line x1="12" y1="8" x2="12" y2="3" />
-              <line x1="20" y1="21" x2="20" y2="16" />
-              <line x1="20" y1="12" x2="20" y2="3" />
-              <line x1="1" y1="14" x2="7" y2="14" />
-              <line x1="9" y1="8" x2="15" y2="8" />
-              <line x1="17" y1="16" x2="23" y2="16" />
-            </svg>
+            <SlidersHorizontal size={17} />
             <span>Filter &amp; Refine</span>
             {hasActiveFilters && <span className="filter-active-dot" />}
           </button>
 
           {/* Quick Search */}
           <div className="shop-search-box">
-            <svg className="shop-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="11" cy="11" r="8" />
-              <line x1="21" y1="21" x2="16.65" y2="16.65" />
-            </svg>
+            <Search size={16} className="shop-search-icon" />
             <input
               type="text"
               className="shop-search-input"
@@ -454,7 +443,7 @@ export default function ShopPage({
                 onClick={() => setSearchQuery('')}
                 aria-label="Clear search query"
               >
-                ✕
+                <X size={14} />
               </button>
             )}
           </div>
@@ -491,7 +480,7 @@ export default function ShopPage({
                   onClick={() => changeCategory('All')}
                   aria-label={`Remove category filter ${activeCategory}`}
                 >
-                  ✕
+                  <X size={12} strokeWidth={2.5} />
                 </button>
               </span>
             )}
@@ -503,7 +492,7 @@ export default function ShopPage({
                   onClick={() => setActiveSubcategory('')}
                   aria-label={`Remove subcategory filter ${activeSubcategory}`}
                 >
-                  ✕
+                  <X size={12} strokeWidth={2.5} />
                 </button>
               </span>
             )}
@@ -515,7 +504,7 @@ export default function ShopPage({
                   onClick={() => setSearchQuery('')}
                   aria-label="Clear search filter"
                 >
-                  ✕
+                  <X size={12} strokeWidth={2.5} />
                 </button>
               </span>
             )}
@@ -527,7 +516,7 @@ export default function ShopPage({
                   onClick={() => { setMinPrice(''); setMaxPrice(''); }}
                   aria-label="Reset price filter"
                 >
-                  ✕
+                  <X size={12} strokeWidth={2.5} />
                 </button>
               </span>
             )}
@@ -539,7 +528,7 @@ export default function ShopPage({
                   onClick={() => setSortBy('featured')}
                   aria-label="Reset sort order"
                 >
-                  ✕
+                  <X size={12} strokeWidth={2.5} />
                 </button>
               </span>
             )}
@@ -715,11 +704,7 @@ export default function ShopPage({
                 /* No search results state */
                 <div className="shop-no-results">
                   <div className="no-results-icon" aria-hidden="true">
-                    <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                      <circle cx="11" cy="11" r="8" />
-                      <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                      <line x1="8" y1="11" x2="14" y2="11" />
-                    </svg>
+                    <Search size={38} strokeWidth={1.5} />
                   </div>
                   <h3 className="no-results-title">No search results</h3>
                   <p className="no-results-desc">
@@ -748,14 +733,7 @@ export default function ShopPage({
                 /* No filter matches state */
                 <div className="shop-no-results">
                   <div className="no-results-icon" aria-hidden="true">
-                    <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                      <line x1="4" y1="21" x2="4" y2="14" />
-                      <line x1="4" y1="10" x2="4" y2="3" />
-                      <line x1="12" y1="21" x2="12" y2="12" />
-                      <line x1="12" y1="8" x2="12" y2="3" />
-                      <line x1="20" y1="21" x2="20" y2="16" />
-                      <line x1="20" y1="12" x2="20" y2="3" />
-                    </svg>
+                    <Filter size={38} strokeWidth={1.5} />
                   </div>
                   <h3 className="no-results-title">No products match your filters</h3>
                   <p className="no-results-desc">
@@ -787,7 +765,17 @@ export default function ShopPage({
                   }
 
                   return (
-                    <article key={p.id} id={`product-${p.id}`} className="shop-card" aria-label={p.name}>
+                    <motion.article
+                      key={p.id}
+                      id={`product-${p.id}`}
+                      className="shop-card"
+                      aria-label={p.name}
+                      initial={{ opacity: 0, scale: 0.98 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.98 }}
+                      transition={{ duration: 0.2 }}
+                      whileHover={{ y: -6 }}
+                    >
                       {/* Product Tag */}
                       {p.tag && (
                         <div className={`prod-tag prod-tag--${p.tag.replace(/\s+/g, '-').toLowerCase()}`}>
@@ -796,7 +784,9 @@ export default function ShopPage({
                       )}
 
                       {/* Wishlist Heart Button */}
-                      <button
+                      <motion.button
+                        whileHover={{ scale: 1.15 }}
+                        whileTap={{ scale: 0.85 }}
                         type="button"
                         className={`prod-wishlist-btn ${isFav ? 'is-active' : ''}`}
                         onClick={(e) => {
@@ -807,20 +797,14 @@ export default function ShopPage({
                         aria-label={isFav ? `Remove ${p.name} from wishlist` : `Add ${p.name} to wishlist`}
                         title={isFav ? 'Remove from wishlist' : 'Add to wishlist'}
                       >
-                        <svg
-                          width="18"
-                          height="18"
-                          viewBox="0 0 24 24"
+                        <Heart
+                          size={18}
                           fill={isFav ? '#e53935' : 'none'}
                           stroke={isFav ? '#e53935' : '#444'}
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
+                          strokeWidth={2}
                           className="prod-wishlist-heart"
-                        >
-                          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-                        </svg>
-                      </button>
+                        />
+                      </motion.button>
 
                       {/* Product Image Area - Clean aspect ratio container without broken icons */}
                       <div
@@ -887,16 +871,18 @@ export default function ShopPage({
                         </div>
 
                         {/* Add to Cart button */}
-                        <button
+                        <motion.button
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.96 }}
                           type="button"
                           className={`shop-card-cart-btn ${addedIds[p.id] ? 'added' : ''}`}
                           onClick={() => handleAddToCart(p)}
                           aria-label={`Add ${p.name} to cart`}
                         >
                           {addedIds[p.id] ? 'Added to Cart ✓' : 'Add to Cart'}
-                        </button>
+                        </motion.button>
                       </div>
-                    </article>
+                    </motion.article>
                   );
                 })}
               </div>
@@ -906,15 +892,27 @@ export default function ShopPage({
       </div>
 
       {/* ── 6. Mobile Filter Drawer ── */}
-      {mobileFilterOpen && (
-        <div className="mobile-filter-overlay" onClick={() => setMobileFilterOpen(false)}>
-          <div
-            className="mobile-filter-drawer"
-            onClick={(e) => e.stopPropagation()}
-            role="dialog"
-            aria-modal="true"
-            aria-label="Filter products"
+      <AnimatePresence>
+        {mobileFilterOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="mobile-filter-overlay"
+            onClick={() => setMobileFilterOpen(false)}
           >
+            <motion.div
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 32, stiffness: 350 }}
+              className="mobile-filter-drawer"
+              onClick={(e) => e.stopPropagation()}
+              role="dialog"
+              aria-modal="true"
+              aria-label="Filter products"
+            >
             <div className="mobile-filter-header">
               <h3>Filter Products</h3>
               <button
@@ -923,7 +921,7 @@ export default function ShopPage({
                 onClick={() => setMobileFilterOpen(false)}
                 aria-label="Close filter drawer"
               >
-                ✕
+                <X size={20} strokeWidth={2} />
               </button>
             </div>
 
@@ -1033,9 +1031,10 @@ export default function ShopPage({
                 Apply Filters ({filteredProducts.length})
               </button>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       )}
-    </div>
-  );
+    </AnimatePresence>
+  </div>
+);
 }

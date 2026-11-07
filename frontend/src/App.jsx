@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import AnnouncementBar from './components/AnnouncementBar';
 import Navbar from './components/Navbar';
 import CategoryScrollbar from './components/CategoryScrollbar';
@@ -148,6 +149,11 @@ function App() {
 
   // Handle browser back/forward buttons
   useEffect(() => {
+    // Disable automatic browser scroll restoration for seamless SPA view changes
+    if (typeof window !== 'undefined' && 'scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+
     const handleUrlChange = () => {
       const hash = window.location.hash;
       const path = window.location.pathname;
@@ -186,6 +192,12 @@ function App() {
         setCurrentPage('home');
         setSelectedCategory('All');
       }
+
+      if (hash !== '#reviews' && hash !== '#/reviews') {
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+      }
     };
 
     window.addEventListener('popstate', handleUrlChange);
@@ -195,6 +207,16 @@ function App() {
       window.removeEventListener('hashchange', handleUrlChange);
     };
   }, []);
+
+  // Reset scroll to top on every page and product navigation
+  useEffect(() => {
+    if (window.location.hash === '#reviews' || window.location.hash === '#/reviews') {
+      return;
+    }
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, [currentPage, activeProductSlug]);
 
   // Programmatic navigation
   const navigateTo = (page, param = 'All') => {
@@ -226,7 +248,9 @@ function App() {
       setSelectedCategory('All');
       window.history.pushState(null, '', '#/');
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
   };
 
   const handleSelectProduct = (prod) => {
@@ -263,96 +287,102 @@ function App() {
           />
         )}
 
-        {/* ── 4. Main Page View ── */}
-        {currentPage === 'product' ? (
-          <ProductDetailPage
-            product={currentProduct}
-            allProducts={allProducts}
-            onNavigateHome={() => navigateTo('home')}
-            onNavigateShop={(cat) => navigateTo('shop', cat || 'All')}
-            onSelectProduct={handleSelectProduct}
-            onProductUpdated={(updatedProd) => {
-              fetchAllProducts().then((live) => {
-                if (live && live.length > 0) setAllProducts([...live]);
-              });
-              handleSelectProduct(updatedProd);
-            }}
-            onProductDeleted={(deletedId) => {
-              fetchAllProducts().then((live) => {
-                if (live && live.length > 0) setAllProducts([...live]);
-              });
-              navigateTo('shop', 'All');
-            }}
-          />
-        ) : currentPage === 'shop' ? (
-          <ShopPage
-            products={allProducts}
-            selectedCategory={selectedCategory}
-            onSelectCategory={(cat) => navigateTo('shop', cat)}
-            onNavigateHome={() => navigateTo('home')}
-            onSelectProduct={handleSelectProduct}
-          />
-        ) : currentPage === 'cart' ? (
-          <CartPage
-            onNavigateHome={() => navigateTo('home')}
-            onNavigateShop={() => navigateTo('shop', 'All')}
-            onSelectProduct={handleSelectProduct}
-          />
-        ) : currentPage === 'wishlist' ? (
-          <WishlistPage
-            onNavigateHome={() => navigateTo('home')}
-            onNavigateShop={() => navigateTo('shop', 'All')}
-            onSelectProduct={handleSelectProduct}
-          />
-        ) : currentPage === 'admin-add-product' ? (
-          <AdminGuard onNavigateHome={() => navigateTo('home')}>
-            <AdminAddProductPage
-              onNavigateHome={() => navigateTo('home')}
-              onProductCreated={(createdProd) => {
-                fetchAllProducts().then((live) => {
-                  if (live && live.length > 0) {
-                    setAllProducts([...live]);
-                  }
-                });
-                handleSelectProduct(createdProd);
-              }}
-            />
-          </AdminGuard>
-        ) : (
-          <main>
-            {/* Hero banner slider */}
-            <HeroSlider onSelectCategory={(cat) => navigateTo('shop', cat)} />
+        {/* ── 4. Main Page View (Instant Snappy 60fps) ── */}
+        <div
+          key={currentPage === 'product' ? `product-${activeProductSlug}` : currentPage}
+          className="page-view-fade"
+          style={{ width: '100%' }}
+        >
+            {currentPage === 'product' ? (
+              <ProductDetailPage
+                product={currentProduct}
+                allProducts={allProducts}
+                onNavigateHome={() => navigateTo('home')}
+                onNavigateShop={(cat) => navigateTo('shop', cat || 'All')}
+                onSelectProduct={handleSelectProduct}
+                onProductUpdated={(updatedProd) => {
+                  fetchAllProducts().then((live) => {
+                    if (live && live.length > 0) setAllProducts([...live]);
+                  });
+                  handleSelectProduct(updatedProd);
+                }}
+                onProductDeleted={(deletedId) => {
+                  fetchAllProducts().then((live) => {
+                    if (live && live.length > 0) setAllProducts([...live]);
+                  });
+                  navigateTo('shop', 'All');
+                }}
+              />
+            ) : currentPage === 'shop' ? (
+              <ShopPage
+                products={allProducts}
+                selectedCategory={selectedCategory}
+                onSelectCategory={(cat) => navigateTo('shop', cat)}
+                onNavigateHome={() => navigateTo('home')}
+                onSelectProduct={handleSelectProduct}
+              />
+            ) : currentPage === 'cart' ? (
+              <CartPage
+                onNavigateHome={() => navigateTo('home')}
+                onNavigateShop={() => navigateTo('shop', 'All')}
+                onSelectProduct={handleSelectProduct}
+              />
+            ) : currentPage === 'wishlist' ? (
+              <WishlistPage
+                onNavigateHome={() => navigateTo('home')}
+                onNavigateShop={() => navigateTo('shop', 'All')}
+                onSelectProduct={handleSelectProduct}
+              />
+            ) : currentPage === 'admin-add-product' ? (
+              <AdminGuard onNavigateHome={() => navigateTo('home')}>
+                <AdminAddProductPage
+                  onNavigateHome={() => navigateTo('home')}
+                  onProductCreated={(createdProd) => {
+                    fetchAllProducts().then((live) => {
+                      if (live && live.length > 0) {
+                        setAllProducts([...live]);
+                      }
+                    });
+                    handleSelectProduct(createdProd);
+                  }}
+                />
+              </AdminGuard>
+            ) : (
+              <main>
+                {/* Hero banner slider */}
+                <HeroSlider onSelectCategory={(cat) => navigateTo('shop', cat)} />
 
-            {/* Devotional Décor product section */}
-            <ProductSection
-              sectionId="devotional"
-              title="Devotional Décor"
-              subtitle="Wall Hangings, Backlit LED Frames, Divine Tabletop Idols, Sacred Yantra & Spiritual Décor"
-              products={devotionalProducts}
-              onSelectProduct={handleSelectProduct}
-              onViewMore={() => navigateTo('shop', 'Wall Hangings')}
-            />
+                {/* Devotional Décor product section */}
+                <ProductSection
+                  sectionId="devotional"
+                  title="Devotional Décor"
+                  subtitle="Wall Hangings, Backlit LED Frames, Divine Tabletop Idols, Sacred Yantra & Spiritual Décor"
+                  products={devotionalProducts}
+                  onSelectProduct={handleSelectProduct}
+                  onViewMore={() => navigateTo('shop', 'Wall Hangings')}
+                />
 
-            {/* Wall & Car Décor product section */}
-            <ProductSection
-              sectionId="wall-decor"
-              title="Wall & Car Décor"
-              subtitle="Framed Wall Art, Modern Metal Wall Décor, Designer Clocks, Car Dashboard Idols & Hangings"
-              products={wallAndCarProducts}
-              onSelectProduct={handleSelectProduct}
-              onViewMore={() => navigateTo('shop', 'Metal Wall Art')}
-            />
+                {/* Wall & Car Décor product section */}
+                <ProductSection
+                  sectionId="wall-decor"
+                  title="Wall & Car Décor"
+                  subtitle="Framed Wall Art, Modern Metal Wall Décor, Designer Clocks, Car Dashboard Idols & Hangings"
+                  products={wallAndCarProducts}
+                  onSelectProduct={handleSelectProduct}
+                  onViewMore={() => navigateTo('shop', 'Metal Wall Art')}
+                />
 
-            {/* "Your Style, Your Collection" horizontal scroll */}
-            <StyleCollection onSelectCategory={(cat) => navigateTo('shop', cat)} />
+                {/* "Your Style, Your Collection" horizontal scroll */}
+                <StyleCollection onSelectCategory={(cat) => navigateTo('shop', cat)} />
 
-            {/* Customer reviews section (resolves REVIEWS navbar link) */}
-            <Testimonials />
+                {/* Customer reviews section (resolves REVIEWS navbar link) */}
+                <Testimonials />
 
-            {/* Full-width promo strip (Free Shipping + ₹100 OFF) */}
-            <PromoBanner onNavigateShop={() => navigateTo('shop', 'All')} />
-          </main>
-        )}
+                {/* Full-width promo strip (Free Shipping + ₹100 OFF) */}
+                <PromoBanner onNavigateShop={() => navigateTo('shop', 'All')} />
+              </main>
+            )}
+        </div>
 
         {/* ── 5. Footer ── */}
         <Footer onNavigate={navigateTo} />

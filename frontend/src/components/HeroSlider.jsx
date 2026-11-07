@@ -1,45 +1,52 @@
 import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
 import './HeroSlider.css';
 
 /* 
-  Hero image slider with 3 home décor collection slides.
-  Each slide has a background image + semi-transparent overlay card on the left.
-  Images can be replaced in public/new-images/hero-*.jpg
+  Hero image slider with luxury spiritual home décor collection slides.
+  Preserves existing image paths, categories, and navigation contracts.
 */
 const slides = [
   {
     id: 1,
     image: '/new-images/hero-devotional.jpg',
+    tag: 'SACRED HOME SANCTUARY',
     title: 'Devotional\nCollection',
-    subtitle: 'Sacred wall hangings, illuminated frames & divine tabletop idols.',
-    bullet1: 'Premium Quality',
-    bullet2: 'Ready to Hang / Easy to Place',
-    bullet3: 'Gift-Ready Packaging',
+    subtitle: 'Illuminated Backlit LED frames, handcrafted brass idols & sacred wall sanctums.',
+    bullet1: 'Temple-Grade Sanctified Art',
+    bullet2: 'Warm Ambient 12V LED Illumination',
+    bullet3: 'Gift-Ready Wooden Protective Packaging',
     cta: 'EXPLORE COLLECTION',
+    secondaryCta: 'VIEW BESTSELLERS',
     category: 'Wall Hangings',
     ctaHref: '#/shop?category=Wall%20Hangings',
   },
   {
     id: 2,
     image: '/new-images/hero-car-decor.jpg',
+    tag: 'DIVINE SAFE TRAVEL',
     title: 'Car Décor\nCollection',
-    subtitle: 'Graceful dashboard idols and spiritual hangings for every drive.',
-    bullet1: 'Premium Quality',
-    bullet2: 'Ready to Hang / Easy to Place',
-    bullet3: 'Gift-Ready Packaging',
+    subtitle: 'Graceful dashboard idols and sacred hangings for peaceful, blessed journeys.',
+    bullet1: 'Precision Engineered Acrylic & Brass',
+    bullet2: 'Anti-Slip Heat Resistant Dashboard Mount',
+    bullet3: 'Sacred Mantra Engraved Accents',
     cta: 'EXPLORE COLLECTION',
+    secondaryCta: 'VIEW DASHBOARD IDOLS',
     category: 'Dashboard Idols',
     ctaHref: '#/shop?category=Dashboard%20Idols',
   },
   {
     id: 3,
     image: '/new-images/hero-wall-decor.jpg',
+    tag: 'TIMELESS INDIAN CRAFT',
     title: 'Wall Décor\nCollection',
-    subtitle: 'Artistic framed wall art, modern metal craft & designer clocks.',
-    bullet1: 'Premium Quality',
-    bullet2: 'Ready to Hang / Easy to Place',
-    bullet3: 'Gift-Ready Packaging',
+    subtitle: 'Contemporary laser-cut metal craft, spiritual silhouettes & artisan clocks.',
+    bullet1: 'Rust-Proof High-Grade Matte Metal',
+    bullet2: 'Pre-Installed Precision Mounting Kit',
+    bullet3: '100% Proudly Made in India',
     cta: 'EXPLORE COLLECTION',
+    secondaryCta: 'EXPLORE WALL ART',
     category: 'Metal Wall Art',
     ctaHref: '#/shop?category=Metal%20Wall%20Art',
   },
@@ -48,9 +55,9 @@ const slides = [
 export default function HeroSlider({ onSelectCategory }) {
   const [active, setActive] = useState(0);
 
-  /* Auto-advance every 5 seconds */
+  /* Auto-advance every 5.5 seconds */
   useEffect(() => {
-    const t = setTimeout(() => setActive((a) => (a + 1) % slides.length), 5000);
+    const t = setTimeout(() => setActive((a) => (a + 1) % slides.length), 5500);
     return () => clearTimeout(t);
   }, [active]);
 
@@ -59,65 +66,118 @@ export default function HeroSlider({ onSelectCategory }) {
   const s = slides[active];
 
   return (
-    <section className="hero-slider" aria-label="Featured collections">
-      {/* Background image */}
-      <div
-        className="hero-bg"
-        style={{ backgroundImage: `url(${s.image})` }}
-        aria-hidden="true"
-      />
+    <section className="hero-slider" aria-label="Featured Sacred Collections">
+      {/* Background slide images with Ken Burns zoom */}
+      {slides.map((slide, idx) => (
+        <div
+          key={slide.id}
+          className={`hero-bg ${idx === active ? 'hero-bg--active' : ''}`}
+          style={{ backgroundImage: `url(${slide.image})` }}
+          aria-hidden={idx !== active}
+        />
+      ))}
 
-      {/* Overlay content */}
+      {/* Atmospheric gradient overlay for contrast */}
+      <div className="hero-gradient-overlay" aria-hidden="true" />
+
+      {/* Overlay content with snappy, lightweight transition */}
       <div className="hero-content">
-        <div className="hero-text-block">
-          <h1 className="hero-title">
-            {s.title.split('\n').map((line, i) => (
-              <span key={i}>{line}<br /></span>
-            ))}
-          </h1>
-          <p className="hero-subtitle">
-            {s.subtitle}
-          </p>
-          {/* Feature bullets: Premium Quality, Ready to Hang / Easy to Place, Gift-Ready Packaging */}
-          <div className="hero-bullets">
-            <span className="hero-bullet">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-              {s.bullet1}
-            </span>
-            <span className="hero-bullet">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
-              {s.bullet2}
-            </span>
-            <span className="hero-bullet">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
-              {s.bullet3}
-            </span>
-          </div>
-          <a
-            href={s.ctaHref}
-            className="hero-cta"
-            onClick={(e) => {
-              if (onSelectCategory) {
-                e.preventDefault();
-                onSelectCategory(s.category);
-              }
-            }}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={s.id}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.22 }}
+            className="hero-text-block"
           >
-            {s.cta}
-          </a>
-        </div>
+            <div className="hero-eyebrow">
+              <span className="hero-eyebrow-icon">✦</span>
+              <span>{s.tag}</span>
+              <span className="hero-eyebrow-icon">✦</span>
+            </div>
+
+            <h1 className="hero-title">
+              {s.title.split('\n').map((line, i) => (
+                <span key={i} className="hero-title-line">
+                  {line}
+                </span>
+              ))}
+            </h1>
+
+            <p className="hero-subtitle">{s.subtitle}</p>
+
+            <div className="hero-bullets">
+              <div className="hero-bullet">
+                <span className="bullet-diamond">✦</span>
+                <span>{s.bullet1}</span>
+              </div>
+              <div className="hero-bullet">
+                <span className="bullet-diamond">✦</span>
+                <span>{s.bullet2}</span>
+              </div>
+              <div className="hero-bullet">
+                <span className="bullet-diamond">✦</span>
+                <span>{s.bullet3}</span>
+              </div>
+            </div>
+
+            <div className="hero-actions">
+              <a
+                href={s.ctaHref}
+                className="hero-cta btn-gold"
+                onClick={(e) => {
+                  if (onSelectCategory) {
+                    e.preventDefault();
+                    onSelectCategory(s.category);
+                  }
+                }}
+              >
+                <span>{s.cta}</span>
+                <ArrowRight size={15} strokeWidth={2.4} style={{ marginLeft: '4px', verticalAlign: 'middle' }} />
+              </a>
+
+              <a
+                href="#/shop"
+                className="hero-secondary-cta"
+                onClick={(e) => {
+                  if (onSelectCategory) {
+                    e.preventDefault();
+                    onSelectCategory('All');
+                  }
+                }}
+              >
+                <span>ALL PIECES</span>
+              </a>
+            </div>
+          </motion.div>
+        </AnimatePresence>
       </div>
 
-      {/* Prev / Next arrows */}
-      <button className="hero-arrow hero-prev" onClick={prev} aria-label="Previous slide">&#8249;</button>
-      <button className="hero-arrow hero-next" onClick={next} aria-label="Next slide">&#8250;</button>
+      {/* Prev / Next arrows with Lucide icons */}
+      <button
+        type="button"
+        className="hero-arrow hero-prev"
+        onClick={prev}
+        aria-label="Previous slide"
+      >
+        <ChevronLeft size={22} strokeWidth={2.2} />
+      </button>
+      <button
+        type="button"
+        className="hero-arrow hero-next"
+        onClick={next}
+        aria-label="Next slide"
+      >
+        <ChevronRight size={22} strokeWidth={2.2} />
+      </button>
 
-      {/* Dot indicators */}
+      {/* Modern elongated pill dot indicators */}
       <div className="hero-dots" role="tablist" aria-label="Slide indicators">
         {slides.map((_, i) => (
           <button
             key={i}
-            className={`hero-dot${i === active ? ' active' : ''}`}
+            className={`hero-dot ${i === active ? 'active' : ''}`}
             onClick={() => setActive(i)}
             aria-label={`Go to slide ${i + 1}`}
             aria-selected={i === active}

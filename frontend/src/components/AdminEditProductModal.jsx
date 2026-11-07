@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { api } from '../services/api';
 import './AdminEditProductModal.css';
 
@@ -336,7 +337,7 @@ export default function AdminEditProductModal({
     }
   };
 
-  return (
+  return createPortal(
     <div className="admin-modal-overlay" onClick={onClose} role="presentation">
       <div
         className="admin-modal-container"
@@ -729,6 +730,7 @@ export default function AdminEditProductModal({
           </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

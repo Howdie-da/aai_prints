@@ -1,4 +1,24 @@
 import { useState, useEffect, useMemo } from 'react';
+import { createPortal } from 'react-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  Star,
+  Heart,
+  ShoppingBag,
+  Truck,
+  ShieldCheck,
+  Package,
+  ZoomIn,
+  ChevronLeft,
+  ChevronRight,
+  Minus,
+  Plus,
+  X,
+  Edit3,
+  Trash2,
+  Check,
+  ArrowRight,
+} from 'lucide-react';
 import { useWishlist } from '../context/WishlistContext';
 import { useAuth } from '../context/AuthContext';
 import AdminEditProductModal from '../components/AdminEditProductModal';
@@ -103,6 +123,25 @@ export default function ProductDetailPage({
   // Zoom modal state
   const [isZoomOpen, setIsZoomOpen] = useState(false);
 
+  // Lock body scroll and listen for Escape key when zoom modal is open
+  useEffect(() => {
+    if (isZoomOpen) {
+      document.body.style.overflow = 'hidden';
+      const handleKeyDown = (e) => {
+        if (e.key === 'Escape') {
+          setIsZoomOpen(false);
+        }
+      };
+      window.addEventListener('keydown', handleKeyDown);
+      return () => {
+        document.body.style.overflow = '';
+        window.removeEventListener('keydown', handleKeyDown);
+      };
+    } else {
+      document.body.style.overflow = '';
+    }
+  }, [isZoomOpen]);
+
   // Reset state when product changes
   useEffect(() => {
     setActiveImageIndex(0);
@@ -114,7 +153,9 @@ export default function ProductDetailPage({
     } else {
       setSelectedVariant(null);
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
   }, [product?.id]);
 
   // Clean gallery images array: exclude placeholder pictures
@@ -251,7 +292,8 @@ export default function ProductDetailPage({
           {isAdmin && (
             <div className="pdp-admin-bar">
               <div className="pdp-admin-badge">
-                <span>🛡️ ADMIN ACCESS: Live Product Controls</span>
+                <ShieldCheck size={16} />
+                <span>ADMIN ACCESS: Live Product Controls</span>
               </div>
               <div className="pdp-admin-actions">
                 <button
@@ -259,7 +301,7 @@ export default function ProductDetailPage({
                   className="pdp-admin-btn pdp-admin-btn--edit"
                   onClick={() => setIsEditModalOpen(true)}
                 >
-                  ✏️ Edit Product &amp; Photos
+                  <Edit3 size={15} /> Edit Product &amp; Photos
                 </button>
                 <button
                   type="button"
@@ -267,7 +309,7 @@ export default function ProductDetailPage({
                   onClick={handleDirectDelete}
                   disabled={isDeleting}
                 >
-                  {isDeleting ? 'Deleting...' : '🗑️ Delete Product'}
+                  <Trash2 size={15} /> {isDeleting ? 'Deleting...' : 'Delete Product'}
                 </button>
               </div>
             </div>
@@ -281,7 +323,9 @@ export default function ProductDetailPage({
             {galleryImages.length > 1 && (
               <div className="pdp-thumbnails" role="tablist" aria-label="Product thumbnails">
                 {galleryImages.map((imgSrc, idx) => (
-                  <button
+                  <motion.button
+                    whileHover={{ scale: 1.06 }}
+                    whileTap={{ scale: 0.94 }}
                     key={idx}
                     type="button"
                     className={`pdp-thumb-btn ${idx === activeImageIndex ? 'active' : ''}`}
@@ -299,7 +343,7 @@ export default function ProductDetailPage({
                         e.currentTarget.style.display = 'none';
                       }}
                     />
-                  </button>
+                  </motion.button>
                 ))}
               </div>
             )}
@@ -319,7 +363,18 @@ export default function ProductDetailPage({
                   onClick={handlePrevImage}
                   aria-label="Previous image"
                 >
-                  ‹
+                  <ChevronLeft size={20} strokeWidth={2.5} />
+                </button>
+              )}
+
+              {galleryImages.length > 1 && (
+                <button
+                  type="button"
+                  className="pdp-gallery-arrow pdp-arrow-next"
+                  onClick={handleNextImage}
+                  aria-label="Next image"
+                >
+                  <ChevronRight size={20} strokeWidth={2.5} />
                 </button>
               )}
 
@@ -340,22 +395,24 @@ export default function ProductDetailPage({
               >
                 {currentImageSrc ? (
                   <>
-                    <img
-                      src={currentImageSrc}
-                      alt={product.name}
-                      className="pdp-main-img"
-                      loading="eager"
-                      onError={(e) => {
-                        e.currentTarget.style.display = 'none';
-                      }}
-                    />
+                    <AnimatePresence mode="wait">
+                      <motion.img
+                        key={activeImageIndex}
+                        src={currentImageSrc}
+                        alt={product.name}
+                        className="pdp-main-img"
+                        loading="eager"
+                        initial={{ opacity: 0, scale: 0.98 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.98 }}
+                        transition={{ duration: 0.22, ease: 'easeOut' }}
+                        onError={(e) => {
+                          e.currentTarget.style.display = 'none';
+                        }}
+                      />
+                    </AnimatePresence>
                     <span className="pdp-zoom-hint">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <circle cx="11" cy="11" r="8" />
-                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                        <line x1="11" y1="8" x2="11" y2="14" />
-                        <line x1="8" y1="11" x2="14" y2="11" />
-                      </svg>
+                      <ZoomIn size={14} />
                       Click to Zoom
                     </span>
                   </>
@@ -363,17 +420,6 @@ export default function ProductDetailPage({
                   <div className="pdp-main-image-empty" aria-hidden="true" />
                 )}
               </div>
-
-              {galleryImages.length > 1 && (
-                <button
-                  type="button"
-                  className="pdp-gallery-arrow pdp-arrow-next"
-                  onClick={handleNextImage}
-                  aria-label="Next image"
-                >
-                  ›
-                </button>
-              )}
             </div>
           </div>
 
@@ -426,7 +472,9 @@ export default function ProductDetailPage({
                 <label className="pdp-variants-label">Available Options / Sizes:</label>
                 <div className="pdp-variants-list" role="radiogroup" aria-label="Product options">
                   {product.variants.map((v) => (
-                    <button
+                    <motion.button
+                      whileHover={{ scale: 1.04 }}
+                      whileTap={{ scale: 0.96 }}
                       key={v.id}
                       type="button"
                       className={`pdp-variant-chip ${selectedVariant?.id === v.id ? 'active' : ''}`}
@@ -435,7 +483,7 @@ export default function ProductDetailPage({
                       aria-checked={selectedVariant?.id === v.id}
                     >
                       {v.label}
-                    </button>
+                    </motion.button>
                   ))}
                 </div>
               </div>
@@ -445,15 +493,16 @@ export default function ProductDetailPage({
             <div className="pdp-qty-section">
               <label htmlFor="pdp-qty-input" className="pdp-qty-label">Quantity:</label>
               <div className="pdp-qty-control">
-                <button
+                <motion.button
+                  whileTap={{ scale: 0.85 }}
                   type="button"
                   className="pdp-qty-btn"
                   onClick={() => handleQuantityChange(-1)}
                   disabled={quantity <= 1}
                   aria-label="Decrease quantity"
                 >
-                  −
-                </button>
+                  <Minus size={14} strokeWidth={2.5} />
+                </motion.button>
                 <input
                   id="pdp-qty-input"
                   type="number"
@@ -466,20 +515,23 @@ export default function ProductDetailPage({
                   }}
                   aria-label="Product quantity"
                 />
-                <button
+                <motion.button
+                  whileTap={{ scale: 0.85 }}
                   type="button"
                   className="pdp-qty-btn"
                   onClick={() => handleQuantityChange(1)}
                   aria-label="Increase quantity"
                 >
-                  +
-                </button>
+                  <Plus size={14} strokeWidth={2.5} />
+                </motion.button>
               </div>
             </div>
 
             {/* Primary Action Buttons */}
             <div className="pdp-actions">
-              <button
+              <motion.button
+                whileHover={{ scale: 1.02, y: -2 }}
+                whileTap={{ scale: 0.97 }}
                 type="button"
                 className={`pdp-btn-add-cart ${addedToast ? 'added' : ''}`}
                 onClick={handleAddToCart}
@@ -487,47 +539,38 @@ export default function ProductDetailPage({
                 aria-label={addedToast ? "Product added to cart" : "Add product to cart"}
               >
                 {addedToast ? (
-                  <>✓ Added to Cart</>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                    <Check size={16} strokeWidth={2.5} /> Added to Cart
+                  </span>
                 ) : (
-                  <>
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M9 22c.55 0 1-.45 1-1s-.45-1-1-1-1 .45-1 1 .45 1 1 1zm11 0c.55 0 1-.45 1-1s-.45-1-1-1-1 .45-1 1 .45 1 1 1z" />
-                      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
-                    </svg>
-                    ADD TO CART
-                  </>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                    <ShoppingBag size={18} /> ADD TO CART
+                  </span>
                 )}
-              </button>
+              </motion.button>
 
-              <button
+              <motion.button
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.95 }}
                 type="button"
                 className={`pdp-btn-wishlist ${isFav ? 'active' : ''}`}
                 onClick={() => toggleWishlist(product)}
                 aria-label={isFav ? 'Remove from wishlist' : 'Add to wishlist'}
               >
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
+                <Heart
+                  size={18}
                   fill={isFav ? '#e53935' : 'none'}
                   stroke={isFav ? '#e53935' : 'currentColor'}
-                  strokeWidth="2"
-                >
-                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-                </svg>
+                  strokeWidth={2}
+                />
                 {isFav ? 'In Wishlist' : 'Wishlist'}
-              </button>
+              </motion.button>
             </div>
 
             {/* Value Highlights */}
             <div className="pdp-value-points">
               <div className="pdp-value-point">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <rect x="1" y="3" width="15" height="13" rx="1" />
-                  <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
-                  <circle cx="5.5" cy="18.5" r="2.5" />
-                  <circle cx="18.5" cy="18.5" r="2.5" />
-                </svg>
+                <Truck size={18} />
                 <div>
                   <strong>Standard Dispatch</strong>
                   <span>Handcrafted and dispatched within 24–48 hours</span>
@@ -535,9 +578,7 @@ export default function ProductDetailPage({
               </div>
 
               <div className="pdp-value-point">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                </svg>
+                <ShieldCheck size={18} />
                 <div>
                   <strong>Secure Packaging</strong>
                   <span>Shipped in reinforced multi-layer protective packaging</span>
@@ -545,11 +586,7 @@ export default function ProductDetailPage({
               </div>
 
               <div className="pdp-value-point">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
-                  <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
-                  <line x1="12" y1="22.08" x2="12" y2="12" />
-                </svg>
+                <Package size={18} />
                 <div>
                   <strong>Gift-Ready Presentation</strong>
                   <span>Artisanal presentation suitable for gifting</span>
@@ -576,20 +613,31 @@ export default function ProductDetailPage({
                 aria-expanded={openAccordion === 'description'}
               >
                 <span>Description &amp; Artistic Craftsmanship</span>
-                <span className="pdp-accordion-icon">{openAccordion === 'description' ? '−' : '+'}</span>
+                <span className="pdp-accordion-icon">
+                  {openAccordion === 'description' ? <Minus size={14} /> : <Plus size={14} />}
+                </span>
               </button>
-              {openAccordion === 'description' && (
-                <div className="pdp-accordion-content">
-                  <p>
-                    Experience the timeless beauty of the <strong>{product.name}</strong> from Aai Prints.
-                    Each piece is thoughtfully produced using high-precision craftsmanship and durable finishes.
-                  </p>
-                  <p>
-                    {product.description ||
-                      'Designed to infuse serene spiritual aura and aesthetic elegance into temples, living rooms, and office entrances.'}
-                  </p>
-                </div>
-              )}
+              <AnimatePresence>
+                {openAccordion === 'description' && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.25, ease: 'easeOut' }}
+                    className="pdp-accordion-content"
+                    style={{ overflow: 'hidden' }}
+                  >
+                    <p>
+                      Experience the timeless beauty of the <strong>{product.name}</strong> from Aai Prints.
+                      Each piece is thoughtfully produced using high-precision craftsmanship and durable finishes.
+                    </p>
+                    <p>
+                      {product.description ||
+                        'Designed to infuse serene spiritual aura and aesthetic elegance into temples, living rooms, and office entrances.'}
+                    </p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
             {/* 2. Specifications Table */}
@@ -601,45 +649,56 @@ export default function ProductDetailPage({
                 aria-expanded={openAccordion === 'specs'}
               >
                 <span>Specifications &amp; Dimensions</span>
-                <span className="pdp-accordion-icon">{openAccordion === 'specs' ? '−' : '+'}</span>
+                <span className="pdp-accordion-icon">
+                  {openAccordion === 'specs' ? <Minus size={14} /> : <Plus size={14} />}
+                </span>
               </button>
-              {openAccordion === 'specs' && (
-                <div className="pdp-accordion-content">
-                  <table className="pdp-specs-table">
-                    <tbody>
-                      <tr>
-                        <th>Brand</th>
-                        <td>Aai Prints</td>
-                      </tr>
-                      <tr>
-                        <th>Product ID</th>
-                        <td>AAP-{String(product.id).padStart(4, '0')}</td>
-                      </tr>
-                      {product.category && (
+              <AnimatePresence>
+                {openAccordion === 'specs' && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.25, ease: 'easeOut' }}
+                    className="pdp-accordion-content"
+                    style={{ overflow: 'hidden' }}
+                  >
+                    <table className="pdp-specs-table">
+                      <tbody>
                         <tr>
-                          <th>Category</th>
-                          <td>{product.category}</td>
+                          <th>Brand</th>
+                          <td>Aai Prints</td>
                         </tr>
-                      )}
-                      {product.subcategory && (
                         <tr>
-                          <th>Subcategory</th>
-                          <td>{product.subcategory}</td>
+                          <th>Product ID</th>
+                          <td>AAP-{String(product.id).padStart(4, '0')}</td>
                         </tr>
-                      )}
-                      {product.specifications &&
-                        Object.entries(product.specifications).map(([key, val]) => (
-                          <tr key={key}>
-                            <th style={{ textTransform: 'capitalize' }}>
-                              {key.replace(/([A-Z])/g, ' $1')}
-                            </th>
-                            <td>{val}</td>
+                        {product.category && (
+                          <tr>
+                            <th>Category</th>
+                            <td>{product.category}</td>
                           </tr>
-                        ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
+                        )}
+                        {product.subcategory && (
+                          <tr>
+                            <th>Subcategory</th>
+                            <td>{product.subcategory}</td>
+                          </tr>
+                        )}
+                        {product.specifications &&
+                          Object.entries(product.specifications).map(([key, val]) => (
+                            <tr key={key}>
+                              <th style={{ textTransform: 'capitalize' }}>
+                                {key.replace(/([A-Z])/g, ' $1')}
+                              </th>
+                              <td>{val}</td>
+                            </tr>
+                          ))}
+                      </tbody>
+                    </table>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
             {/* 3. Delivery & Dispatch Area */}
@@ -651,21 +710,32 @@ export default function ProductDetailPage({
                 aria-expanded={openAccordion === 'delivery'}
               >
                 <span>Delivery &amp; Packaging Details</span>
-                <span className="pdp-accordion-icon">{openAccordion === 'delivery' ? '−' : '+'}</span>
+                <span className="pdp-accordion-icon">
+                  {openAccordion === 'delivery' ? <Minus size={14} /> : <Plus size={14} />}
+                </span>
               </button>
-              {openAccordion === 'delivery' && (
-                <div className="pdp-accordion-content">
-                  <p>
-                    <strong>Dispatch:</strong> Orders are packaged and dispatched within 24 to 48 business hours.
-                  </p>
-                  <p>
-                    <strong>Protective Packaging:</strong> Items are encased in corner-protected, shock-absorbent packaging to ensure safe transit.
-                  </p>
-                  <p>
-                    <strong>Tracking:</strong> A live shipment tracking link is shared via SMS and Email once the order is handed to the delivery courier.
-                  </p>
-                </div>
-              )}
+              <AnimatePresence>
+                {openAccordion === 'delivery' && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.25, ease: 'easeOut' }}
+                    className="pdp-accordion-content"
+                    style={{ overflow: 'hidden' }}
+                  >
+                    <p>
+                      <strong>Dispatch:</strong> Orders are packaged and dispatched within 24 to 48 business hours.
+                    </p>
+                    <p>
+                      <strong>Protective Packaging:</strong> Items are encased in corner-protected, shock-absorbent packaging to ensure safe transit.
+                    </p>
+                    <p>
+                      <strong>Tracking:</strong> A live shipment tracking link is shared via SMS and Email once the order is handed to the delivery courier.
+                    </p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
           </div>
@@ -703,16 +773,12 @@ export default function ProductDetailPage({
                       }}
                       aria-label={relFav ? 'Remove from wishlist' : 'Add to wishlist'}
                     >
-                      <svg
-                        width="18"
-                        height="18"
-                        viewBox="0 0 24 24"
+                      <Heart
+                        size={18}
                         fill={relFav ? '#e53935' : 'none'}
                         stroke={relFav ? '#e53935' : '#444'}
-                        strokeWidth="2"
-                      >
-                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-                      </svg>
+                        strokeWidth={2}
+                      />
                     </button>
 
                     {/* Related Image Area */}
@@ -765,8 +831,10 @@ export default function ProductDetailPage({
                         type="button"
                         className="pdp-rel-view-btn"
                         onClick={() => onSelectProduct && onSelectProduct(rel)}
+                        style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
                       >
-                        View Product →
+                        <span>View Product</span>
+                        <ArrowRight size={14} />
                       </button>
                     </div>
                   </article>
@@ -777,8 +845,8 @@ export default function ProductDetailPage({
         </section>
       )}
 
-      {/* ── 5. Zoom Modal ── */}
-      {isZoomOpen && currentImageSrc && (
+      {/* ── 5. Zoom Modal (Portaled to document.body to guarantee 100vw/100vh viewport coverage) ── */}
+      {isZoomOpen && currentImageSrc && createPortal(
         <div className="pdp-zoom-overlay" onClick={() => setIsZoomOpen(false)}>
           <div className="pdp-zoom-content" onClick={(e) => e.stopPropagation()}>
             <button
@@ -787,7 +855,7 @@ export default function ProductDetailPage({
               onClick={() => setIsZoomOpen(false)}
               aria-label="Close zoomed view"
             >
-              ✕
+              <X size={20} strokeWidth={2} />
             </button>
             <img
               src={currentImageSrc}
@@ -799,7 +867,8 @@ export default function ProductDetailPage({
             />
             <p className="pdp-zoom-caption">{product.name}</p>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* ── 6. Admin Edit Product Modal ── */}

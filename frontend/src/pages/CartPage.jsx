@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ShoppingBag, Trash2, Plus, Minus, Lock, ShieldCheck, CreditCard } from 'lucide-react';
 import { useWishlist } from '../context/WishlistContext';
 import './CartPage.css';
 
@@ -123,10 +125,7 @@ export default function CartPage({
           /* Empty Cart State */
           <div className="cart-empty-card">
             <div className="cart-empty-icon" aria-hidden="true">
-              <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <path d="M9 22c.55 0 1-.45 1-1s-.45-1-1-1-1 .45-1 1 .45 1 1 1zm11 0c.55 0 1-.45 1-1s-.45-1-1-1-1 .45-1 1 .45 1 1 1z" />
-                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
-              </svg>
+              <ShoppingBag size={44} strokeWidth={1.5} />
             </div>
             <h2 className="cart-empty-title">Your Cart Is Empty</h2>
             <p className="cart-empty-desc">
@@ -147,24 +146,33 @@ export default function CartPage({
             {/* Left: Cart Items List */}
             <div className="cart-items-section">
               <div className="cart-items-list">
-                {cart.map((item) => {
-                  const qty = item.quantity || 1;
-                  const unitPrice = parsePrice(item.price);
-                  const itemSubtotal = unitPrice * qty;
-                  const itemKey = item.cartItemId || (item.variantId ? `${item.id}-${item.variantId}` : String(item.id));
-                  const hasImage = Boolean(item.image && !item.image.includes('placeholder'));
+                <AnimatePresence initial={false}>
+                  {cart.map((item) => {
+                    const qty = item.quantity || 1;
+                    const unitPrice = parsePrice(item.price);
+                    const itemSubtotal = unitPrice * qty;
+                    const itemKey = item.cartItemId || (item.variantId ? `${item.id}-${item.variantId}` : String(item.id));
+                    const hasImage = Boolean(item.image && !item.image.includes('placeholder'));
 
-                  // Discount calculation if originalPrice exists
-                  let itemDiscountPercent = null;
-                  if (item.originalPrice && item.price) {
-                    const orig = parsePrice(item.originalPrice);
-                    if (orig > unitPrice) {
-                      itemDiscountPercent = Math.round(((orig - unitPrice) / orig) * 100);
+                    // Discount calculation if originalPrice exists
+                    let itemDiscountPercent = null;
+                    if (item.originalPrice && item.price) {
+                      const orig = parsePrice(item.originalPrice);
+                      if (orig > unitPrice) {
+                        itemDiscountPercent = Math.round(((orig - unitPrice) / orig) * 100);
+                      }
                     }
-                  }
 
-                  return (
-                    <article key={itemKey} className="cart-item-card" aria-label={item.name}>
+                    return (
+                      <motion.article
+                        key={itemKey}
+                        className="cart-item-card"
+                        aria-label={item.name}
+                        initial={{ opacity: 0, y: 15 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, x: 30, transition: { duration: 0.2 } }}
+                        transition={{ duration: 0.2 }}
+                      >
                       {/* Product Image */}
                       <div
                         className="cart-item-img-wrap"
@@ -242,7 +250,7 @@ export default function CartPage({
                               disabled={qty <= 1}
                               aria-label={`Decrease quantity of ${item.name}`}
                             >
-                              −
+                              <Minus size={13} strokeWidth={2.5} />
                             </button>
                             <input
                               type="number"
@@ -258,7 +266,7 @@ export default function CartPage({
                               onClick={() => handleIncrease(item)}
                               aria-label={`Increase quantity of ${item.name}`}
                             >
-                              +
+                              <Plus size={13} strokeWidth={2.5} />
                             </button>
                           </div>
 
@@ -269,24 +277,25 @@ export default function CartPage({
                             </span>
                           </div>
 
-                          <button
+                          <motion.button
+                            whileHover={{ scale: 1.12 }}
+                            whileTap={{ scale: 0.88 }}
                             type="button"
                             className="cart-item-remove-btn"
                             onClick={() => handleRemove(item)}
                             aria-label={`Remove ${item.name} from cart`}
                             title="Remove item"
+                            style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}
                           >
-                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                              <polyline points="3 6 5 6 21 6" />
-                              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-                            </svg>
+                            <Trash2 size={14} />
                             <span>Remove</span>
-                          </button>
+                          </motion.button>
                         </div>
                       </div>
-                    </article>
+                    </motion.article>
                   );
                 })}
+                </AnimatePresence>
               </div>
 
               <div className="cart-items-footer-nav">
@@ -327,9 +336,7 @@ export default function CartPage({
 
                   {subtotal >= 500 && (
                     <div className="cart-free-shipping-badge">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <polyline points="20 6 9 17 4 12" />
-                      </svg>
+                      <ShieldCheck size={16} />
                       <span>Eligible for Free Standard Delivery</span>
                     </div>
                   )}
@@ -346,28 +353,27 @@ export default function CartPage({
                   </p>
                 </div>
 
-                <button
+                <motion.button
+                  whileHover={{ scale: 1.02, y: -2 }}
+                  whileTap={{ scale: 0.98 }}
                   type="button"
                   className="cart-checkout-cta"
                   onClick={() => setShowCheckoutNotice(true)}
                   aria-label={`Proceed to checkout with total amount ₹${finalTotal.toLocaleString('en-IN')}`}
+                  style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
                 >
-                  PROCEED TO CHECKOUT • ₹{finalTotal.toLocaleString('en-IN')}
-                </button>
+                  <Lock size={16} />
+                  <span>PROCEED TO CHECKOUT • ₹{finalTotal.toLocaleString('en-IN')}</span>
+                </motion.button>
 
                 {/* Trust Badges */}
                 <div className="cart-trust-badges">
                   <div className="cart-trust-item">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                      <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                    </svg>
+                    <Lock size={15} />
                     <span>Secure &amp; Encrypted Ordering</span>
                   </div>
                   <div className="cart-trust-item">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                    </svg>
+                    <ShieldCheck size={15} />
                     <span>Artisan Handcrafted Quality Guarantee</span>
                   </div>
                 </div>
@@ -412,7 +418,7 @@ export default function CartPage({
         </div>
       )}
 
-      {/* ── 5. Frontend Notice: Proceed to Checkout ── */}
+      {/* ── 5. Customer Notice: Proceed to Checkout ── */}
       {showCheckoutNotice && (
         <div className="cart-modal-overlay" onClick={() => setShowCheckoutNotice(false)}>
           <div
@@ -423,15 +429,12 @@ export default function CartPage({
             aria-labelledby="checkout-notice-title"
           >
             <div className="cart-checkout-notice-icon">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" strokeWidth="2">
-                <rect x="2" y="5" width="20" height="14" rx="2" />
-                <line x1="2" y1="10" x2="22" y2="10" />
-              </svg>
+              <CreditCard size={32} style={{ color: 'var(--teal)' }} />
             </div>
-            <h3 id="checkout-notice-title" className="cart-modal-title">Checkout Integration</h3>
+            <h3 id="checkout-notice-title" className="cart-modal-title">Priority Concierge Order</h3>
             <p className="cart-modal-msg">
-              Payment gateway and online checkout integration will be connected by our backend team.
-              Your cart with <strong>{cartCount} {cartCount === 1 ? 'item' : 'items'}</strong> (Total: <strong>₹{finalTotal.toLocaleString('en-IN')}</strong>) is saved in your browser.
+              We are currently coordinating custom orders, fast delivery, and payments directly through our dedicated concierge support.
+              Your cart with <strong>{cartCount} {cartCount === 1 ? 'item' : 'items'}</strong> (Total: <strong>₹{finalTotal.toLocaleString('en-IN')}</strong>) is safely reserved.
             </p>
             <div className="cart-modal-actions">
               <button
@@ -439,7 +442,7 @@ export default function CartPage({
                 className="cart-modal-btn cart-modal-btn--primary"
                 onClick={() => setShowCheckoutNotice(false)}
               >
-                Got It
+                Understood
               </button>
             </div>
           </div>

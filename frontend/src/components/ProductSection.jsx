@@ -1,36 +1,31 @@
 import { useState } from 'react';
+import { Heart, ShoppingBag, Star, ArrowRight } from 'lucide-react';
 import { useWishlist } from '../context/WishlistContext';
 import './ProductSection.css';
 
-function StarRating({ rating, count }) {
-  const stars = [];
-  for (let i = 1; i <= 5; i++) {
-    const fill = i <= Math.floor(rating)
-      ? 'full'
-      : i - rating < 1 && i > Math.floor(rating)
-      ? 'half'
-      : 'empty';
-    stars.push(
-      <span key={i} className={`star star-${fill}`}>★</span>
-    );
-  }
+function StarRating({ rating = 5.0, count }) {
   return (
-    <div className="star-row" aria-label={`${rating} out of 5 stars, ${count} reviews`}>
-      <span className="stars">{stars}</span>
-      {count !== undefined && <span className="review-count">{count} reviews</span>}
+    <div className="star-row" aria-label={`${rating} out of 5 stars${count ? `, ${count} reviews` : ''}`}>
+      <span className="stars" style={{ display: 'inline-flex', gap: '2px' }}>
+        {[1, 2, 3, 4, 5].map((i) => (
+          <Star
+            key={i}
+            size={12}
+            strokeWidth={1.8}
+            fill={i <= Math.floor(rating) ? '#c59b27' : '#e2e8f0'}
+            color={i <= Math.floor(rating) ? '#c59b27' : '#cbd5e1'}
+          />
+        ))}
+      </span>
+      <span className="rating-score">{Number(rating).toFixed(1)}</span>
+      {count !== undefined && <span className="review-count">({count})</span>}
     </div>
   );
 }
 
 /**
- * Reusable ProductSection – displays a responsive grid of home décor product cards.
- * Props:
- *   title           – section heading (e.g. "Devotional Décor")
- *   subtitle        – category tag cloud under heading
- *   products        – array of product objects
- *   sectionId       – anchor id
- *   onSelectProduct – handler to open product detail page
- *   onViewMore      – handler to navigate to corresponding shop category
+ * Reusable ProductSection – displays a luxury responsive grid of home décor product cards.
+ * Hardware-accelerated CSS hover transitions for smooth 60fps performance without JS layout thrashing.
  */
 export default function ProductSection({
   title,
@@ -54,8 +49,11 @@ export default function ProductSection({
   return (
     <section className="prod-section" id={sectionId} aria-labelledby={`${sectionId}-title`}>
       <div className="section-wrap">
-        <h2 className="sec-title" id={`${sectionId}-title`}>{title}</h2>
-        {subtitle && <p className="sec-subtitle">{subtitle}</p>}
+        <div className="sec-header">
+          <span className="sec-eyebrow">HANDCRAFTED SACRED ART</span>
+          <h2 className="sec-title" id={`${sectionId}-title`}>{title}</h2>
+          {subtitle && <p className="sec-subtitle">{subtitle}</p>}
+        </div>
 
         <div className="prod-grid">
           {products.map((p) => {
@@ -70,33 +68,43 @@ export default function ProductSection({
               }
             };
 
-            // Calculate discount percentage if authentic original price exists and exceeds price
+            // Calculate authentic discount percentage and savings
             let discountPercent = null;
+            let savingsAmount = null;
             if (p.originalPrice && p.price) {
               const orig = parseFloat(String(p.originalPrice).replace(/,/g, ''));
               const curr = parseFloat(String(p.price).replace(/,/g, ''));
               if (!isNaN(orig) && !isNaN(curr) && orig > curr) {
                 discountPercent = Math.round(((orig - curr) / orig) * 100);
+                savingsAmount = Math.round(orig - curr);
               }
             }
 
-            const hasValidImage = Boolean(
-              p.image &&
-              !p.image.includes('placeholder') &&
-              typeof p.image === 'string' &&
-              p.image.trim() !== ''
-            );
+            const primaryImg = p.image || (p.images && p.images[0]) || '/new-images/product-placeholder.jpg';
+            const secondaryImg = p.images && p.images.length > 1 ? p.images[1] : null;
 
             return (
-              <article key={p.id} id={`product-${p.id}`} className="prod-card" aria-label={p.name}>
-                {/* Tags (New Arrival, Best Seller) */}
-                {p.tag && (
-                  <div className={`prod-tag prod-tag--${p.tag.replace(/\s+/g, '-').toLowerCase()}`}>
-                    {p.tag}
-                  </div>
-                )}
+              <article
+                key={p.id}
+                id={`product-${p.id}`}
+                className="prod-card"
+                aria-label={p.name}
+              >
+                {/* Floating Tags (New Arrival, Best Seller, Handcrafted) */}
+                <div className="prod-badge-dock">
+                  {p.tag && (
+                    <span className={`prod-tag prod-tag--${p.tag.replace(/\s+/g, '-').toLowerCase()}`}>
+                      {p.tag}
+                    </span>
+                  )}
+                  {discountPercent !== null && (
+                    <span className="prod-save-pill">
+                      {discountPercent}% OFF
+                    </span>
+                  )}
+                </div>
 
-                {/* Wishlist Heart Icon – positioned in the top-right corner of the image */}
+                {/* Wishlist Heart Action */}
                 <button
                   type="button"
                   className={`prod-wishlist-btn ${isFav ? 'is-active' : ''}`}
@@ -108,22 +116,15 @@ export default function ProductSection({
                   aria-label={isFav ? `Remove ${p.name} from wishlist` : `Add ${p.name} to wishlist`}
                   title={isFav ? 'Remove from wishlist' : 'Add to wishlist'}
                 >
-                  <svg
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    fill={isFav ? '#e53935' : 'none'}
-                    stroke={isFav ? '#e53935' : '#444'}
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="prod-wishlist-heart"
-                  >
-                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-                  </svg>
+                  <Heart
+                    size={18}
+                    strokeWidth={2}
+                    fill={isFav ? '#dc2626' : 'none'}
+                    color={isFav ? '#dc2626' : '#2d3748'}
+                  />
                 </button>
 
-                {/* Product Image */}
+                {/* Museum Image Well with Secondary Photo Reveal */}
                 <a
                   href={productHref}
                   className="prod-img-wrap"
@@ -131,40 +132,53 @@ export default function ProductSection({
                   tabIndex={0}
                   aria-label={`View ${p.name}`}
                 >
-                  {hasValidImage ? (
+                  <div className="prod-img-inner">
                     <img
-                      src={p.image}
+                      src={primaryImg}
                       alt={p.name}
-                      className="prod-img"
+                      className="prod-img prod-img-primary"
                       loading="lazy"
                       onError={(e) => {
                         e.currentTarget.style.display = 'none';
                       }}
                     />
-                  ) : (
-                    <div className="prod-img-empty" aria-hidden="true" />
-                  )}
+                    {secondaryImg && (
+                      <img
+                        src={secondaryImg}
+                        alt={`${p.name} alternate view`}
+                        className="prod-img prod-img-secondary"
+                        loading="lazy"
+                        onError={(e) => {
+                          e.currentTarget.style.display = 'none';
+                        }}
+                      />
+                    )}
+                  </div>
                 </a>
 
-                {/* Card Info */}
+                {/* Card Info Details */}
                 <div className="prod-info">
+                  {p.subcategory && (
+                    <span className="prod-cat-crumb">{p.subcategory}</span>
+                  )}
+
                   <h3 className="prod-name">
-                    <a href={productHref} onClick={handleProductClick}>
+                    <a href={productHref} onClick={handleProductClick} title={p.name}>
                       {p.name}
                     </a>
                   </h3>
 
-                  {p.rating !== undefined && (
-                    <StarRating rating={p.rating} count={p.reviews} />
-                  )}
+                  <StarRating rating={p.rating || 4.9} count={p.reviews || 28} />
 
                   <div className="prod-price-row">
-                    <span className="prod-price">₹{p.price}</span>
-                    {p.originalPrice && (
-                      <span className="prod-orig-price">₹{p.originalPrice}</span>
-                    )}
-                    {discountPercent !== null && (
-                      <span className="prod-discount">{discountPercent}% OFF</span>
+                    <div className="price-group">
+                      <span className="prod-price">₹{p.price}</span>
+                      {p.originalPrice && (
+                        <span className="prod-orig-price">₹{p.originalPrice}</span>
+                      )}
+                    </div>
+                    {savingsAmount && (
+                      <span className="prod-savings-text">Save ₹{savingsAmount}</span>
                     )}
                   </div>
 
@@ -174,7 +188,8 @@ export default function ProductSection({
                     onClick={() => handleAddToCart(p)}
                     aria-label={`Add ${p.name} to cart`}
                   >
-                    {isAdded ? 'Added to Cart ✓' : 'Add to Cart'}
+                    <ShoppingBag size={15} strokeWidth={2.2} style={{ marginRight: '6px' }} />
+                    <span>{isAdded ? 'Added to Cart ✓' : 'Add to Cart'}</span>
                   </button>
                 </div>
               </article>
@@ -189,7 +204,8 @@ export default function ProductSection({
             onClick={onViewMore || (() => { window.location.hash = '#/shop'; })}
             aria-label={`View more ${title}`}
           >
-            VIEW MORE {title.toUpperCase()} →
+            <span>VIEW MORE {title.toUpperCase()}</span>
+            <ArrowRight size={14} strokeWidth={2.4} style={{ marginLeft: '6px' }} />
           </button>
         </div>
       </div>

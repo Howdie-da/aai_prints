@@ -1,17 +1,21 @@
 import { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  Search,
+  User,
+  Heart,
+  ShoppingBag,
+  X,
+  ChevronDown,
+  ChevronRight,
+  ArrowRight,
+  Crown
+} from 'lucide-react';
 import { useWishlist } from '../context/WishlistContext';
 import { useAuth } from '../context/AuthContext';
 import { fetchInstantSearch } from '../services/productService';
 import { navLinks, getActiveNavLabel } from '../data/navigationConfig';
 import './Navbar.css';
-
-function ChevronDown() {
-  return (
-    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
-      <polyline points="6 9 12 15 18 9" />
-    </svg>
-  );
-}
 
 export default function Navbar({
   products = [],
@@ -97,7 +101,6 @@ export default function Navbar({
       onSelectProduct(product);
       return;
     }
-    // Fallback: Scroll to matching product on current page
     const el = document.getElementById(`product-${product.id}`);
     if (el) {
       el.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -130,200 +133,229 @@ export default function Navbar({
     if (link.label === 'REVIEWS') {
       e.preventDefault();
       setMenuOpen(false);
-        if (onNavigate) {
-          onNavigate('home', 'reviews');
-        } else {
-          const el = document.getElementById('reviews');
-          if (el) el.scrollIntoView({ behavior: 'smooth' });
-        }
-        return;
+      if (onNavigate) {
+        onNavigate('home', 'reviews');
+      } else {
+        const el = document.getElementById('reviews');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
       }
+      return;
+    }
 
-      if (link.page && onNavigate) {
-        e.preventDefault();
-        onNavigate(link.page, link.category || 'All');
-        setMenuOpen(false);
-      }
-    };
+    if (link.page && onNavigate) {
+      e.preventDefault();
+      onNavigate(link.page, link.category || 'All');
+      setMenuOpen(false);
+    }
+  };
 
-    // Strictly compute at most ONE active top-level navigation label
-    const activeNavLabel = getActiveNavLabel(currentPage, selectedCategory);
+  // Strictly compute at most ONE active top-level navigation label
+  const activeNavLabel = getActiveNavLabel(currentPage, selectedCategory);
 
-    return (
-      <header className="navbar" role="navigation" aria-label="Main navigation">
-        <div className="navbar-inner">
+  return (
+    <header className="navbar" role="navigation" aria-label="Main navigation">
+      <div className="navbar-inner">
 
-          {/* aai Prints Brand Logo */}
-          <a
-            href="#/"
-            className="navbar-logo"
-            aria-label="aai Prints Home"
-            onClick={(e) => {
-              if (onNavigate) {
-                e.preventDefault();
-                onNavigate('home');
-              }
-            }}
-          >
-            <img
-              src="/new-images/logo.png"
-              alt="aai Prints"
-              className="site-logo"
-            />
-          </a>
+        {/* aai Prints Brand Logo */}
+        <a
+          href="#/"
+          className="navbar-logo"
+          aria-label="aai Prints Home"
+          onClick={(e) => {
+            if (onNavigate) {
+              e.preventDefault();
+              onNavigate('home');
+            }
+          }}
+        >
+          <img
+            src="/new-images/logo.png"
+            alt="aai Prints"
+            className="site-logo"
+          />
+        </a>
 
-          {/* ── Desktop Nav ── */}
-          <nav className="nav-links" aria-label="Site navigation">
-            {navLinks.map((link) => {
-              const isActive = link.label === activeNavLabel;
+        {/* ── Desktop Nav ── */}
+        <nav className="nav-links" aria-label="Site navigation">
+          {navLinks.map((link) => {
+            const isActive = link.label === activeNavLabel;
 
-              return (
-                <div
-                  key={link.label}
-                  className="nav-item-wrap"
-                  onMouseEnter={() => link.hasDropdown && setOpenDropdown(link.label)}
-                  onMouseLeave={() => setOpenDropdown(null)}
-                >
-                  <a
-                    href={link.href}
-                    className={`nav-link ${isActive ? 'nav-link--active' : ''}`}
-                    onClick={(e) => handleNavClick(e, link)}
-                  >
-                    {link.label}
-                    {link.hasDropdown && <ChevronDown />}
-                  </a>
-
-                  {link.hasDropdown && (
-                    <div
-                      className={`nav-dropdown ${openDropdown === link.label ? 'is-visible' : ''}`}
-                      role="menu"
-                    >
-                      {link.children.map((child) => {
-                        const isChildActive =
-                          Boolean(selectedCategory) &&
-                          String(selectedCategory).toLowerCase().trim() === (child.category || '').toLowerCase().trim();
-
-                        return (
-                          <a
-                            key={child.label}
-                            href={child.href}
-                            className={`nav-dropdown-item ${isChildActive ? 'nav-dropdown-item--active' : ''}`}
-                            role="menuitem"
-                            onClick={(e) => {
-                              if (onNavigate) {
-                                e.preventDefault();
-                                onNavigate('shop', child.category || 'All');
-                                setOpenDropdown(null);
-                              }
-                            }}
-                          >
-                            {child.label}
-                          </a>
-                        );
-                      })}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </nav>
-
-          {/* ── Right Icons: Search, Account, Wishlist, Cart ── */}
-          <div className="navbar-icons">
-            <button
-              className={`icon-btn ${searchOpen ? 'icon-btn--active' : ''}`}
-              aria-label={searchOpen ? 'Close search' : 'Open search'}
-              title="Search products"
-              onClick={() => setSearchOpen((prev) => !prev)}
-              aria-expanded={searchOpen}
-            >
-              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="11" cy="11" r="8" />
-                <line x1="21" y1="21" x2="16.65" y2="16.65" />
-              </svg>
-            </button>
-            <button
-              className="icon-btn pos-rel"
-              aria-label={isAuthenticated ? `My Account (${user?.name || user?.email})` : "My Account"}
-              title={isAuthenticated ? `Logged in as ${user?.name || user?.email}` : "My Account"}
-              onClick={onOpenAccount}
-            >
-              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                <circle cx="12" cy="7" r="4" />
-              </svg>
-              {isAuthenticated && (
-                <span
-                  style={{
-                    position: 'absolute',
-                    top: '6px',
-                    right: '6px',
-                    width: '7px',
-                    height: '7px',
-                    borderRadius: '50%',
-                    backgroundColor: '#10b981',
-                    border: '1.5px solid #fff'
-                  }}
-                />
-              )}
-            </button>
-            <button
-              className={`icon-btn pos-rel ${currentPage === 'wishlist' ? 'icon-btn--active' : ''}`}
-              aria-label={`Wishlist (${wishlistCount} items)`}
-              title="View Wishlist"
-              onClick={() => setIsWishlistOpen(true)}
-            >
-              <svg
-                width="19"
-                height="19"
-                viewBox="0 0 24 24"
-                fill={wishlistCount > 0 ? '#e53935' : 'none'}
-                stroke={wishlistCount > 0 ? '#e53935' : 'currentColor'}
-                strokeWidth="2"
+            return (
+              <div
+                key={link.label}
+                className="nav-item-wrap"
+                onMouseEnter={() => link.hasDropdown && setOpenDropdown(link.label)}
+                onMouseLeave={() => setOpenDropdown(null)}
               >
-                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-              </svg>
-              <span className="icon-badge">{wishlistCount}</span>
-            </button>
-            <button
-              className={`icon-btn pos-rel ${currentPage === 'cart' ? 'icon-btn--active' : ''}`}
-              aria-label={`Cart (${cartCount} items)`}
-              title="View Cart"
-              onClick={() => setIsCartOpen(true)}
-            >
-              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M9 22c.55 0 1-.45 1-1s-.45-1-1-1-1 .45-1 1 .45 1 1 1zm11 0c.55 0 1-.45 1-1s-.45-1-1-1-1 .45-1 1 .45 1 1 1z" />
-                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
-              </svg>
-              <span className="icon-badge">{cartCount}</span>
-            </button>
+                <a
+                  href={link.href}
+                  className={`nav-link ${isActive ? 'nav-link--active' : ''}`}
+                  onClick={(e) => handleNavClick(e, link)}
+                >
+                  {link.label}
+                  {link.hasDropdown && <ChevronDown size={11} strokeWidth={2.4} style={{ marginLeft: '4px', verticalAlign: 'middle' }} />}
+                </a>
 
-            {/* Hamburger – mobile only */}
+                {link.hasDropdown && (
+                  <AnimatePresence>
+                    {openDropdown === link.label && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 4 }}
+                        transition={{ duration: 0.15 }}
+                        className="nav-dropdown is-visible"
+                        role="menu"
+                      >
+                        {link.children.map((child) => {
+                          const isChildActive =
+                            Boolean(selectedCategory) &&
+                            String(selectedCategory).toLowerCase().trim() === (child.category || '').toLowerCase().trim();
+
+                          return (
+                            <a
+                              key={child.label}
+                              href={child.href}
+                              className={`nav-dropdown-item ${isChildActive ? 'nav-dropdown-item--active' : ''}`}
+                              role="menuitem"
+                              onClick={(e) => {
+                                if (onNavigate) {
+                                  e.preventDefault();
+                                  onNavigate('shop', child.category || 'All');
+                                  setOpenDropdown(null);
+                                }
+                              }}
+                            >
+                              {child.label}
+                            </a>
+                          );
+                        })}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                )}
+              </div>
+            );
+          })}
+        </nav>
+
+        {/* ── Right Icons: Search, Admin Portal, Account, Wishlist, Cart ── */}
+        <div className="navbar-icons">
+          {/* Quick Search Trigger */}
+          <button
+            className={`icon-btn search-trigger-btn ${searchOpen ? 'icon-btn--active' : ''}`}
+            aria-label={searchOpen ? 'Close search' : 'Open search'}
+            title="Search"
+            onClick={() => setSearchOpen((prev) => !prev)}
+            aria-expanded={searchOpen}
+          >
+            <Search size={19} strokeWidth={2} />
+          </button>
+
+          {/* Admin Badge Shortcut */}
+          {isAuthenticated && user?.role === 'admin' && (
             <button
-              className={`hamburger${menuOpen ? ' open' : ''}`}
-              onClick={() => setMenuOpen(!menuOpen)}
-              aria-label="Toggle menu"
-              aria-expanded={menuOpen}
+              className="admin-header-pill"
+              onClick={() => {
+                if (onNavigate) onNavigate('admin-add-product');
+                else window.location.hash = '#/admin/add-product';
+              }}
+              title="Admin Portal"
+              aria-label="Admin Portal"
             >
-              <span /><span /><span />
+              <Crown size={14} strokeWidth={2.2} style={{ color: '#92400e' }} />
+              <span className="admin-label">Admin</span>
             </button>
-          </div>
+          )}
+
+          <button
+            className="icon-btn pos-rel"
+            aria-label={isAuthenticated ? `Account (${user?.name || user?.email})` : "Account"}
+            title={isAuthenticated ? `Account (${user?.name || user?.email})` : "Account"}
+            onClick={onOpenAccount}
+          >
+            <User size={19} strokeWidth={2} />
+            {isAuthenticated && (
+              <span
+                style={{
+                  position: 'absolute',
+                  top: '6px',
+                  right: '6px',
+                  width: '7px',
+                  height: '7px',
+                  borderRadius: '50%',
+                  backgroundColor: '#10b981',
+                  border: '1.5px solid #fff'
+                }}
+              />
+            )}
+          </button>
+
+          <button
+            className={`icon-btn pos-rel ${currentPage === 'wishlist' ? 'icon-btn--active' : ''}`}
+            aria-label={`Wishlist (${wishlistCount} items)`}
+            title="Wishlist"
+            onClick={() => setIsWishlistOpen(true)}
+          >
+            <Heart
+              size={19}
+              strokeWidth={2}
+              fill={wishlistCount > 0 ? '#e53935' : 'none'}
+              color={wishlistCount > 0 ? '#e53935' : 'currentColor'}
+            />
+            {wishlistCount > 0 && (
+              <span className="icon-badge">
+                {wishlistCount}
+              </span>
+            )}
+          </button>
+
+          <button
+            className={`icon-btn pos-rel ${currentPage === 'cart' ? 'icon-btn--active' : ''}`}
+            aria-label={`Cart (${cartCount} items)`}
+            title="Cart"
+            onClick={() => setIsCartOpen(true)}
+          >
+            <ShoppingBag size={19} strokeWidth={2} />
+            {cartCount > 0 && (
+              <span className="icon-badge">
+                {cartCount}
+              </span>
+            )}
+          </button>
+
+          {/* Hamburger – mobile only */}
+          <button
+            className={`hamburger${menuOpen ? ' open' : ''}`}
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Toggle menu"
+            aria-expanded={menuOpen}
+          >
+            <span /><span /><span />
+          </button>
         </div>
+      </div>
 
-        {/* ── Search Interface Drawer (Opens below Navbar) ── */}
+      {/* ── Search Interface Drawer (Opens below Navbar) ── */}
+      <AnimatePresence>
         {searchOpen && (
-          <div className="navbar-search-drawer" role="search" aria-label="Product Search">
+          <motion.div
+            initial={{ opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.16 }}
+            className="navbar-search-drawer"
+            role="search"
+            aria-label="Product Search"
+          >
             <div className="search-bar-inner">
               <div className="search-input-box">
-                <svg className="search-input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                  <circle cx="11" cy="11" r="8" />
-                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                </svg>
+                <Search size={18} strokeWidth={2} className="search-input-icon" />
                 <input
                   ref={searchInputRef}
                   type="text"
                   className="search-input"
-                  placeholder="Search for products..."
+                  placeholder="Search for devotional art, frames, idols..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onKeyDown={handleSearchKeyDown}
@@ -340,7 +372,7 @@ export default function Navbar({
                     aria-label="Clear search input"
                     title="Clear input"
                   >
-                    ✕
+                    <X size={14} strokeWidth={2.4} />
                   </button>
                 )}
               </div>
@@ -352,10 +384,7 @@ export default function Navbar({
                 aria-label="Close search"
                 title="Close search (Esc)"
               >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-                  <line x1="18" y1="6" x2="6" y2="18" />
-                  <line x1="6" y1="6" x2="18" y2="18" />
-                </svg>
+                <X size={17} strokeWidth={2.4} />
                 <span className="search-close-text">Close</span>
               </button>
             </div>
@@ -394,11 +423,10 @@ export default function Navbar({
                           </div>
                           <div className="search-result-info">
                             <span className="search-result-name">{p.name}</span>
-                            <span className="search-result-price">Rs. {p.price}</span>
+                            <span className="search-result-price">₹{p.price}</span>
                           </div>
                           <span className="search-result-action">
-                            View
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="9 18 15 12 9 6" /></svg>
+                            View <ArrowRight size={13} strokeWidth={2.5} style={{ marginLeft: '4px', verticalAlign: 'middle' }} />
                           </span>
                         </button>
                       ))}
@@ -414,120 +442,127 @@ export default function Navbar({
                 </div>
               </div>
             )}
-          </div>
+          </motion.div>
         )}
+      </AnimatePresence>
 
-        {/* ── Mobile Dropdown Menu ── */}
+      {/* ── Mobile Dropdown Menu ── */}
+      <AnimatePresence>
         {menuOpen && (
-          <nav className="mobile-menu" aria-label="Mobile navigation">
-                      {navLinks.map((link) => {
-                        const isGroupActive = link.label === activeNavLabel;
+          <motion.nav
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.16 }}
+            className="mobile-menu"
+            aria-label="Mobile navigation"
+          >
+            {navLinks.map((link) => {
+              const isGroupActive = link.label === activeNavLabel;
+
+              return (
+                <div key={link.label} className="mobile-nav-group">
+                  <div className="mobile-nav-row">
+                    <a
+                      href={link.href}
+                      className={`mobile-nav-link ${isGroupActive ? 'mobile-nav-link--active' : ''}`}
+                      onClick={(e) => {
+                        if (!link.hasDropdown) {
+                          handleNavClick(e, link);
+                        } else {
+                          e.preventDefault();
+                          toggleMobileSubmenu(link.label);
+                        }
+                      }}
+                    >
+                      {link.label}
+                    </a>
+                    {link.hasDropdown && (
+                      <button
+                        type="button"
+                        className="mobile-sub-toggle"
+                        onClick={() => toggleMobileSubmenu(link.label)}
+                        aria-label={`Toggle ${link.label} submenu`}
+                      >
+                        <ChevronRight
+                          size={16}
+                          strokeWidth={2}
+                          className={`sub-chevron ${mobileSubmenu === link.label ? 'open' : ''}`}
+                        />
+                      </button>
+                    )}
+                  </div>
+                  {link.hasDropdown && mobileSubmenu === link.label && (
+                    <div className="mobile-sub-list">
+                      {link.children.map((child) => {
+                        const isChildActive =
+                          Boolean(selectedCategory) &&
+                          String(selectedCategory).toLowerCase().trim() === (child.category || '').toLowerCase().trim();
 
                         return (
-                          <div key={link.label} className="mobile-nav-group">
-                            <div className="mobile-nav-row">
-                              <a
-                                href={link.href}
-                                className={`mobile-nav-link ${isGroupActive ? 'mobile-nav-link--active' : ''}`}
-                                onClick={(e) => {
-                                  if (!link.hasDropdown) {
-                                    handleNavClick(e, link);
-                                  } else {
-                                    e.preventDefault();
-                                    toggleMobileSubmenu(link.label);
-                                  }
-                                }}
-                              >
-                                  { link.label }
-                  </a>
-                  {link.hasDropdown && (
-                              <button
-                                type="button"
-                                className="mobile-sub-toggle"
-                                onClick={() => toggleMobileSubmenu(link.label)}
-                                aria-label={`Toggle ${link.label} submenu`}
-                              >
-                                <span className={`sub-chevron ${mobileSubmenu === link.label ? 'open' : ''}`}>›</span>
-                              </button>
-                            )}
-                          </div>
-                {
-                          link.hasDropdown && mobileSubmenu === link.label && (
-                            <div className="mobile-sub-list">
-                              {link.children.map((child) => {
-                                const isChildActive =
-                                  Boolean(selectedCategory) &&
-                                  String(selectedCategory).toLowerCase().trim() === (child.category || '').toLowerCase().trim();
+                          <a
+                            key={child.label}
+                            href={child.href}
+                            className={`mobile-sub-link ${isChildActive ? 'mobile-sub-link--active' : ''}`}
+                            onClick={(e) => {
+                              if (onNavigate) {
+                                e.preventDefault();
+                                onNavigate('shop', child.category || 'All');
+                                setMenuOpen(false);
+                              }
+                            }}
+                          >
+                            {child.label}
+                          </a>
+                        );
+                      })}
+                      <a
+                        href={link.href}
+                        className="mobile-sub-link mobile-sub-link--view-all"
+                        onClick={(e) => {
+                          if (onNavigate) {
+                            e.preventDefault();
+                            onNavigate(link.page || 'shop', link.category || 'All');
+                            setMenuOpen(false);
+                          }
+                        }}
+                      >
+                        View All {link.label} →
+                      </a>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
 
-                                return (
-                                  <a
-                                    key={child.label}
-                                    href={child.href}
-                                    className={`mobile-sub-link ${isChildActive ? 'mobile-sub-link--active' : ''}`}
-                                    onClick={(e) => {
-                                      if (onNavigate) {
-                                        e.preventDefault();
-                                        onNavigate('shop', child.category || 'All');
-                                        setMenuOpen(false);
-                                      }
-                                    }}
-                                  >
-                                    {child.label}
-                                  </a>
-                                );
-                              })}
-                              <a
-                                href={link.href}
-                                className="mobile-sub-link mobile-sub-link--view-all"
-                                onClick={(e) => {
-                                  if (onNavigate) {
-                                    e.preventDefault();
-                                    onNavigate(link.page || 'shop', link.category || 'All');
-                                    setMenuOpen(false);
-                                  }
-                                }}
-                              >
-                                View All {link.label} →
-                              </a>
-              </div>
-            )}
-          </div>
-        );
-          })}
-
-        {/* Quick Access Actions for Mobile Menu */}
-        <div className="mobile-menu-footer">
-          <button
-            type="button"
-            className="mobile-footer-link"
-            onClick={() => {
-              setMenuOpen(false);
-              setIsWishlistOpen(true);
-            }}
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill={wishlistCount > 0 ? '#e53935' : 'none'} stroke={wishlistCount > 0 ? '#e53935' : 'currentColor'} strokeWidth="2">
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-            </svg>
-            <span>My Wishlist ({wishlistCount})</span>
-          </button>
-          <button
-            type="button"
-            className="mobile-footer-link"
-            onClick={() => {
-              setMenuOpen(false);
-              setIsCartOpen(true);
-            }}
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M9 22c.55 0 1-.45 1-1s-.45-1-1-1-1 .45-1 1 .45 1 1 1zm11 0c.55 0 1-.45 1-1s-.45-1-1-1-1 .45-1 1 .45 1 1 1z" />
-              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
-            </svg>
-            <span>Shopping Cart ({cartCount})</span>
-          </button>
-        </div>
-      </nav>
-    )
-  }
-    </header >
+            {/* Quick Access Actions for Mobile Menu */}
+            <div className="mobile-menu-footer">
+              <button
+                type="button"
+                className="mobile-footer-link"
+                onClick={() => {
+                  setMenuOpen(false);
+                  setIsWishlistOpen(true);
+                }}
+              >
+                <Heart size={18} strokeWidth={2} fill={wishlistCount > 0 ? '#e53935' : 'none'} color={wishlistCount > 0 ? '#e53935' : 'currentColor'} />
+                <span>Wishlist ({wishlistCount})</span>
+              </button>
+              <button
+                type="button"
+                className="mobile-footer-link"
+                onClick={() => {
+                  setMenuOpen(false);
+                  setIsCartOpen(true);
+                }}
+              >
+                <ShoppingBag size={18} strokeWidth={2} />
+                <span>Cart ({cartCount})</span>
+              </button>
+            </div>
+          </motion.nav>
+        )}
+      </AnimatePresence>
+    </header>
   );
 }
