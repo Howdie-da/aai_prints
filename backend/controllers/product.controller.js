@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Product = require('../models/product.model');
 const Category = require('../models/category.model');
+const Cart = require('../models/cart.model');
 const ApiError = require('../utils/apiError.util');
 const ApiResponse = require('../utils/apiResponse.util');
 const slugify = require('../utils/slugify.util');
@@ -255,7 +256,15 @@ const updateProduct = async (req, res, next) => {
 
     const updates = req.body;
     if (updates.name && updates.name !== product.name) {
-      updates.slug = slugify(updates.name);
+      const baseSlug = slugify(updates.name);
+      let candidateSlug = baseSlug;
+      let counter = 1;
+      // Loop until a non-colliding slug is found
+      while (await Product.findOne({ slug: candidateSlug, _id: { $ne: product._id } })) {
+        candidateSlug = `${baseSlug}-${counter}`;
+        counter += 1;
+      }
+      updates.slug = candidateSlug;
     }
 
     if (updates.category) {
@@ -362,6 +371,12 @@ const deleteProduct = async (req, res, next) => {
 
     // Permanently remove all associated media assets from Cloudinary
     await deleteCloudinaryImages(product);
+
+    // Prune this product from all user carts in database immediately to prevent stale checkout locks
+    await Cart.updateMany(
+      { 'items.product': product._id },
+      { $pull: { items: { product: product._id } } }
+    ).catch((err) => console.warn('[deleteProduct Cart cleanup warning]:', err.message));
 
     if (req.query.hard === 'true') {
       await Product.findByIdAndDelete(product._id);

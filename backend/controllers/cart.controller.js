@@ -87,6 +87,15 @@ const getCart = async (req, res, next) => {
       cart = await Cart.create({ user: req.user._id, items: [] });
     }
 
+    // Auto-prune any items whose product was deleted or inactivated from DB
+    const initialItemCount = cart.items.length;
+    cart.items = cart.items.filter(
+      (item) => item.product && !item.product.isDeleted && item.product.isActive
+    );
+    if (cart.items.length !== initialItemCount) {
+      await cart.save();
+    }
+
     const formatted = formatCartResponse(cart);
     return ApiResponse.send(res, 200, { cart: formatted });
   } catch (error) {

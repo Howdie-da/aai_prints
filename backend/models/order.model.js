@@ -81,6 +81,11 @@ const orderSchema = new mongoose.Schema(
       enum: ['razorpay', 'cod'],
       default: 'razorpay'
     },
+    // Tracks whether physical inventory has been decremented for this order
+    isStockDecremented: {
+      type: Boolean,
+      default: false
+    },
     // Razorpay transaction details (placeholder for when Razorpay is enabled)
     paymentDetails: {
       razorpayOrderId: { type: String, default: null },

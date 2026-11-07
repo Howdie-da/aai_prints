@@ -1,5 +1,6 @@
 const Review = require('../models/review.model');
 const Product = require('../models/product.model');
+const Order = require('../models/order.model');
 const ApiError = require('../utils/apiError.util');
 const ApiResponse = require('../utils/apiResponse.util');
 
@@ -94,11 +95,27 @@ const createReview = async (req, res, next) => {
     }
 
     let productDoc = null;
+    let isVerifiedPurchase = false;
+
     if (productId) {
       productDoc = await Product.findById(productId);
       if (!productDoc) {
         return next(new ApiError(404, 'Product not found'));
       }
+
+      // Check if user already submitted a review for this product
+      const existingReview = await Review.findOne({ product: productId, user: req.user._id });
+      if (existingReview) {
+        return next(new ApiError(400, 'You have already submitted a review for this product'));
+      }
+
+      // Verify legitimate purchase status from orders
+      const hasPurchased = await Order.exists({
+        user: req.user._id,
+        'items.product': productId,
+        status: { $in: ['confirmed', 'processing', 'shipped', 'delivered'] }
+      });
+      isVerifiedPurchase = Boolean(hasPurchased);
     }
 
     const review = await Review.create({
@@ -109,7 +126,7 @@ const createReview = async (req, res, next) => {
       rating: Number(rating),
       title: title || '',
       comment,
-      isVerifiedPurchase: true
+      isVerifiedPurchase
     });
 
     if (productId) {

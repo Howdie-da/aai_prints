@@ -44,24 +44,45 @@ function App() {
 
   const devotionalProducts = useMemo(
     () =>
-      allProducts.filter(
-        (p) =>
-          p.category === 'Backlit LED Frames' ||
-          p.category === 'Desk Standees' ||
-          p.category === 'Wall Hangings'
-      ),
+      allProducts.filter((p) => {
+        const cat = (p.category || '').toLowerCase();
+        const sub = (p.subcategory || '').toLowerCase();
+        const slug = (p.categorySlug || '').toLowerCase();
+        return (
+          cat === 'devotional' ||
+          slug.includes('devotional') ||
+          sub === 'backlit led frames' ||
+          sub === 'desk standees' ||
+          sub === 'wall hangings' ||
+          cat === 'backlit led frames' ||
+          cat === 'desk standees' ||
+          cat === 'wall hangings'
+        );
+      }),
     [allProducts]
   );
 
   const wallAndCarProducts = useMemo(
     () =>
-      allProducts.filter(
-        (p) =>
-          p.category === 'Metal Wall Art' ||
-          p.category === 'Dashboard Idols' ||
-          p.category === 'Car Hangings' ||
-          p.category === 'Wall Clocks'
-      ),
+      allProducts.filter((p) => {
+        const cat = (p.category || '').toLowerCase();
+        const sub = (p.subcategory || '').toLowerCase();
+        const slug = (p.categorySlug || '').toLowerCase();
+        return (
+          cat.includes('wall') ||
+          cat.includes('car') ||
+          slug.includes('wall') ||
+          slug.includes('car') ||
+          sub === 'metal wall art' ||
+          sub === 'dashboard idols' ||
+          sub === 'car hangings' ||
+          sub === 'wall clocks' ||
+          cat === 'metal wall art' ||
+          cat === 'dashboard idols' ||
+          cat === 'car hangings' ||
+          cat === 'wall clocks'
+        );
+      }),
     [allProducts]
   );
 

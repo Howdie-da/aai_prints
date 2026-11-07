@@ -5,6 +5,75 @@ const Coupon = require('../models/coupon.model');
 const ApiError = require('../utils/apiError.util');
 const ApiResponse = require('../utils/apiResponse.util');
 
+// Atomic stock decrement with auto-rollback on insufficient inventory
+const decrementStockAtomically = async (orderItems) => {
+  const decrementedItems = [];
+  try {
+    for (const item of orderItems) {
+      let updateResult;
+      if (item.variantId) {
+        updateResult = await Product.updateOne(
+          {
+            _id: item.product,
+            'variants._id': item.variantId,
+            'variants.stock': { $gte: item.quantity }
+          },
+          { $inc: { 'variants.$.stock': -item.quantity } }
+        );
+      } else {
+        updateResult = await Product.updateOne(
+          {
+            _id: item.product,
+            stock: { $gte: item.quantity }
+          },
+          { $inc: { stock: -item.quantity } }
+        );
+      }
+
+      if (updateResult.modifiedCount === 0) {
+        throw new Error(
+          `Insufficient stock for "${item.name}${item.variantName ? ` - ${item.variantName}` : ''}". It may have just sold out.`
+        );
+      }
+      decrementedItems.push(item);
+    }
+    return true;
+  } catch (err) {
+    // Rollback any items that were decremented before the failure
+    for (const item of decrementedItems) {
+      if (item.variantId) {
+        await Product.updateOne(
+          { _id: item.product, 'variants._id': item.variantId },
+          { $inc: { 'variants.$.stock': item.quantity } }
+        ).catch(() => null);
+      } else {
+        await Product.updateOne(
+          { _id: item.product },
+          { $inc: { stock: item.quantity } }
+        ).catch(() => null);
+      }
+    }
+    throw err;
+  }
+};
+
+// Helper to restock items for cancelled or refunded orders
+const restockOrderItems = async (orderItems) => {
+  for (const item of orderItems) {
+    if (item.variantId) {
+      await Product.updateOne(
+        { _id: item.product, 'variants._id': item.variantId },
+        { $inc: { 'variants.$.stock': item.quantity } }
+      ).catch(() => null);
+    } else {
+      await Product.updateOne(
+        { _id: item.product },
+        { $inc: { stock: item.quantity } }
+      ).catch(() => null);
+    }
+  }
+};
+
 // @desc    Checkout preview (validates cart, checks stock, applies coupon, calculates totals)
 // @route   POST /api/v1/orders/checkout-preview
 // @access  Private
@@ -21,15 +90,24 @@ const getCheckoutPreview = async (req, res, next) => {
       return next(new ApiError(400, 'Your cart is empty'));
     }
 
+    // Auto-prune dead/deleted products from cart
+    const initialItemCount = cart.items.length;
+    cart.items = cart.items.filter(
+      (item) => item.product && !item.product.isDeleted && item.product.isActive
+    );
+    if (cart.items.length !== initialItemCount) {
+      await cart.save();
+    }
+
+    if (cart.items.length === 0) {
+      return next(new ApiError(400, 'Your cart is empty or the items in it are no longer available'));
+    }
+
     let subtotal = 0;
     const validatedItems = [];
 
     for (const item of cart.items) {
       const product = item.product;
-      if (!product || product.isDeleted || !product.isActive) {
-        return next(new ApiError(400, 'One or more items in your cart are no longer available'));
-      }
-
       let unitPrice = product.basePrice;
       let variantName = null;
       let availableStock = product.stock;
@@ -108,6 +186,7 @@ const getCheckoutPreview = async (req, res, next) => {
 // @route   POST /api/v1/orders
 // @access  Private
 const createOrder = async (req, res, next) => {
+  let appliedCoupon = null;
   try {
     const { shippingAddress, couponCode, paymentMethod = 'razorpay' } = req.body;
 
@@ -124,16 +203,25 @@ const createOrder = async (req, res, next) => {
       return next(new ApiError(400, 'Cannot place order with an empty cart'));
     }
 
+    // Auto-prune dead/deleted products from cart
+    const initialItemCount = cart.items.length;
+    cart.items = cart.items.filter(
+      (item) => item.product && !item.product.isDeleted && item.product.isActive
+    );
+    if (cart.items.length !== initialItemCount) {
+      await cart.save();
+    }
+
+    if (cart.items.length === 0) {
+      return next(new ApiError(400, 'All items in your cart are no longer available'));
+    }
+
     let subtotal = 0;
     const orderItems = [];
 
     // 1. Verify stock and prepare order items
     for (const item of cart.items) {
       const product = item.product;
-      if (!product || product.isDeleted || !product.isActive) {
-        return next(new ApiError(400, `Product is no longer available`));
-      }
-
       let unitPrice = product.basePrice;
       let variantName = null;
       let availableStock = product.stock;
@@ -169,20 +257,39 @@ const createOrder = async (req, res, next) => {
       });
     }
 
-    // 2. Coupon calculation
+    // 2. Atomic Coupon calculation and increment
     let discount = 0;
-    let appliedCoupon = null;
     if (couponCode) {
-      const coupon = await Coupon.findOne({ code: couponCode.trim().toUpperCase() });
-      if (coupon) {
-        const check = coupon.isValid(subtotal);
-        if (check.valid) {
-          discount = coupon.calculateDiscount(subtotal);
-          appliedCoupon = coupon.code;
-          coupon.usedCount += 1;
-          await coupon.save();
-        }
+      const couponDoc = await Coupon.findOne({
+        code: couponCode.trim().toUpperCase(),
+        isActive: true
+      });
+      if (!couponDoc) {
+        return next(new ApiError(400, 'Invalid coupon code'));
       }
+      const check = couponDoc.isValid(subtotal);
+      if (!check.valid) {
+        return next(new ApiError(400, check.message));
+      }
+
+      // Atomically check usage limit and increment
+      const updatedCoupon = await Coupon.findOneAndUpdate(
+        {
+          _id: couponDoc._id,
+          $or: [
+            { usageLimit: null },
+            { $expr: { $lt: ['$usedCount', '$usageLimit'] } }
+          ]
+        },
+        { $inc: { usedCount: 1 } },
+        { new: true }
+      );
+
+      if (!updatedCoupon) {
+        return next(new ApiError(400, 'Coupon usage limit has been reached'));
+      }
+      discount = couponDoc.calculateDiscount(subtotal);
+      appliedCoupon = couponDoc.code;
     }
 
     const FREE_SHIPPING_THRESHOLD = 500;
@@ -190,18 +297,19 @@ const createOrder = async (req, res, next) => {
     const shippingFee = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : STANDARD_SHIPPING_FEE;
     const total = Math.max(0, subtotal - discount + shippingFee);
 
-    // 3. Atomically decrement stock
-    for (const item of orderItems) {
-      if (item.variantId) {
-        await Product.updateOne(
-          { _id: item.product, 'variants._id': item.variantId },
-          { $inc: { 'variants.$.stock': -item.quantity } }
-        );
-      } else {
-        await Product.updateOne(
-          { _id: item.product },
-          { $inc: { stock: -item.quantity } }
-        );
+    // 3. Two-Phase Payment & Stock Allocation:
+    // COD decrements stock immediately and clears cart.
+    // Online payments (Razorpay) initialize order in pending state; stock is decremented and cart cleared upon payment capture.
+    let isStockDecremented = false;
+    if (paymentMethod === 'cod') {
+      try {
+        await decrementStockAtomically(orderItems);
+        isStockDecremented = true;
+      } catch (err) {
+        if (appliedCoupon) {
+          await Coupon.updateOne({ code: appliedCoupon }, { $inc: { usedCount: -1 } }).catch(() => null);
+        }
+        return next(new ApiError(409, err.message));
       }
     }
 
@@ -220,17 +328,23 @@ const createOrder = async (req, res, next) => {
         shippingFee,
         total
       },
-      status: 'pending',
-      paymentStatus: paymentMethod === 'cod' ? 'pending' : 'pending',
-      paymentMethod
+      status: paymentMethod === 'cod' ? 'confirmed' : 'pending',
+      paymentStatus: 'pending',
+      paymentMethod,
+      isStockDecremented
     });
 
-    // 5. Clear user's cart
-    cart.items = [];
-    await cart.save();
+    // 5. Clear cart if COD (or for Razorpay, cart will be cleared on payment confirmation)
+    if (paymentMethod === 'cod') {
+      cart.items = [];
+      await cart.save();
+    }
 
     return ApiResponse.send(res, 201, { order }, 'Order placed successfully');
   } catch (error) {
+    if (appliedCoupon) {
+      await Coupon.updateOne({ code: appliedCoupon }, { $inc: { usedCount: -1 } }).catch(() => null);
+    }
     next(error);
   }
 };
@@ -329,28 +443,43 @@ const updateOrderStatus = async (req, res, next) => {
     }
 
     if (status) {
-      // If cancelling an order, restock items
+      // If cancelling an order, restock items only if stock was decremented
       if (status === 'cancelled' && order.status !== 'cancelled') {
-        for (const item of order.items) {
-          if (item.variantId) {
-            await Product.updateOne(
-              { _id: item.product, 'variants._id': item.variantId },
-              { $inc: { 'variants.$.stock': item.quantity } }
-            );
-          } else {
-            await Product.updateOne(
-              { _id: item.product },
-              { $inc: { stock: item.quantity } }
-            );
-          }
+        if (order.isStockDecremented) {
+          await restockOrderItems(order.items);
+          order.isStockDecremented = false;
+        }
+        if (order.pricing?.couponCode) {
+          await Coupon.updateOne(
+            { code: order.pricing.couponCode },
+            { $inc: { usedCount: -1 } }
+          ).catch(() => null);
         }
         order.cancelledAt = new Date();
         order.cancelReason = cancelReason || 'Cancelled by admin';
       }
+
+      // If confirming an order where stock was deferred (e.g. online checkout)
+      if (
+        (status === 'confirmed' || status === 'processing') &&
+        !order.isStockDecremented &&
+        order.status !== 'cancelled'
+      ) {
+        await decrementStockAtomically(order.items);
+        order.isStockDecremented = true;
+        await Cart.updateOne({ user: order.user }, { $set: { items: [] } }).catch(() => null);
+      }
+
       order.status = status;
     }
 
     if (paymentStatus) {
+      // When payment is marked paid, ensure stock is decremented and cart cleared
+      if (paymentStatus === 'paid' && !order.isStockDecremented && order.status !== 'cancelled') {
+        await decrementStockAtomically(order.items);
+        order.isStockDecremented = true;
+        await Cart.updateOne({ user: order.user }, { $set: { items: [] } }).catch(() => null);
+      }
       order.paymentStatus = paymentStatus;
     }
 

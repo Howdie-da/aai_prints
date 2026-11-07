@@ -54,4 +54,7 @@ const reviewSchema = new mongoose.Schema(
   }
 );
 
+// Prevent duplicate reviews from the same user on the same product
+reviewSchema.index({ product: 1, user: 1 }, { unique: true, sparse: true });
+
 module.exports = mongoose.model('Review', reviewSchema);

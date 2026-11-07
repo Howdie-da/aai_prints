@@ -68,68 +68,87 @@ export function WishlistProvider({ children }) {
     }
   }, [cart]);
 
-  // Synchronize cart & wishlist from backend when authenticated
+  // Synchronize cart & wishlist from backend when authenticated (with guest merge)
+  const cartRef = useRef(cart);
+  cartRef.current = cart;
+  const wishlistRef = useRef(wishlist);
+  wishlistRef.current = wishlist;
+
+  const formatBackendCart = (cartData) => {
+    if (!cartData?.items) return [];
+    return cartData.items.map((item) => {
+      const product = item.product || {};
+      const itemKey = item.variantId
+        ? `${product._id}-${item.variantId}`
+        : String(item._id);
+
+      return {
+        id: product._id,
+        _id: product._id,
+        name: item.variantName ? `${product.name} - ${item.variantName}` : product.name,
+        productName: product.name,
+        slug: product.slug,
+        price: String(item.unitPrice),
+        originalPrice: item.originalPrice ? String(item.originalPrice) : null,
+        image: product.image || (product.images && product.images[0]) || '/new-images/product-placeholder.jpg',
+        cartItemId: itemKey,
+        backendItemId: item._id,
+        variantId: item.variantId,
+        selectedVariant: item.variantName
+          ? { id: item.variantId, label: item.variantName }
+          : null,
+        quantity: item.quantity,
+      };
+    });
+  };
+
   const fetchBackendCartAndWishlist = useCallback(async () => {
     if (!isAuthenticated || isSyncingRef.current) return;
     isSyncingRef.current = true;
 
     try {
-      // 1. Fetch live cart
-      const cartRes = await api.get('/cart');
-      if (cartRes?.data?.cart?.items && Array.isArray(cartRes.data.cart.items)) {
-        const liveItems = cartRes.data.cart.items.map((item) => {
-          const product = item.product || {};
-          const itemKey = item.variantId
-            ? `${product._id}-${item.variantId}`
-            : String(item._id);
+      const guestCart = cartRef.current || [];
+      const guestWishlist = wishlistRef.current || [];
 
-          return {
-            id: product._id,
-            _id: product._id,
-            name: item.variantName ? `${product.name} - ${item.variantName}` : product.name,
-            productName: product.name,
-            slug: product.slug,
-            price: String(item.unitPrice),
-            originalPrice: item.originalPrice ? String(item.originalPrice) : null,
-            image: product.image || (product.images && product.images[0]) || '/new-images/product-placeholder.jpg',
-            cartItemId: itemKey,
-            backendItemId: item._id,
-            variantId: item.variantId,
-            selectedVariant: item.variantName
-              ? { id: item.variantId, label: item.variantName }
-              : null,
-            quantity: item.quantity,
-          };
-        });
-
-        // If backend has items, populate state; otherwise if local cart has items, sync them up
-        if (liveItems.length > 0) {
-          setCart(liveItems);
-        } else if (cart.length > 0) {
-          // Push local guest cart to backend
-          for (const localItem of cart) {
-            await api.post('/cart/items', {
-              productId: localItem._id || localItem.id,
-              variantId: localItem.variantId || localItem.selectedVariant?.id || null,
-              quantity: localItem.quantity || 1,
-            }).catch(() => null);
-          }
+      // 1. If guest has items in local cart, push them to backend before fetching
+      if (guestCart.length > 0) {
+        for (const localItem of guestCart) {
+          await api.post('/cart/items', {
+            productId: localItem._id || localItem.id,
+            variantId: localItem.variantId || localItem.selectedVariant?.id || null,
+            quantity: localItem.quantity || 1,
+          }).catch(() => null);
         }
       }
 
-      // 2. Fetch live wishlist
+      // Fetch live consolidated cart from backend
+      const cartRes = await api.get('/cart');
+      if (cartRes?.data?.cart) {
+        const liveItems = formatBackendCart(cartRes.data.cart);
+        setCart(liveItems);
+      }
+
+      // 2. Fetch live wishlist and merge guest wishlist
       const wishRes = await api.get('/wishlist');
       if (wishRes?.data?.products && Array.isArray(wishRes.data.products)) {
         const liveWishlist = wishRes.data.products.map(normalizeProduct);
-        if (liveWishlist.length > 0) {
-          setWishlist(liveWishlist);
-        } else if (wishlist.length > 0) {
-          // Push local guest wishlist to backend
-          for (const item of wishlist) {
-            await api.post('/wishlist/toggle', {
-              productId: item._id || item.id,
-            }).catch(() => null);
+        if (guestWishlist.length > 0) {
+          const liveIds = new Set(liveWishlist.map((p) => String(p._id || p.id)));
+          for (const item of guestWishlist) {
+            const itemId = String(item._id || item.id);
+            if (!liveIds.has(itemId)) {
+              await api.post('/wishlist/toggle', { productId: itemId }).catch(() => null);
+            }
           }
+          // Fetch final merged wishlist
+          const mergedWishRes = await api.get('/wishlist');
+          if (mergedWishRes?.data?.products && Array.isArray(mergedWishRes.data.products)) {
+            setWishlist(mergedWishRes.data.products.map(normalizeProduct));
+          } else {
+            setWishlist(liveWishlist);
+          }
+        } else {
+          setWishlist(liveWishlist);
         }
       }
     } catch (err) {

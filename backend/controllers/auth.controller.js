@@ -144,7 +144,37 @@ const refreshAccessToken = async (req, res, next) => {
     }
 
     if (tokenDoc.revoked) {
-      // TOKEN REUSE DETECTED: Revoke all refresh tokens for this user!
+      // Check if this request falls within the rotation grace period (30 seconds)
+      // and was legitimately rotated into a successor token (handles multi-tab/concurrent refreshes)
+      const GRACE_PERIOD_MS = 30 * 1000;
+      const isWithinGrace =
+        tokenDoc.revokedAt &&
+        Date.now() - new Date(tokenDoc.revokedAt).getTime() <= GRACE_PERIOD_MS;
+
+      if (isWithinGrace && tokenDoc.replacedByToken) {
+        const replacementDoc = await RefreshToken.findOne({
+          token: tokenDoc.replacedByToken
+        });
+
+        if (replacementDoc && !replacementDoc.revoked && !replacementDoc.isExpired()) {
+          const user = await User.findById(tokenDoc.user);
+          if (user && user.isActive) {
+            const freshAccessToken = generateAccessToken(user);
+            setAuthCookies(res, freshAccessToken, replacementDoc.token);
+            return ApiResponse.send(
+              res,
+              200,
+              {
+                accessToken: freshAccessToken,
+                refreshToken: replacementDoc.token
+              },
+              'Access token refreshed successfully (session grace window)'
+            );
+          }
+        }
+      }
+
+      // Beyond grace period or without a valid replacement -> TRUE TOKEN REUSE DETECTED: Revoke all tokens!
       await RefreshToken.updateMany(
         { user: decoded.id },
         { $set: { revoked: true, revokedAt: new Date() } }
