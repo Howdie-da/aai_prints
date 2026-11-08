@@ -1,6 +1,6 @@
 /* ========================================================
    StyleCollection – "Your Style, Your Collection"
-   Curated aesthetic home décor gallery with luxury gold accents
+   Curated aesthetic home decor gallery with luxury gold accents
    ======================================================== */
 
 .style-section {
@@ -113,14 +113,17 @@
   .style-section {
     padding: 40px 0 48px;
   }
+
   .style-card {
     width: 150px;
   }
+
   .style-card-img-wrap {
     width: 150px;
     height: 150px;
     border-radius: 12px;
   }
+
   .style-card-label {
     font-size: 13px;
   }

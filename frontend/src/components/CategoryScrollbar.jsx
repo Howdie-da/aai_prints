@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import './CategoryScrollbar.css';
 
 /* 
-  Category circles matching the requested home décor categories.
+  Category circles matching the requested home decor categories.
   Images point to public/new-images/*.jpg for easy replacement.
 */
 const categories = [

@@ -24,7 +24,7 @@ function StarRating({ rating = 5.0, count }) {
 }
 
 /**
- * Reusable ProductSection – displays a luxury responsive grid of home décor product cards.
+ * Reusable ProductSection – displays a luxury responsive grid of home decor product cards.
  * Hardware-accelerated CSS hover transitions for smooth 60fps performance without JS layout thrashing.
  */
 export default function ProductSection({
@@ -46,11 +46,15 @@ export default function ProductSection({
     }, 1800);
   };
 
+  if (!products || products.length === 0) {
+    return null;
+  }
+
   return (
     <section className="prod-section" id={sectionId} aria-labelledby={`${sectionId}-title`}>
       <div className="section-wrap">
         <div className="sec-header">
-          <span className="sec-eyebrow">HANDCRAFTED SACRED ART</span>
+          <span className="sec-eyebrow">ARTISAN CRAFTSMANSHIP</span>
           <h2 className="sec-title" id={`${sectionId}-title`}>{title}</h2>
           {subtitle && <p className="sec-subtitle">{subtitle}</p>}
         </div>

@@ -4,17 +4,17 @@ import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
 import './HeroSlider.css';
 
 /* 
-  Hero image slider with luxury spiritual home décor collection slides.
+  Hero image slider with luxury spiritual home decor collection slides.
   Preserves existing image paths, categories, and navigation contracts.
 */
 const slides = [
   {
     id: 1,
     image: '/new-images/hero-devotional.jpg',
-    tag: 'SACRED HOME SANCTUARY',
+    tag: 'PREMIUM HOME COLLECTION',
     title: 'Devotional\nCollection',
-    subtitle: 'Illuminated Backlit LED frames, handcrafted brass idols & sacred wall sanctums.',
-    bullet1: 'Temple-Grade Sanctified Art',
+    subtitle: 'Illuminated Backlit LED frames, handcrafted brass idols & designer wall art.',
+    bullet1: 'Precision Artisan Craftsmanship',
     bullet2: 'Warm Ambient 12V LED Illumination',
     bullet3: 'Gift-Ready Wooden Protective Packaging',
     cta: 'EXPLORE COLLECTION',
@@ -25,12 +25,12 @@ const slides = [
   {
     id: 2,
     image: '/new-images/hero-car-decor.jpg',
-    tag: 'DIVINE SAFE TRAVEL',
-    title: 'Car Décor\nCollection',
-    subtitle: 'Graceful dashboard idols and sacred hangings for peaceful, blessed journeys.',
+    tag: 'CAR DECOR & IDOLS',
+    title: 'Car Decor\nCollection',
+    subtitle: 'Graceful dashboard idols and refined hangings for daily travel.',
     bullet1: 'Precision Engineered Acrylic & Brass',
     bullet2: 'Anti-Slip Heat Resistant Dashboard Mount',
-    bullet3: 'Sacred Mantra Engraved Accents',
+    bullet3: 'Engraved Mantra Accents',
     cta: 'EXPLORE COLLECTION',
     secondaryCta: 'VIEW DASHBOARD IDOLS',
     category: 'Dashboard Idols',
@@ -40,7 +40,7 @@ const slides = [
     id: 3,
     image: '/new-images/hero-wall-decor.jpg',
     tag: 'TIMELESS INDIAN CRAFT',
-    title: 'Wall Décor\nCollection',
+    title: 'Wall Decor\nCollection',
     subtitle: 'Contemporary laser-cut metal craft, spiritual silhouettes & artisan clocks.',
     bullet1: 'Rust-Proof High-Grade Matte Metal',
     bullet2: 'Pre-Installed Precision Mounting Kit',
@@ -66,7 +66,7 @@ export default function HeroSlider({ onSelectCategory }) {
   const s = slides[active];
 
   return (
-    <section className="hero-slider" aria-label="Featured Sacred Collections">
+    <section className="hero-slider" aria-label="Featured Collections">
       {/* Background slide images with Ken Burns zoom */}
       {slides.map((slide, idx) => (
         <div

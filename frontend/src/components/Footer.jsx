@@ -4,8 +4,8 @@ import './Footer.css';
 
 const policyContents = {
   'Contact Us': {
-    title: 'Customer Assistance & Sanctuary Support',
-    body: 'Our patron assistance team is dedicated to helping you with sacred product inquiries, bulk temple orders, and custom dimensions.\n\n• Email: care@aaiprints.com\n• Helpline: +91 98765 43210 (Mon-Sat, 10 AM - 7 PM IST)\n• Artisan Studio: Ananta Art International, India',
+    title: 'Customer Care & Support',
+    body: 'Our customer care team is dedicated to helping you with product inquiries, bulk orders, and custom dimensions.\n\n• Email: care@aaiprints.com\n• Helpline: +91 98765 43210 (Mon-Sat, 10 AM - 7 PM IST)\n• Artisan Studio: Ananta Art International, India',
   },
   'FAQs': {
     title: 'Frequently Asked Questions',
@@ -16,16 +16,16 @@ const policyContents = {
     body: 'We deliver safely across all serviceable pin codes in India. Every order is encased in 5-ply reinforced protective packaging with inner bubble foam shielding to ensure zero transit shock.\n\n• Free Express Shipping on all orders above ₹500.\n• Standard dispatch within 24-48 business hours.\n• Delivery turnaround: 3-5 business days across metro cities.',
   },
   'Returns & Refunds': {
-    title: 'Sanctuary Transit Guarantee',
-    body: 'We stand 100% behind the craftsmanship of our sacred pieces. In the rare event of transit damage, we provide an immediate 7-day hassle-free replacement upon sharing unboxing photos or video to care@aaiprints.com.',
+    title: 'Transit Guarantee & Replacements',
+    body: 'We stand 100% behind the craftsmanship of every art piece. In the rare event of transit damage, we provide an immediate 7-day hassle-free replacement upon sharing unboxing photos or video to care@aaiprints.com.',
   },
   'Privacy Policy': {
     title: 'Privacy Policy',
-    body: 'Your privacy is treated with sacred trust. Personal information including delivery address, phone number, and transaction history is encrypted via 256-bit SSL protocols and is never shared, rented, or sold to third parties.',
+    body: 'Your privacy is treated with the highest degree of care and confidentiality. Personal information including delivery address, phone number, and transaction history is encrypted via 256-bit SSL protocols and is never shared, rented, or sold to third parties.',
   },
   'Terms of Service': {
     title: 'Terms of Service',
-    body: 'Welcome to Aai Prints (Ananta Art International). All catalog prices, specifications, and spiritual art descriptions represent authentic handcrafted goods. Orders are subject to standard verification and dispatch schedules.',
+    body: 'Welcome to Aai Prints (Ananta Art International). All catalog prices, specifications, and product descriptions represent authentic handcrafted goods. Orders are subject to standard verification and dispatch schedules.',
   },
 };
 
@@ -33,9 +33,9 @@ export default function Footer({ onNavigate }) {
   const [activePolicy, setActivePolicy] = useState(null);
 
   const quickLinks = [
-    { label: 'Home Sanctuary', href: '#/', page: 'home' },
-    { label: 'Shop All Sacred Art', href: '#/shop', page: 'shop', category: 'All' },
-    { label: 'My Sacred Wishlist', href: '#/wishlist', page: 'wishlist' },
+    { label: 'Home', href: '#/', page: 'home' },
+    { label: 'Shop All Products', href: '#/shop', page: 'shop', category: 'All' },
+    { label: 'My Wishlist', href: '#/wishlist', page: 'wishlist' },
     { label: 'Shopping Cart', href: '#/cart', page: 'cart' },
     { label: 'Customer Reviews', href: '#reviews', page: 'home' },
   ];
@@ -44,7 +44,7 @@ export default function Footer({ onNavigate }) {
     { label: 'Devotional Wall Hangings', category: 'Wall Hangings' },
     { label: 'Illuminated Backlit LED Frames', category: 'Backlit LED Frames' },
     { label: 'Car Dashboard Idols', category: 'Dashboard Idols' },
-    { label: 'Sacred Car Hangings', category: 'Car Hangings' },
+    { label: 'Car Hangings', category: 'Car Hangings' },
     { label: 'Metal Wall Art Craft', category: 'Metal Wall Art' },
     { label: 'Artisan Wall Clocks', category: 'Wall Clocks' },
     { label: 'Desk Standees & Gifts', category: 'Desk Standees' },
@@ -70,14 +70,14 @@ export default function Footer({ onNavigate }) {
               <span className="footer-brand-sub">ANANTA ART INTERNATIONAL</span>
             </div>
             <p className="footer-desc">
-              Handcrafted spiritual devotional frames, illuminated backlit LED shrines, and contemporary wall art designed to bring divine peace, serenity, and sacred positive vibrations into every home and vehicle.
+              Handcrafted devotional frames, illuminated backlit LED frames, and contemporary wall art designed to bring elegance, serenity, and premium aesthetics into every home and vehicle.
             </p>
             <div className="footer-badge">
               <Sparkles size={13} style={{ color: 'var(--gold, #d4af37)' }} />
-              <span>Temple-Grade Craft • 100% Handcrafted in India</span>
+              <span>Artisan Craftsmanship • 100% Handcrafted in India</span>
             </div>
             <div className="footer-socials" aria-label="Connect with us">
-              <a href="#" className="social-link" aria-label="Chat with Sanctuary Support" onClick={(e) => e.preventDefault()} title="Sanctuary Support">
+              <a href="#" className="social-link" aria-label="Chat with Customer Support" onClick={(e) => e.preventDefault()} title="Customer Support">
                 <MessageCircle size={17} />
               </a>
               <a href="#" className="social-link" aria-label="Official Website" onClick={(e) => e.preventDefault()} title="Artisan Community">
@@ -86,7 +86,7 @@ export default function Footer({ onNavigate }) {
               <a href="mailto:care@aaiprints.com" className="social-link" aria-label="Email Customer Care" title="care@aaiprints.com">
                 <Mail size={17} />
               </a>
-              <a href="#" className="social-link" aria-label="Share Collection" onClick={(e) => e.preventDefault()} title="Share Sanctuary Collection">
+              <a href="#" className="social-link" aria-label="Share Collection" onClick={(e) => e.preventDefault()} title="Share Collection">
                 <Share2 size={17} />
               </a>
             </div>
@@ -116,7 +116,7 @@ export default function Footer({ onNavigate }) {
 
           {/* 3. Shop Categories */}
           <div className="footer-col">
-            <h3 className="footer-heading">Sacred Categories</h3>
+            <h3 className="footer-heading">Product Categories</h3>
             <ul className="footer-links">
               {shopCategories.map((c) => (
                 <li key={c.label}>
@@ -138,7 +138,7 @@ export default function Footer({ onNavigate }) {
 
           {/* 4. Customer Care & Policies */}
           <div className="footer-col">
-            <h3 className="footer-heading">Patron Assistance</h3>
+            <h3 className="footer-heading">Customer Care</h3>
             <ul className="footer-links">
               {customerCareLinks.map((label) => (
                 <li key={label}>
@@ -158,7 +158,7 @@ export default function Footer({ onNavigate }) {
         {/* ── Payment Badges & Copyright Bottom Bar ── */}
         <div className="footer-bottom">
           <p className="footer-copy">
-            © {new Date().getFullYear()} <strong>Aai Prints</strong> (Ananta Art International). Handcrafted with sacred devotion in India. All Rights Reserved.
+            © {new Date().getFullYear()} <strong>Aai Prints</strong> (Ananta Art International). Handcrafted in India. All Rights Reserved.
           </p>
 
           <div className="footer-payment-strip">

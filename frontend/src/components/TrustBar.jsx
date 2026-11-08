@@ -5,8 +5,8 @@ import './TrustBar.css';
 const features = [
   {
     icon: <ShieldCheck size={24} strokeWidth={2} />,
-    title: 'Temple-Grade Quality',
-    desc: 'Sanctified handcrafted art',
+    title: 'Artisan Quality',
+    desc: 'Handcrafted with precision',
   },
   {
     icon: <Truck size={24} strokeWidth={2} />,
@@ -20,14 +20,14 @@ const features = [
   },
   {
     icon: <Headphones size={24} strokeWidth={2} />,
-    title: 'Devoted Support',
-    desc: 'Help via WhatsApp & Call',
+    title: 'Customer Support',
+    desc: 'Assistance via WhatsApp & Call',
   },
 ];
 
 export default function TrustBar() {
   return (
-    <section className="trust-bar" aria-label="Store guarantees and privileges">
+    <section className="trust-bar" aria-label="Store guarantees and customer benefits">
       <div className="section-wrap">
         <div className="trust-bar-inner">
           {features.map((f, idx) => (

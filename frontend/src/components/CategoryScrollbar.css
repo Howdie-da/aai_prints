@@ -1,5 +1,5 @@
 /* ==============================================
-   Luxury Sacred Category Scrollbar
+   Category Scrollbar
    ============================================== */
 .catbar-wrap {
   background: linear-gradient(180deg, var(--cream) 0%, #f7f3ec 100%);
@@ -50,7 +50,7 @@
   transform: translateY(-4px);
 }
 
-/* Sacred Double Halo Circular Frame */
+/* Double Halo Circular Frame */
 .catbar-circle {
   width: 130px;
   height: 130px;
@@ -110,14 +110,17 @@
     padding: 16px 14px 20px;
     gap: 8px;
   }
+
   .catbar-item {
     width: 125px;
     flex: 0 0 125px;
   }
+
   .catbar-circle {
     width: 100px;
     height: 100px;
   }
+
   .catbar-label {
     font-size: 11.5px;
     max-width: 100px;

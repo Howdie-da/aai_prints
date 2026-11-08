@@ -1,47 +1,10 @@
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Star, CheckCircle2, MapPin } from 'lucide-react';
+import { api } from '../services/api';
 import './Testimonials.css';
 
-const testimonials = [
-  {
-    id: 'review-1',
-    name: 'Priya Sharma',
-    location: 'Mumbai, Maharashtra',
-    rating: 5,
-    artwork: 'Lord Ganesha Backlit LED Wooden Frame',
-    text: 'Ordered the backlit LED frame for our home mandir. The warm golden illumination and sacred precision of the carving exceeded our expectations. It has transformed our living room.',
-    initial: 'P',
-  },
-  {
-    id: 'review-2',
-    name: 'Rahul Gupta',
-    location: 'New Delhi',
-    rating: 5,
-    artwork: 'Lord Ganesha Dashboard Idol',
-    text: 'The car dashboard idol and hanging look stunning and add a serene energy to every drive. Sturdy anti-slip mount and genuine handcrafted brass finish. Top-notch quality!',
-    initial: 'R',
-  },
-  {
-    id: 'review-3',
-    name: 'Anita Desai',
-    location: 'Bengaluru, Karnataka',
-    rating: 5,
-    artwork: 'Geometric Ginkgo Metal Wall Art',
-    text: 'Impeccable metal craft with rust-resistant matte finish. Arrived in reinforced wooden packaging without a single scratch. Truly luxurious feel at an honest price.',
-    initial: 'A',
-  },
-  {
-    id: 'review-4',
-    name: 'Vikram Patel',
-    location: 'Ahmedabad, Gujarat',
-    rating: 5,
-    artwork: 'Shree Ram Mandir 3D Wooden Model',
-    text: 'Bought festive gift sets for family and corporate gifting. Everyone was spellbound by the intricate architecture and sacred devotion in each piece. Highly recommended!',
-    initial: 'V',
-  },
-];
-
-function Stars({ count }) {
+function Stars({ count = 5 }) {
   return (
     <div className="review-stars" aria-label={`${count} out of 5 stars`}>
       {Array.from({ length: 5 }).map((_, i) => (
@@ -58,6 +21,30 @@ function Stars({ count }) {
 }
 
 export default function Testimonials() {
+  const [reviews, setReviews] = useState([]);
+
+  useEffect(() => {
+    let isMounted = true;
+    api
+      .get('/reviews/featured')
+      .then((res) => {
+        if (isMounted && res?.data?.reviews && Array.isArray(res.data.reviews)) {
+          setReviews(res.data.reviews);
+        }
+      })
+      .catch(() => {
+        if (isMounted) setReviews([]);
+      });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  // When no featured reviews exist in the database, cleanly omit the section
+  if (!reviews || reviews.length === 0) {
+    return null;
+  }
+
   return (
     <section className="testimonials-section" id="reviews" aria-label="Customer reviews">
       <div className="section-wrap">
@@ -68,50 +55,62 @@ export default function Testimonials() {
           transition={{ duration: 0.3 }}
           className="sec-header"
         >
-          <span className="sec-eyebrow">PATRON EXPERIENCES</span>
-          <h2 className="sec-title">Blessed Homes &amp; Testimonials</h2>
+          <span className="sec-eyebrow">CUSTOMER EXPERIENCES</span>
+          <h2 className="sec-title">Customer Reviews &amp; Testimonials</h2>
           <p className="sec-subtitle">
-            Cherished by over 10,000+ patrons across India who have sanctified their living spaces with our art.
+            Authentic feedback from verified customers across India.
           </p>
         </motion.div>
 
         <div className="reviews-grid">
-          {testimonials.map((review, idx) => (
-            <motion.div
-              key={review.id}
-              className="review-card"
-              id={review.id}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-20px' }}
-              whileHover={{ y: -6 }}
-              transition={{ duration: 0.25, delay: idx * 0.05 }}
-            >
-              <div className="review-card-top">
-                <Stars count={review.rating} />
-                <span className="review-verified-pill">
-                  <CheckCircle2 size={12} strokeWidth={2.5} />
-                  Verified Patron
-                </span>
-              </div>
+          {reviews.map((review, idx) => {
+            const authorName = review.userName || review.user?.name || 'Customer';
+            const location = review.city || '';
+            const initial = authorName.charAt(0).toUpperCase();
+            const artworkTitle = review.product?.name || review.title || '';
 
-              <p className="review-artwork-tag">Artwork: {review.artwork}</p>
-              <p className="review-text">"{review.text}"</p>
+            return (
+              <motion.div
+                key={review._id || review.id || idx}
+                className="review-card"
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-20px' }}
+                whileHover={{ y: -6 }}
+                transition={{ duration: 0.25, delay: idx * 0.05 }}
+              >
+                <div className="review-card-top">
+                  <Stars count={review.rating || 5} />
+                  {review.isVerifiedPurchase !== false && (
+                    <span className="review-verified-pill">
+                      <CheckCircle2 size={12} strokeWidth={2.5} />
+                      Verified Customer
+                    </span>
+                  )}
+                </div>
 
-              <div className="review-author">
-                <div className="review-avatar">
-                  {review.initial}
+                {artworkTitle && (
+                  <p className="review-artwork-tag">Artwork: {artworkTitle}</p>
+                )}
+                <p className="review-text">"{review.comment}"</p>
+
+                <div className="review-author">
+                  <div className="review-avatar">
+                    {initial}
+                  </div>
+                  <div className="review-author-meta">
+                    <p className="review-name">{authorName}</p>
+                    {location && (
+                      <p className="review-location" style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
+                        <MapPin size={11} />
+                        <span>{location}</span>
+                      </p>
+                    )}
+                  </div>
                 </div>
-                <div className="review-author-meta">
-                  <p className="review-name">{review.name}</p>
-                  <p className="review-location" style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
-                    <MapPin size={11} />
-                    <span>{review.location}</span>
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>

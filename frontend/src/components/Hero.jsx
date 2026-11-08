@@ -5,13 +5,13 @@ export default function Hero() {
     <section className="hero-section" id="hero" aria-label="Hero banner">
       <div className="hero-content">
         <div className="hero-text">
-          <span className="hero-tag">✨ Premium Home Décor</span>
+          <span className="hero-tag">✨ Premium Home Decor</span>
           <h1 className="hero-title">
-            Bring Divine Elegance<br />
+            Bring Timeless Elegance<br />
             <span className="hero-title-accent">To Every Space</span>
           </h1>
           <p className="hero-subtitle">
-            Thoughtfully crafted devotional wall hangings, backlit frames, car décor &amp; designer wall art.
+            Thoughtfully crafted devotional wall hangings, backlit frames, car decor &amp; designer wall art.
           </p>
           <div className="hero-actions">
             <a href="#devotional" className="btn btn-primary">Shop Now</a>

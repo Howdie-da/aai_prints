@@ -5,22 +5,22 @@ import './AnnouncementBar.css';
 
 const announcements = [
   {
-    prefix: 'SACRED PRIVILEGE',
+    prefix: 'FREE SHIPPING',
     text: 'Free Express Shipping Across India on Orders Above ₹500',
     highlight: 'FREE SHIPPING',
   },
   {
-    prefix: 'FESTIVE OFFER',
+    prefix: 'SPECIAL OFFER',
     text: 'Flat 5% Additional OFF on Orders Above ₹3,000 • Use Code',
     code: 'DIVINE5',
   },
   {
-    prefix: 'HANDCRAFTED HERITAGE',
-    text: 'Temple-Grade Sanctified Art & Sacred Frames • 10,000+ Blessed Homes',
+    prefix: 'ARTISAN CRAFT',
+    text: 'Handcrafted Spiritual Art & Designer Frames • Trusted by Over 10,000 Homes',
   },
   {
-    prefix: 'WELCOME GIFT',
-    text: 'Instant ₹100 OFF on Your First Sacred Artwork Order • Use Code',
+    prefix: 'WELCOME OFFER',
+    text: 'Instant ₹100 OFF on Your First Order • Use Code',
     code: 'AAI100',
   },
 ];

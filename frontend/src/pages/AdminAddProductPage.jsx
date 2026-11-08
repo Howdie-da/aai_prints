@@ -221,19 +221,19 @@ export default function AdminAddProductPage({ onNavigateHome, onProductCreated }
     // Prepare payload matching Mongoose Product model contract
     const formattedVariants = hasVariants
       ? variants
-          .filter((v) => v.name && v.name.trim())
-          .map((v) => ({
-            name: v.name.trim(),
-            label: v.name.trim(),
-            attributes: {
-              size: v.size?.trim() || undefined,
-              material: v.material?.trim() || undefined
-            },
-            price: Number(v.price) || Number(basePrice),
-            originalPrice: v.originalPrice ? Number(v.originalPrice) : null,
-            stock: Number(v.stock) || 10,
-            inStock: (Number(v.stock) || 10) > 0
-          }))
+        .filter((v) => v.name && v.name.trim())
+        .map((v) => ({
+          name: v.name.trim(),
+          label: v.name.trim(),
+          attributes: {
+            size: v.size?.trim() || undefined,
+            material: v.material?.trim() || undefined
+          },
+          price: Number(v.price) || Number(basePrice),
+          originalPrice: v.originalPrice ? Number(v.originalPrice) : null,
+          stock: Number(v.stock) || 10,
+          inStock: (Number(v.stock) || 10) > 0
+        }))
       : [];
 
     const finalImageUrls = images.map((img) => (typeof img === 'string' ? img : img.url));

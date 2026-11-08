@@ -129,7 +129,7 @@ export default function CartPage({
             </div>
             <h2 className="cart-empty-title">Your Cart Is Empty</h2>
             <p className="cart-empty-desc">
-              You haven't added any home décor pieces to your cart yet. Explore our handcrafted spiritual idols, illuminated frames, and artisan wall art.
+              You haven't added any home decor pieces to your cart yet. Explore our handcrafted spiritual idols, illuminated frames, and artisan wall art.
             </p>
             <button
               type="button"
@@ -173,128 +173,128 @@ export default function CartPage({
                         exit={{ opacity: 0, x: 30, transition: { duration: 0.2 } }}
                         transition={{ duration: 0.2 }}
                       >
-                      {/* Product Image */}
-                      <div
-                        className="cart-item-img-wrap"
-                        onClick={() => handleGoToProduct(item)}
-                        role="button"
-                        tabIndex={0}
-                        aria-label={`View ${item.name}`}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter' || e.key === ' ') {
-                            e.preventDefault();
-                            handleGoToProduct(item);
-                          }
-                        }}
-                      >
-                        {hasImage ? (
-                          <img
-                            src={item.image}
-                            alt={item.name}
-                            className="cart-item-img"
-                            loading="lazy"
-                            onError={(e) => {
-                              e.currentTarget.style.display = 'none';
-                            }}
-                          />
-                        ) : (
-                          <div className="cart-item-img-empty" aria-hidden="true" />
-                        )}
-                      </div>
-
-                      {/* Product Details */}
-                      <div className="cart-item-details">
-                        <div className="cart-item-main-info">
-                          {item.category && (
-                            <span className="cart-item-cat">{item.category}</span>
-                          )}
-                          <h3
-                            className="cart-item-name"
-                            onClick={() => handleGoToProduct(item)}
-                            role="button"
-                            tabIndex={0}
-                            onKeyDown={(e) => {
-                              if (e.key === 'Enter' || e.key === ' ') {
-                                e.preventDefault();
-                                handleGoToProduct(item);
-                              }
-                            }}
-                          >
-                            {item.name}
-                          </h3>
-
-                          {item.variant && (
-                            <div className="cart-item-variant">
-                              Option: <strong>{item.variant}</strong>
-                            </div>
-                          )}
-
-                          <div className="cart-item-price-row">
-                            <span className="cart-item-unit-price">₹{item.price}</span>
-                            {item.originalPrice && (
-                              <span className="cart-item-orig-price">₹{item.originalPrice}</span>
-                            )}
-                            {itemDiscountPercent && (
-                              <span className="cart-item-discount">{itemDiscountPercent}% OFF</span>
-                            )}
-                          </div>
-                        </div>
-
-                        {/* Controls & Subtotal */}
-                        <div className="cart-item-actions-row">
-                          <div className="cart-item-qty-control" aria-label="Quantity selector">
-                            <button
-                              type="button"
-                              className="cart-qty-btn"
-                              onClick={() => handleDecrease(item)}
-                              disabled={qty <= 1}
-                              aria-label={`Decrease quantity of ${item.name}`}
-                            >
-                              <Minus size={13} strokeWidth={2.5} />
-                            </button>
-                            <input
-                              type="number"
-                              className="cart-qty-input"
-                              value={qty}
-                              min="1"
-                              onChange={(e) => handleManualQty(item, e.target.value)}
-                              aria-label="Item quantity"
+                        {/* Product Image */}
+                        <div
+                          className="cart-item-img-wrap"
+                          onClick={() => handleGoToProduct(item)}
+                          role="button"
+                          tabIndex={0}
+                          aria-label={`View ${item.name}`}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                              e.preventDefault();
+                              handleGoToProduct(item);
+                            }
+                          }}
+                        >
+                          {hasImage ? (
+                            <img
+                              src={item.image}
+                              alt={item.name}
+                              className="cart-item-img"
+                              loading="lazy"
+                              onError={(e) => {
+                                e.currentTarget.style.display = 'none';
+                              }}
                             />
-                            <button
-                              type="button"
-                              className="cart-qty-btn"
-                              onClick={() => handleIncrease(item)}
-                              aria-label={`Increase quantity of ${item.name}`}
-                            >
-                              <Plus size={13} strokeWidth={2.5} />
-                            </button>
-                          </div>
-
-                          <div className="cart-item-subtotal-box">
-                            <span className="cart-subtotal-label">Subtotal:</span>
-                            <span className="cart-subtotal-val">
-                              ₹{itemSubtotal.toLocaleString('en-IN')}
-                            </span>
-                          </div>
-
-                          <motion.button
-                            whileHover={{ scale: 1.12 }}
-                            whileTap={{ scale: 0.88 }}
-                            type="button"
-                            className="cart-item-remove-btn"
-                            onClick={() => handleRemove(item)}
-                            aria-label={`Remove ${item.name} from cart`}
-                            title="Remove item"
-                            style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}
-                          >
-                            <Trash2 size={14} />
-                            <span>Remove</span>
-                          </motion.button>
+                          ) : (
+                            <div className="cart-item-img-empty" aria-hidden="true" />
+                          )}
                         </div>
-                      </div>
-                    </motion.article>
-                  );
-                })}
+
+                        {/* Product Details */}
+                        <div className="cart-item-details">
+                          <div className="cart-item-main-info">
+                            {item.category && (
+                              <span className="cart-item-cat">{item.category}</span>
+                            )}
+                            <h3
+                              className="cart-item-name"
+                              onClick={() => handleGoToProduct(item)}
+                              role="button"
+                              tabIndex={0}
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter' || e.key === ' ') {
+                                  e.preventDefault();
+                                  handleGoToProduct(item);
+                                }
+                              }}
+                            >
+                              {item.name}
+                            </h3>
+
+                            {item.variant && (
+                              <div className="cart-item-variant">
+                                Option: <strong>{item.variant}</strong>
+                              </div>
+                            )}
+
+                            <div className="cart-item-price-row">
+                              <span className="cart-item-unit-price">₹{item.price}</span>
+                              {item.originalPrice && (
+                                <span className="cart-item-orig-price">₹{item.originalPrice}</span>
+                              )}
+                              {itemDiscountPercent && (
+                                <span className="cart-item-discount">{itemDiscountPercent}% OFF</span>
+                              )}
+                            </div>
+                          </div>
+
+                          {/* Controls & Subtotal */}
+                          <div className="cart-item-actions-row">
+                            <div className="cart-item-qty-control" aria-label="Quantity selector">
+                              <button
+                                type="button"
+                                className="cart-qty-btn"
+                                onClick={() => handleDecrease(item)}
+                                disabled={qty <= 1}
+                                aria-label={`Decrease quantity of ${item.name}`}
+                              >
+                                <Minus size={13} strokeWidth={2.5} />
+                              </button>
+                              <input
+                                type="number"
+                                className="cart-qty-input"
+                                value={qty}
+                                min="1"
+                                onChange={(e) => handleManualQty(item, e.target.value)}
+                                aria-label="Item quantity"
+                              />
+                              <button
+                                type="button"
+                                className="cart-qty-btn"
+                                onClick={() => handleIncrease(item)}
+                                aria-label={`Increase quantity of ${item.name}`}
+                              >
+                                <Plus size={13} strokeWidth={2.5} />
+                              </button>
+                            </div>
+
+                            <div className="cart-item-subtotal-box">
+                              <span className="cart-subtotal-label">Subtotal:</span>
+                              <span className="cart-subtotal-val">
+                                ₹{itemSubtotal.toLocaleString('en-IN')}
+                              </span>
+                            </div>
+
+                            <motion.button
+                              whileHover={{ scale: 1.12 }}
+                              whileTap={{ scale: 0.88 }}
+                              type="button"
+                              className="cart-item-remove-btn"
+                              onClick={() => handleRemove(item)}
+                              aria-label={`Remove ${item.name} from cart`}
+                              title="Remove item"
+                              style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+                            >
+                              <Trash2 size={14} />
+                              <span>Remove</span>
+                            </motion.button>
+                          </div>
+                        </div>
+                      </motion.article>
+                    );
+                  })}
                 </AnimatePresence>
               </div>
 

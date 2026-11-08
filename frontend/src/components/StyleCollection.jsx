@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import './StyleCollection.css';
 
-/* "Your Style, Your Collection" – horizontal scrollable home décor collections */
+/* "Your Style, Your Collection" – horizontal scrollable home decor collections */
 const collections = [
   {
     label: 'Wall Hangings',

@@ -111,16 +111,16 @@ function Create-CardImage {
 }
 
 # Create Neutral Product Placeholder
-Create-CardImage "product-placeholder.jpg" "Aai Prints" "Home Décor Collection" 600 600
+Create-CardImage "product-placeholder.jpg" "Aai Prints" "Home Decor Collection" 600 600
 
 # Create Category Circular Preview JPEGs
 Create-CardImage "cat-backlit-led-frames.jpg" "Backlit LED Frames" "Devotional Lighting" 400 400
-Create-CardImage "cat-desk-standees.jpg" "Desk Standees" "Tabletop Décor" 400 400
+Create-CardImage "cat-desk-standees.jpg" "Desk Standees" "Tabletop Decor" 400 400
 Create-CardImage "cat-wall-hangings.jpg" "Wall Hangings" "Sacred & Artistic" 400 400
 Create-CardImage "cat-metal-wall-art.jpg" "Metal Wall Art" "Laser Cut Elegance" 400 400
 Create-CardImage "cat-dashboard-idols.jpg" "Dashboard Idols" "Divine Travel Companion" 400 400
 Create-CardImage "cat-car-hangings.jpg" "Car Hangings" "Macrame & Brass" 400 400
-Create-CardImage "cat-wall-clocks.jpg" "Wall Clocks" "Silent Quartz Décor" 400 400
+Create-CardImage "cat-wall-clocks.jpg" "Wall Clocks" "Silent Quartz Decor" 400 400
 Create-CardImage "cat-framed-wall-art.jpg" "Framed Wall Art" "Gallery Quality" 400 400
 Create-CardImage "cat-gift-combos.jpg" "Gift Combos" "Auspicious Gifting" 400 400
 

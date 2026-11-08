@@ -52,7 +52,7 @@ const products = [
   },
   {
     id: 'prod-5',
-    name: 'Maha Mrityunjaya Sacred Brass Yantra Plate',
+    name: 'Maha Mrityunjaya Brass Yantra Plate',
     price: '₹499',
     originalPrice: '₹799',
     discount: '37% OFF',
@@ -153,7 +153,7 @@ export default function ProductGrid() {
         <div className="section-header">
           <span className="section-label">Our Collection</span>
           <h2 className="section-title">Featured Products</h2>
-          <p className="section-desc">Handcrafted devotional and wall decor pieces loved by thousands of patrons.</p>
+          <p className="section-desc">Handcrafted devotional and wall decor pieces loved by thousands of happy customers.</p>
         </div>
         <div className="products-grid">
           {products.map((product) => (

@@ -102,7 +102,7 @@ export default function CartDrawer({ onSelectProduct, onNavigateShop, onNavigate
             <div className="cart-header">
               <div className="cart-header-title">
                 <ShoppingBag size={20} strokeWidth={2.2} style={{ color: 'var(--teal)' }} />
-                <h2>Sacred Cart</h2>
+                <h2>Shopping Cart</h2>
                 {cartCount > 0 && (
                   <span className="cart-badge-count">
                     {cartCount}
@@ -151,7 +151,7 @@ export default function CartDrawer({ onSelectProduct, onNavigateShop, onNavigate
                   </div>
                   <h3 className="cart-empty-title">Your cart is empty</h3>
                   <p className="cart-empty-desc">
-                    Explore our illuminated backlit frames, handcrafted brass idols, and sacred wall sanctums.
+                    Explore our illuminated backlit frames, handcrafted brass idols, and designer wall art.
                   </p>
                   <button
                     type="button"
@@ -165,7 +165,7 @@ export default function CartDrawer({ onSelectProduct, onNavigateShop, onNavigate
                       }
                     }}
                   >
-                    DISCOVER SACRED ART
+                    START SHOPPING
                   </button>
                 </div>
               ) : (

@@ -33,8 +33,8 @@ function StarRating({ rating, count }) {
       i <= Math.floor(rating)
         ? 'full'
         : i - rating < 1 && i > Math.floor(rating)
-        ? 'half'
-        : 'empty';
+          ? 'half'
+          : 'empty';
     stars.push(
       <span key={i} className={`star star-${fill}`}>★</span>
     );
@@ -164,8 +164,8 @@ export default function ProductDetailPage({
     const rawList = Array.isArray(product.images) && product.images.length > 0
       ? product.images
       : product.image
-      ? [product.image]
-      : [];
+        ? [product.image]
+        : [];
     // Filter out any placeholder picture references
     return rawList.filter((img) => img && !img.includes('placeholder'));
   }, [product]);
@@ -231,10 +231,10 @@ export default function ProductDetailPage({
 
     const itemToAdd = selectedVariant
       ? {
-          ...product,
-          variant: selectedVariant.label,
-          variantId: selectedVariant.id,
-        }
+        ...product,
+        variant: selectedVariant.label,
+        variantId: selectedVariant.id,
+      }
       : product;
 
     addToCart(itemToAdd, quantity);
@@ -317,285 +317,285 @@ export default function ProductDetailPage({
 
           <div className="pdp-grid">
 
-          {/* ── LEFT COLUMN: Product Gallery ── */}
-          <div className="pdp-gallery-wrap">
-            {/* Thumbnails (vertical on desktop, horizontal on mobile) */}
-            {galleryImages.length > 1 && (
-              <div className="pdp-thumbnails" role="tablist" aria-label="Product thumbnails">
-                {galleryImages.map((imgSrc, idx) => (
-                  <motion.button
-                    whileHover={{ scale: 1.06 }}
-                    whileTap={{ scale: 0.94 }}
-                    key={idx}
-                    type="button"
-                    className={`pdp-thumb-btn ${idx === activeImageIndex ? 'active' : ''}`}
-                    onClick={() => setActiveImageIndex(idx)}
-                    role="tab"
-                    aria-selected={idx === activeImageIndex}
-                    aria-label={`Thumbnail ${idx + 1}`}
-                  >
-                    <img
-                      src={imgSrc}
-                      alt=""
-                      className="pdp-thumb-img"
-                      loading="lazy"
-                      onError={(e) => {
-                        e.currentTarget.style.display = 'none';
-                      }}
-                    />
-                  </motion.button>
-                ))}
-              </div>
-            )}
-
-            {/* Main Stage Image */}
-            <div className="pdp-main-image-box">
-              {product.tag && (
-                <div className={`pdp-badge pdp-badge--${product.tag.replace(/\s+/g, '-').toLowerCase()}`}>
-                  {product.tag}
-                </div>
-              )}
-
+            {/* ── LEFT COLUMN: Product Gallery ── */}
+            <div className="pdp-gallery-wrap">
+              {/* Thumbnails (vertical on desktop, horizontal on mobile) */}
               {galleryImages.length > 1 && (
-                <button
-                  type="button"
-                  className="pdp-gallery-arrow pdp-arrow-prev"
-                  onClick={handlePrevImage}
-                  aria-label="Previous image"
-                >
-                  <ChevronLeft size={20} strokeWidth={2.5} />
-                </button>
-              )}
-
-              {galleryImages.length > 1 && (
-                <button
-                  type="button"
-                  className="pdp-gallery-arrow pdp-arrow-next"
-                  onClick={handleNextImage}
-                  aria-label="Next image"
-                >
-                  <ChevronRight size={20} strokeWidth={2.5} />
-                </button>
-              )}
-
-              <div
-                className="pdp-main-image-container"
-                onClick={() => {
-                  if (currentImageSrc) setIsZoomOpen(true);
-                }}
-                title={currentImageSrc ? "Click to view full image" : ""}
-                role={currentImageSrc ? "button" : undefined}
-                tabIndex={currentImageSrc ? 0 : undefined}
-                onKeyDown={(e) => {
-                  if ((e.key === 'Enter' || e.key === ' ') && currentImageSrc) {
-                    e.preventDefault();
-                    setIsZoomOpen(true);
-                  }
-                }}
-              >
-                {currentImageSrc ? (
-                  <>
-                    <AnimatePresence mode="wait">
-                      <motion.img
-                        key={activeImageIndex}
-                        src={currentImageSrc}
-                        alt={product.name}
-                        className="pdp-main-img"
-                        loading="eager"
-                        initial={{ opacity: 0, scale: 0.98 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.98 }}
-                        transition={{ duration: 0.22, ease: 'easeOut' }}
+                <div className="pdp-thumbnails" role="tablist" aria-label="Product thumbnails">
+                  {galleryImages.map((imgSrc, idx) => (
+                    <motion.button
+                      whileHover={{ scale: 1.06 }}
+                      whileTap={{ scale: 0.94 }}
+                      key={idx}
+                      type="button"
+                      className={`pdp-thumb-btn ${idx === activeImageIndex ? 'active' : ''}`}
+                      onClick={() => setActiveImageIndex(idx)}
+                      role="tab"
+                      aria-selected={idx === activeImageIndex}
+                      aria-label={`Thumbnail ${idx + 1}`}
+                    >
+                      <img
+                        src={imgSrc}
+                        alt=""
+                        className="pdp-thumb-img"
+                        loading="lazy"
                         onError={(e) => {
                           e.currentTarget.style.display = 'none';
                         }}
                       />
-                    </AnimatePresence>
-                    <span className="pdp-zoom-hint">
-                      <ZoomIn size={14} />
-                      Click to Zoom
-                    </span>
-                  </>
-                ) : (
-                  <div className="pdp-main-image-empty" aria-hidden="true" />
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* ── RIGHT COLUMN: Product Information & Purchase ── */}
-          <div className="pdp-info-wrap">
-            {product.category && (
-              <span className="pdp-category-tag">{product.category}</span>
-            )}
-
-            <h1 className="pdp-title">{product.name}</h1>
-
-            {/* Rating (rendered only when authentic review data exists) */}
-            {product.rating !== undefined && product.rating !== null && (
-              <div className="pdp-rating-row">
-                <StarRating rating={product.rating} count={product.reviews} />
-              </div>
-            )}
-
-            {/* Price Presentation */}
-            <div className="pdp-price-box">
-              <span className="pdp-price">₹{product.price}</span>
-              {product.originalPrice && (
-                <span className="pdp-price-original">₹{product.originalPrice}</span>
-              )}
-              {discountPercent && (
-                <span className="pdp-discount-badge">{discountPercent}% OFF</span>
-              )}
-              <span className="pdp-tax-note">Inclusive of all taxes</span>
-            </div>
-
-            {/* Stock / Dispatch status */}
-            <div className="pdp-status-badge">
-              <span className="pdp-status-dot" />
-              <span>
-                {product.availability === 'in_stock'
-                  ? 'In Stock – Ready to Dispatch within 24–48 Hours'
-                  : 'Available – Handcrafted on order'}
-              </span>
-            </div>
-
-            {/* Description */}
-            <p className="pdp-short-desc">
-              {product.description ||
-                'Thoughtfully handcrafted by Aai Prints artisans. Perfect for spiritual corners, living rooms, work desks, and car dashboards.'}
-            </p>
-
-            {/* Variants Selector (only rendered when real options exist) */}
-            {product.variants && product.variants.length > 0 && (
-              <div className="pdp-variants-section">
-                <label className="pdp-variants-label">Available Options / Sizes:</label>
-                <div className="pdp-variants-list" role="radiogroup" aria-label="Product options">
-                  {product.variants.map((v) => (
-                    <motion.button
-                      whileHover={{ scale: 1.04 }}
-                      whileTap={{ scale: 0.96 }}
-                      key={v.id}
-                      type="button"
-                      className={`pdp-variant-chip ${selectedVariant?.id === v.id ? 'active' : ''}`}
-                      onClick={() => setSelectedVariant(v)}
-                      role="radio"
-                      aria-checked={selectedVariant?.id === v.id}
-                    >
-                      {v.label}
                     </motion.button>
                   ))}
                 </div>
-              </div>
-            )}
+              )}
 
-            {/* Quantity Selector */}
-            <div className="pdp-qty-section">
-              <label htmlFor="pdp-qty-input" className="pdp-qty-label">Quantity:</label>
-              <div className="pdp-qty-control">
-                <motion.button
-                  whileTap={{ scale: 0.85 }}
-                  type="button"
-                  className="pdp-qty-btn"
-                  onClick={() => handleQuantityChange(-1)}
-                  disabled={quantity <= 1}
-                  aria-label="Decrease quantity"
-                >
-                  <Minus size={14} strokeWidth={2.5} />
-                </motion.button>
-                <input
-                  id="pdp-qty-input"
-                  type="number"
-                  className="pdp-qty-input"
-                  value={quantity}
-                  min="1"
-                  onChange={(e) => {
-                    const val = parseInt(e.target.value, 10);
-                    if (!isNaN(val) && val >= 1) setQuantity(val);
-                  }}
-                  aria-label="Product quantity"
-                />
-                <motion.button
-                  whileTap={{ scale: 0.85 }}
-                  type="button"
-                  className="pdp-qty-btn"
-                  onClick={() => handleQuantityChange(1)}
-                  aria-label="Increase quantity"
-                >
-                  <Plus size={14} strokeWidth={2.5} />
-                </motion.button>
-              </div>
-            </div>
-
-            {/* Primary Action Buttons */}
-            <div className="pdp-actions">
-              <motion.button
-                whileHover={{ scale: 1.02, y: -2 }}
-                whileTap={{ scale: 0.97 }}
-                type="button"
-                className={`pdp-btn-add-cart ${addedToast ? 'added' : ''}`}
-                onClick={handleAddToCart}
-                disabled={isAdding}
-                aria-label={addedToast ? "Product added to cart" : "Add product to cart"}
-              >
-                {addedToast ? (
-                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-                    <Check size={16} strokeWidth={2.5} /> Added to Cart
-                  </span>
-                ) : (
-                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
-                    <ShoppingBag size={18} /> ADD TO CART
-                  </span>
+              {/* Main Stage Image */}
+              <div className="pdp-main-image-box">
+                {product.tag && (
+                  <div className={`pdp-badge pdp-badge--${product.tag.replace(/\s+/g, '-').toLowerCase()}`}>
+                    {product.tag}
+                  </div>
                 )}
-              </motion.button>
 
-              <motion.button
-                whileHover={{ scale: 1.04 }}
-                whileTap={{ scale: 0.95 }}
-                type="button"
-                className={`pdp-btn-wishlist ${isFav ? 'active' : ''}`}
-                onClick={() => toggleWishlist(product)}
-                aria-label={isFav ? 'Remove from wishlist' : 'Add to wishlist'}
-              >
-                <Heart
-                  size={18}
-                  fill={isFav ? '#e53935' : 'none'}
-                  stroke={isFav ? '#e53935' : 'currentColor'}
-                  strokeWidth={2}
-                />
-                {isFav ? 'In Wishlist' : 'Wishlist'}
-              </motion.button>
+                {galleryImages.length > 1 && (
+                  <button
+                    type="button"
+                    className="pdp-gallery-arrow pdp-arrow-prev"
+                    onClick={handlePrevImage}
+                    aria-label="Previous image"
+                  >
+                    <ChevronLeft size={20} strokeWidth={2.5} />
+                  </button>
+                )}
+
+                {galleryImages.length > 1 && (
+                  <button
+                    type="button"
+                    className="pdp-gallery-arrow pdp-arrow-next"
+                    onClick={handleNextImage}
+                    aria-label="Next image"
+                  >
+                    <ChevronRight size={20} strokeWidth={2.5} />
+                  </button>
+                )}
+
+                <div
+                  className="pdp-main-image-container"
+                  onClick={() => {
+                    if (currentImageSrc) setIsZoomOpen(true);
+                  }}
+                  title={currentImageSrc ? "Click to view full image" : ""}
+                  role={currentImageSrc ? "button" : undefined}
+                  tabIndex={currentImageSrc ? 0 : undefined}
+                  onKeyDown={(e) => {
+                    if ((e.key === 'Enter' || e.key === ' ') && currentImageSrc) {
+                      e.preventDefault();
+                      setIsZoomOpen(true);
+                    }
+                  }}
+                >
+                  {currentImageSrc ? (
+                    <>
+                      <AnimatePresence mode="wait">
+                        <motion.img
+                          key={activeImageIndex}
+                          src={currentImageSrc}
+                          alt={product.name}
+                          className="pdp-main-img"
+                          loading="eager"
+                          initial={{ opacity: 0, scale: 0.98 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0, scale: 0.98 }}
+                          transition={{ duration: 0.22, ease: 'easeOut' }}
+                          onError={(e) => {
+                            e.currentTarget.style.display = 'none';
+                          }}
+                        />
+                      </AnimatePresence>
+                      <span className="pdp-zoom-hint">
+                        <ZoomIn size={14} />
+                        Click to Zoom
+                      </span>
+                    </>
+                  ) : (
+                    <div className="pdp-main-image-empty" aria-hidden="true" />
+                  )}
+                </div>
+              </div>
             </div>
 
-            {/* Value Highlights */}
-            <div className="pdp-value-points">
-              <div className="pdp-value-point">
-                <Truck size={18} />
-                <div>
-                  <strong>Standard Dispatch</strong>
-                  <span>Handcrafted and dispatched within 24–48 hours</span>
+            {/* ── RIGHT COLUMN: Product Information & Purchase ── */}
+            <div className="pdp-info-wrap">
+              {product.category && (
+                <span className="pdp-category-tag">{product.category}</span>
+              )}
+
+              <h1 className="pdp-title">{product.name}</h1>
+
+              {/* Rating (rendered only when authentic review data exists) */}
+              {product.rating !== undefined && product.rating !== null && (
+                <div className="pdp-rating-row">
+                  <StarRating rating={product.rating} count={product.reviews} />
+                </div>
+              )}
+
+              {/* Price Presentation */}
+              <div className="pdp-price-box">
+                <span className="pdp-price">₹{product.price}</span>
+                {product.originalPrice && (
+                  <span className="pdp-price-original">₹{product.originalPrice}</span>
+                )}
+                {discountPercent && (
+                  <span className="pdp-discount-badge">{discountPercent}% OFF</span>
+                )}
+                <span className="pdp-tax-note">Inclusive of all taxes</span>
+              </div>
+
+              {/* Stock / Dispatch status */}
+              <div className="pdp-status-badge">
+                <span className="pdp-status-dot" />
+                <span>
+                  {product.availability === 'in_stock'
+                    ? 'In Stock – Ready to Dispatch within 24–48 Hours'
+                    : 'Available – Handcrafted on order'}
+                </span>
+              </div>
+
+              {/* Description */}
+              <p className="pdp-short-desc">
+                {product.description ||
+                  'Thoughtfully handcrafted by Aai Prints artisans. Perfect for spiritual corners, living rooms, work desks, and car dashboards.'}
+              </p>
+
+              {/* Variants Selector (only rendered when real options exist) */}
+              {product.variants && product.variants.length > 0 && (
+                <div className="pdp-variants-section">
+                  <label className="pdp-variants-label">Available Options / Sizes:</label>
+                  <div className="pdp-variants-list" role="radiogroup" aria-label="Product options">
+                    {product.variants.map((v) => (
+                      <motion.button
+                        whileHover={{ scale: 1.04 }}
+                        whileTap={{ scale: 0.96 }}
+                        key={v.id}
+                        type="button"
+                        className={`pdp-variant-chip ${selectedVariant?.id === v.id ? 'active' : ''}`}
+                        onClick={() => setSelectedVariant(v)}
+                        role="radio"
+                        aria-checked={selectedVariant?.id === v.id}
+                      >
+                        {v.label}
+                      </motion.button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Quantity Selector */}
+              <div className="pdp-qty-section">
+                <label htmlFor="pdp-qty-input" className="pdp-qty-label">Quantity:</label>
+                <div className="pdp-qty-control">
+                  <motion.button
+                    whileTap={{ scale: 0.85 }}
+                    type="button"
+                    className="pdp-qty-btn"
+                    onClick={() => handleQuantityChange(-1)}
+                    disabled={quantity <= 1}
+                    aria-label="Decrease quantity"
+                  >
+                    <Minus size={14} strokeWidth={2.5} />
+                  </motion.button>
+                  <input
+                    id="pdp-qty-input"
+                    type="number"
+                    className="pdp-qty-input"
+                    value={quantity}
+                    min="1"
+                    onChange={(e) => {
+                      const val = parseInt(e.target.value, 10);
+                      if (!isNaN(val) && val >= 1) setQuantity(val);
+                    }}
+                    aria-label="Product quantity"
+                  />
+                  <motion.button
+                    whileTap={{ scale: 0.85 }}
+                    type="button"
+                    className="pdp-qty-btn"
+                    onClick={() => handleQuantityChange(1)}
+                    aria-label="Increase quantity"
+                  >
+                    <Plus size={14} strokeWidth={2.5} />
+                  </motion.button>
                 </div>
               </div>
 
-              <div className="pdp-value-point">
-                <ShieldCheck size={18} />
-                <div>
-                  <strong>Secure Packaging</strong>
-                  <span>Shipped in reinforced multi-layer protective packaging</span>
+              {/* Primary Action Buttons */}
+              <div className="pdp-actions">
+                <motion.button
+                  whileHover={{ scale: 1.02, y: -2 }}
+                  whileTap={{ scale: 0.97 }}
+                  type="button"
+                  className={`pdp-btn-add-cart ${addedToast ? 'added' : ''}`}
+                  onClick={handleAddToCart}
+                  disabled={isAdding}
+                  aria-label={addedToast ? "Product added to cart" : "Add product to cart"}
+                >
+                  {addedToast ? (
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                      <Check size={16} strokeWidth={2.5} /> Added to Cart
+                    </span>
+                  ) : (
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                      <ShoppingBag size={18} /> ADD TO CART
+                    </span>
+                  )}
+                </motion.button>
+
+                <motion.button
+                  whileHover={{ scale: 1.04 }}
+                  whileTap={{ scale: 0.95 }}
+                  type="button"
+                  className={`pdp-btn-wishlist ${isFav ? 'active' : ''}`}
+                  onClick={() => toggleWishlist(product)}
+                  aria-label={isFav ? 'Remove from wishlist' : 'Add to wishlist'}
+                >
+                  <Heart
+                    size={18}
+                    fill={isFav ? '#e53935' : 'none'}
+                    stroke={isFav ? '#e53935' : 'currentColor'}
+                    strokeWidth={2}
+                  />
+                  {isFav ? 'In Wishlist' : 'Wishlist'}
+                </motion.button>
+              </div>
+
+              {/* Value Highlights */}
+              <div className="pdp-value-points">
+                <div className="pdp-value-point">
+                  <Truck size={18} />
+                  <div>
+                    <strong>Standard Dispatch</strong>
+                    <span>Handcrafted and dispatched within 24–48 hours</span>
+                  </div>
+                </div>
+
+                <div className="pdp-value-point">
+                  <ShieldCheck size={18} />
+                  <div>
+                    <strong>Secure Packaging</strong>
+                    <span>Shipped in reinforced multi-layer protective packaging</span>
+                  </div>
+                </div>
+
+                <div className="pdp-value-point">
+                  <Package size={18} />
+                  <div>
+                    <strong>Gift-Ready Presentation</strong>
+                    <span>Artisanal presentation suitable for gifting</span>
+                  </div>
                 </div>
               </div>
 
-              <div className="pdp-value-point">
-                <Package size={18} />
-                <div>
-                  <strong>Gift-Ready Presentation</strong>
-                  <span>Artisanal presentation suitable for gifting</span>
-                </div>
-              </div>
             </div>
-
           </div>
-        </div>
         </div>
       </section>
 

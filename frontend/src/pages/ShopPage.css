@@ -1,6 +1,6 @@
 /* ========================================================
    Shop Page Styles – Aai Prints E-commerce
-   Clean, polished, high-end home décor shopping experience
+   Clean, polished, high-end home decor shopping experience
    ======================================================== */
 
 .shop-page {
@@ -730,9 +730,17 @@
   font-size: 12px;
 }
 
-.star-full { color: #f5a623; }
-.star-half { color: #f5a623; }
-.star-empty { color: #ddd; }
+.star-full {
+  color: #f5a623;
+}
+
+.star-half {
+  color: #f5a623;
+}
+
+.star-empty {
+  color: #ddd;
+}
 
 .review-count {
   font-family: 'Jost', sans-serif;
@@ -891,8 +899,13 @@
 }
 
 @keyframes filterOverlayIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 .mobile-filter-drawer {
@@ -907,8 +920,13 @@
 }
 
 @keyframes filterSlideIn {
-  from { transform: translateX(-100%); }
-  to { transform: translateX(0); }
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
 }
 
 .mobile-filter-header {
@@ -1023,12 +1041,15 @@
   .shop-layout {
     grid-template-columns: 1fr;
   }
+
   .shop-sidebar {
     display: none;
   }
+
   .mobile-filter-trigger {
     display: inline-flex;
   }
+
   .shop-header {
     flex-direction: column;
     align-items: flex-start;
@@ -1044,35 +1065,44 @@
     gap: 12px;
     padding: 12px 14px;
   }
+
   .shop-search-box {
     max-width: 100%;
   }
+
   .shop-sort-box {
     justify-content: space-between;
     width: 100%;
   }
+
   .shop-sort-select {
     flex: 1;
   }
+
   .shop-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
   }
+
   .shop-card-info {
     padding: 10px 12px 12px;
   }
+
   .shop-card-name {
     font-size: 13px;
     min-height: 34px;
   }
+
   .shop-card-price {
     font-size: 15px;
   }
+
   .shop-card-cart-btn {
     font-size: 11px;
     padding: 8px;
     min-height: 36px;
   }
+
   .shop-title {
     font-size: 32px;
   }

@@ -165,73 +165,21 @@ export default function AccountDrawer({ isOpen, onClose, onNavigate }) {
                   {displayName.charAt(0).toUpperCase()}
                 </div>
                 <div className="account-hero-info">
-                  <span className="account-patron-title">SACRED PATRON</span>
+                  <span className="account-user-badge">ACCOUNT</span>
                   <h3 className="account-user-name">{displayName}</h3>
                   <p className="account-user-email">{displayEmail}</p>
                   <div className="account-badge-wrapper">
                     {user.role === 'admin' ? (
                       <span className="account-badge-pill admin">
                         <Crown size={12} />
-                        <span>Sanctuary Administrator</span>
+                        <span>Store Administrator</span>
                       </span>
                     ) : (
-                      <span className="account-badge-pill patron">
+                      <span className="account-badge-pill member">
                         <Sparkles size={12} />
-                        <span>Verified Sanctuary Patron</span>
+                        <span>Verified Customer</span>
                       </span>
                     )}
-                  </div>
-                </div>
-              </div>
-
-              {/* 2. Patron Quick Stats Row */}
-              <div className="account-stats-row">
-                <button
-                  type="button"
-                  className="account-stat-card"
-                  onClick={() => {
-                    onClose();
-                    if (onNavigate) onNavigate('wishlist');
-                    else if (setIsWishlistOpen) setIsWishlistOpen(true);
-                  }}
-                  title="View Saved Wishlist"
-                >
-                  <div className="account-stat-icon-wrap" style={{ color: '#e53935' }}>
-                    <Heart size={15} fill="#e53935" />
-                  </div>
-                  <div className="account-stat-content">
-                    <span className="account-stat-num">{wishlistCount || 0}</span>
-                    <span className="account-stat-label">Saved</span>
-                  </div>
-                </button>
-
-                <button
-                  type="button"
-                  className="account-stat-card"
-                  onClick={() => {
-                    onClose();
-                    if (onNavigate) onNavigate('cart');
-                  }}
-                  title="View Shopping Bag"
-                >
-                  <div className="account-stat-icon-wrap" style={{ color: 'var(--teal)' }}>
-                    <ShoppingBag size={15} />
-                  </div>
-                  <div className="account-stat-content">
-                    <span className="account-stat-num">{cartCount || 0}</span>
-                    <span className="account-stat-label">In Bag</span>
-                  </div>
-                </button>
-
-                <div className="account-stat-card account-stat-tier">
-                  <div className="account-stat-icon-wrap" style={{ color: 'var(--gold, #c59b27)' }}>
-                    <Sparkles size={15} />
-                  </div>
-                  <div className="account-stat-content">
-                    <span className="account-stat-num" style={{ fontSize: '13px', letterSpacing: '0.5px' }}>
-                      {user.role === 'admin' ? 'ADMIN' : 'GOLD'}
-                    </span>
-                    <span className="account-stat-label">Privilege</span>
                   </div>
                 </div>
               </div>
@@ -262,7 +210,7 @@ export default function AccountDrawer({ isOpen, onClose, onNavigate }) {
                       <strong>Add Product</strong>
                       <span className="admin-chip">ADMIN ACCESS</span>
                     </div>
-                    <p>Create &amp; publish new products with instant Cloudinary image upload</p>
+                    <p>Create &amp; publish new products</p>
                   </div>
                   <ChevronRight size={18} className="account-admin-arrow" />
                 </div>
@@ -270,7 +218,7 @@ export default function AccountDrawer({ isOpen, onClose, onNavigate }) {
 
               {/* 4. Navigation Menu List */}
               <div className="account-nav-list">
-                <span className="account-nav-section-title">PATRON SERVICES &amp; PRIVILEGES</span>
+                <span className="account-nav-section-title">ACCOUNT &amp; SERVICES</span>
 
                 <div className="account-nav-item">
                   <div className="account-nav-item-icon">
@@ -278,7 +226,7 @@ export default function AccountDrawer({ isOpen, onClose, onNavigate }) {
                   </div>
                   <div className="account-nav-item-content">
                     <strong>My Orders</strong>
-                    <span>Track recent sacred art shipments &amp; invoices</span>
+                    <span>Track recent shipments &amp; invoices</span>
                   </div>
                   <ChevronRight size={16} className="account-nav-chevron" />
                 </div>
@@ -305,10 +253,10 @@ export default function AccountDrawer({ isOpen, onClose, onNavigate }) {
                     <Heart size={18} />
                   </div>
                   <div className="account-nav-item-content">
-                    <strong>My Wishlist &amp; Saved Art</strong>
+                    <strong>My Wishlist</strong>
                     <span>
                       {wishlistCount > 0
-                        ? `${wishlistCount} sacred item${wishlistCount > 1 ? 's' : ''} saved`
+                        ? `${wishlistCount} item${wishlistCount > 1 ? 's' : ''} saved`
                         : 'Synchronized across all your devices'}
                     </span>
                   </div>
@@ -372,7 +320,7 @@ export default function AccountDrawer({ isOpen, onClose, onNavigate }) {
                     <Headphones size={18} />
                   </div>
                   <div className="account-nav-item-content">
-                    <strong>Concierge Assistance</strong>
+                    <strong>Customer Support</strong>
                     <span>care@aaiprints.com • Mon–Sat 10AM–7PM</span>
                   </div>
                   <ChevronRight size={16} className="account-nav-chevron" />
@@ -382,7 +330,7 @@ export default function AccountDrawer({ isOpen, onClose, onNavigate }) {
               {/* 5. Security & Trust Badge */}
               <div className="account-security-notice">
                 <ShieldCheck size={15} style={{ color: 'var(--teal)' }} />
-                <span>Protected by 256-bit SSL encrypted patron session</span>
+                <span>Protected by 256-bit SSL encryption</span>
               </div>
 
               {/* 6. Sign Out Button */}

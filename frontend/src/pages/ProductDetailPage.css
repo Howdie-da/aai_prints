@@ -220,8 +220,13 @@
   transform: translateY(-50%) scale(0.92);
 }
 
-.pdp-arrow-prev { left: 14px; }
-.pdp-arrow-next { right: 14px; }
+.pdp-arrow-prev {
+  left: 14px;
+}
+
+.pdp-arrow-next {
+  right: 14px;
+}
 
 .pdp-badge {
   position: absolute;
@@ -238,8 +243,13 @@
   text-transform: uppercase;
 }
 
-.pdp-badge--best-seller { background: var(--teal-dark); }
-.pdp-badge--new-arrival { background: #c27803; }
+.pdp-badge--best-seller {
+  background: var(--teal-dark);
+}
+
+.pdp-badge--new-arrival {
+  background: #c27803;
+}
 
 /* ── 4. Right Column: Product Information ── */
 .pdp-info-wrap {
@@ -899,9 +909,11 @@
     grid-template-columns: 1fr;
     gap: 36px;
   }
+
   .pdp-gallery-wrap {
     position: static;
   }
+
   .pdp-related-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -911,30 +923,37 @@
   .pdp-gallery-wrap {
     flex-direction: column-reverse;
   }
+
   .pdp-thumbnails {
     flex-direction: row;
     width: 100%;
     overflow-x: auto;
     padding-bottom: 6px;
   }
+
   .pdp-thumb-btn {
     width: 64px;
     height: 64px;
     flex-shrink: 0;
   }
+
   .pdp-title {
     font-size: 32px;
   }
+
   .pdp-price {
     font-size: 26px;
   }
+
   .pdp-actions {
     flex-direction: column;
   }
+
   .pdp-btn-add-cart,
   .pdp-btn-wishlist {
     width: 100%;
   }
+
   .pdp-related-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;

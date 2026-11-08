@@ -644,6 +644,7 @@
     transform: scale(0.92);
     opacity: 0;
   }
+
   to {
     transform: scale(1);
     opacity: 1;
@@ -732,6 +733,7 @@
     grid-template-columns: 1fr;
     gap: 32px;
   }
+
   .cart-summary-section {
     position: static;
   }
@@ -744,31 +746,36 @@
     gap: 12px;
     padding: 24px 0 18px;
   }
+
   .cart-page-title {
     font-size: 32px;
   }
+
   .cart-item-card {
     flex-direction: column;
     align-items: stretch;
     padding: 16px;
     gap: 14px;
   }
+
   .cart-item-img-wrap {
     width: 84px;
     height: 84px;
     align-self: flex-start;
   }
+
   .cart-item-actions-row {
     flex-direction: column;
     align-items: stretch;
     gap: 12px;
   }
+
   .cart-item-subtotal-box {
     justify-content: space-between;
   }
+
   .cart-item-remove-btn {
     align-self: flex-start;
     padding: 6px 0;
   }
 }
-

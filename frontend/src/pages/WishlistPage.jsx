@@ -94,7 +94,7 @@ export default function WishlistPage({
               </span>
             </div>
             <p className="wishlist-subtitle">
-              Your saved favourites and handcrafted décor pieces.
+              Your saved favourites and handcrafted decor pieces.
             </p>
           </div>
 
@@ -127,7 +127,7 @@ export default function WishlistPage({
             <h2 className="wishlist-empty-heading">Your Wishlist Is Empty</h2>
             <p className="wishlist-empty-description">
               You haven't saved any items yet. Explore our handcrafted devotional idols,
-              backlit LED frames, and designer car &amp; wall décor to build your personal wishlist.
+              backlit LED frames, and designer car &amp; wall decor to build your personal wishlist.
             </p>
             <div className="wishlist-empty-actions">
               <button
@@ -292,17 +292,17 @@ export default function WishlistPage({
                               : `Add ${product.name} to cart`
                           }
                         >
-                        {isAdded ? (
-                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-                            <Check size={16} strokeWidth={2.5} />
-                            Added to Cart
-                          </span>
-                        ) : (
-                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-                            <ShoppingBag size={16} />
-                            Add to Cart
-                          </span>
-                        )}
+                          {isAdded ? (
+                            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                              <Check size={16} strokeWidth={2.5} />
+                              Added to Cart
+                            </span>
+                          ) : (
+                            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                              <ShoppingBag size={16} />
+                              Add to Cart
+                            </span>
+                          )}
                         </motion.button>
                       </div>
                     </div>

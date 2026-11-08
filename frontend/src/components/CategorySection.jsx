@@ -5,7 +5,7 @@ const categories = [
   {
     id: 'cat-1',
     title: 'Wall Hangings',
-    count: '120+ Sacred Designs',
+    count: '120+ Designs',
     image: '/new-images/cat-wall-hangings.jpg',
     href: '#/shop?category=Wall%20Hangings',
     tag: 'Bestseller',
@@ -13,7 +13,7 @@ const categories = [
   {
     id: 'cat-2',
     title: 'Backlit LED Frames',
-    count: '80+ Divine Frames',
+    count: '80+ Frame Designs',
     image: '/new-images/cat-backlit-led-frames.jpg',
     href: '#/shop?category=Backlit%20LED%20Frames',
     tag: 'Illuminated',
@@ -21,10 +21,10 @@ const categories = [
   {
     id: 'cat-3',
     title: 'Dashboard Idols',
-    count: '60+ Sacred Idols',
+    count: '60+ Idols',
     image: '/new-images/cat-dashboard-idols.jpg',
     href: '#/shop?category=Dashboard%20Idols',
-    tag: 'Car Sanctuary',
+    tag: 'Car Decor',
   },
   {
     id: 'cat-4',
@@ -63,10 +63,10 @@ export default function CategorySection() {
           transition={{ duration: 0.45 }}
           className="sec-header"
         >
-          <span className="sec-eyebrow">CURATED SACRED DECOR</span>
-          <h2 className="sec-title">Shop by Sacred Category</h2>
+          <span className="sec-eyebrow">FEATURED COLLECTIONS</span>
+          <h2 className="sec-title">Shop by Category</h2>
           <p className="sec-subtitle">
-            Explore handcrafted temple-grade artwork, illuminated backlit sanctums, and artisanal decor designed for discerning homes.
+            Explore handcrafted devotional artwork, illuminated LED frames, and artisan home decor designed for modern living.
           </p>
         </motion.div>
 

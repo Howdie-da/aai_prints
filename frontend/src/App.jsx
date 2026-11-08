@@ -34,7 +34,7 @@ function App() {
   useEffect(() => {
     let isMounted = true;
     fetchAllProducts().then((live) => {
-      if (isMounted && live && live.length > 0) {
+      if (isMounted && Array.isArray(live)) {
         setAllProducts([...live]);
       }
     });
@@ -266,33 +266,33 @@ function App() {
   return (
     <AuthProvider>
       <WishlistProvider>
-      <div className="app">
-        {/* ── 1. Announcement bar ── */}
-        <AnnouncementBar />
+        <div className="app">
+          {/* ── 1. Announcement bar ── */}
+          <AnnouncementBar />
 
-        {/* ── 2. Navbar ── */}
-        <Navbar
-          products={allProducts}
-          currentPage={currentPage}
-          selectedCategory={selectedCategory}
-          onNavigate={navigateTo}
-          onSelectProduct={handleSelectProduct}
-          onOpenAccount={() => setIsAccountOpen(true)}
-        />
-
-        {/* ── 3. Horizontal category circle icons (Restricted to Home page /#/) ── */}
-        {currentPage === 'home' && (
-          <CategoryScrollbar
-            onSelectCategory={(cat) => navigateTo('shop', cat)}
+          {/* ── 2. Navbar ── */}
+          <Navbar
+            products={allProducts}
+            currentPage={currentPage}
+            selectedCategory={selectedCategory}
+            onNavigate={navigateTo}
+            onSelectProduct={handleSelectProduct}
+            onOpenAccount={() => setIsAccountOpen(true)}
           />
-        )}
 
-        {/* ── 4. Main Page View (Instant Snappy 60fps) ── */}
-        <div
-          key={currentPage === 'product' ? `product-${activeProductSlug}` : currentPage}
-          className="page-view-fade"
-          style={{ width: '100%' }}
-        >
+          {/* ── 3. Horizontal category circle icons (Restricted to Home page /#/) ── */}
+          {currentPage === 'home' && (
+            <CategoryScrollbar
+              onSelectCategory={(cat) => navigateTo('shop', cat)}
+            />
+          )}
+
+          {/* ── 4. Main Page View (Instant Snappy 60fps) ── */}
+          <div
+            key={currentPage === 'product' ? `product-${activeProductSlug}` : currentPage}
+            className="page-view-fade"
+            style={{ width: '100%' }}
+          >
             {currentPage === 'product' ? (
               <ProductDetailPage
                 product={currentProduct}
@@ -352,25 +352,49 @@ function App() {
                 {/* Hero banner slider */}
                 <HeroSlider onSelectCategory={(cat) => navigateTo('shop', cat)} />
 
-                {/* Devotional Décor product section */}
+                {/* Devotional Decor product section */}
                 <ProductSection
                   sectionId="devotional"
-                  title="Devotional Décor"
-                  subtitle="Wall Hangings, Backlit LED Frames, Divine Tabletop Idols, Sacred Yantra & Spiritual Décor"
+                  title="Devotional Decor"
+                  subtitle="Wall Hangings, Backlit LED Frames, Tabletop Idols & Spiritual Decor"
                   products={devotionalProducts}
                   onSelectProduct={handleSelectProduct}
                   onViewMore={() => navigateTo('shop', 'Wall Hangings')}
                 />
 
-                {/* Wall & Car Décor product section */}
+                {/* Wall & Car Decor product section */}
                 <ProductSection
                   sectionId="wall-decor"
-                  title="Wall & Car Décor"
-                  subtitle="Framed Wall Art, Modern Metal Wall Décor, Designer Clocks, Car Dashboard Idols & Hangings"
+                  title="Wall & Car Decor"
+                  subtitle="Framed Wall Art, Modern Metal Wall Decor, Designer Clocks, Car Dashboard Idols & Hangings"
                   products={wallAndCarProducts}
                   onSelectProduct={handleSelectProduct}
                   onViewMore={() => navigateTo('shop', 'Metal Wall Art')}
                 />
+
+                {/* Clean notice when catalogue is empty / being populated */}
+                {allProducts.length === 0 && (
+                  <section className="catalog-status-banner" style={{ padding: '24px 20px' }}>
+                    <div style={{ maxWidth: '720px', margin: '20px auto', textAlign: 'center', padding: '36px 24px', background: '#ffffff', borderRadius: '16px', border: '1px solid rgba(197, 155, 39, 0.28)', boxShadow: '0 4px 20px rgba(35, 95, 100, 0.05)' }}>
+                      <span style={{ display: 'inline-block', color: 'var(--gold-dark, #9e7916)', letterSpacing: '2px', fontSize: '10.5px', fontWeight: '700', fontFamily: 'var(--font-serif, "Cinzel", serif)', textTransform: 'uppercase', marginBottom: '8px' }}>
+                        STORE CATALOGUE
+                      </span>
+                      <h2 style={{ fontFamily: 'var(--font-serif, "Cinzel", serif)', color: 'var(--teal-deep, #133538)', fontSize: '24px', margin: '0 0 10px', fontWeight: '700' }}>
+                        Collection In Preparation
+                      </h2>
+                      <p style={{ color: 'var(--text-muted, #71717a)', fontSize: '13.5px', lineHeight: '1.6', maxWidth: '520px', margin: '0 auto 20px' }}>
+                        Our handcrafted devotional artworks, illuminated frames, and decor pieces are currently being updated.
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => navigateTo('shop', 'All')}
+                        style={{ background: 'var(--teal, #235f64)', color: '#ffffff', border: 'none', padding: '11px 26px', borderRadius: '9999px', fontFamily: 'var(--font-sans, "Jost", sans-serif)', fontSize: '12.5px', fontWeight: '700', letterSpacing: '1px', textTransform: 'uppercase', cursor: 'pointer', boxShadow: '0 4px 12px rgba(35, 95, 100, 0.2)' }}
+                      >
+                        Browse Collection Categories
+                      </button>
+                    </div>
+                  </section>
+                )}
 
                 {/* "Your Style, Your Collection" horizontal scroll */}
                 <StyleCollection onSelectCategory={(cat) => navigateTo('shop', cat)} />
@@ -382,33 +406,33 @@ function App() {
                 <PromoBanner onNavigateShop={() => navigateTo('shop', 'All')} />
               </main>
             )}
+          </div>
+
+          {/* ── 5. Footer ── */}
+          <Footer onNavigate={navigateTo} />
+
+          {/* ── 6. Wishlist Slide-in Drawer ── */}
+          <WishlistDrawer
+            onSelectProduct={handleSelectProduct}
+            onNavigateShop={() => navigateTo('shop', 'All')}
+            onNavigateWishlist={() => navigateTo('wishlist')}
+          />
+
+          {/* ── 7. Cart Slide-in Drawer ── */}
+          <CartDrawer
+            onSelectProduct={handleSelectProduct}
+            onNavigateShop={() => navigateTo('shop', 'All')}
+            onNavigateCart={() => navigateTo('cart')}
+          />
+
+          {/* ── 8. Account Slide-in Drawer ── */}
+          <AccountDrawer
+            isOpen={isAccountOpen}
+            onClose={() => setIsAccountOpen(false)}
+            onNavigate={navigateTo}
+          />
         </div>
-
-        {/* ── 5. Footer ── */}
-        <Footer onNavigate={navigateTo} />
-
-        {/* ── 6. Wishlist Slide-in Drawer ── */}
-        <WishlistDrawer
-          onSelectProduct={handleSelectProduct}
-          onNavigateShop={() => navigateTo('shop', 'All')}
-          onNavigateWishlist={() => navigateTo('wishlist')}
-        />
-
-        {/* ── 7. Cart Slide-in Drawer ── */}
-        <CartDrawer
-          onSelectProduct={handleSelectProduct}
-          onNavigateShop={() => navigateTo('shop', 'All')}
-          onNavigateCart={() => navigateTo('cart')}
-        />
-
-        {/* ── 8. Account Slide-in Drawer ── */}
-        <AccountDrawer
-          isOpen={isAccountOpen}
-          onClose={() => setIsAccountOpen(false)}
-          onNavigate={navigateTo}
-        />
-      </div>
-    </WishlistProvider>
+      </WishlistProvider>
     </AuthProvider>
   );
 }

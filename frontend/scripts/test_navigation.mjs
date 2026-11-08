@@ -1,10 +1,24 @@
-import { products } from '../src/data/products.js';
+// Unit Test Fixtures for navigation and category routing tests
+const mockTestProducts = [
+  { id: 1, name: 'Lord Ganesha LED Frame', category: 'Backlit LED Frames', subcategory: 'Spiritual Lighting' },
+  { id: 2, name: 'Ram Mandir Standee', category: 'Desk Standees', subcategory: 'Devotional Models' },
+  { id: 3, name: 'Gayatri Mantra Hanging', category: 'Wall Hangings', subcategory: 'Sacred Wall Hangings' },
+  { id: 4, name: 'Om Symbol Hanging', category: 'Wall Hangings', subcategory: 'Spiritual' },
+  { id: 5, name: 'Ganesha Car Dashboard Idol', category: 'Dashboard Idols', subcategory: 'Car Idols' },
+  { id: 6, name: 'Trishul Car Hanging', category: 'Car Hangings', subcategory: 'Car Charms' },
+  { id: 7, name: 'Geometric Ginkgo Leaf Art', category: 'Metal Wall Art', subcategory: 'Botanical Decor' },
+  { id: 8, name: 'Golden Mandala Metal Art', category: 'Metal Wall Art', subcategory: 'Modern Metal Art' },
+  { id: 9, name: 'Silent Quartz Wall Clock', category: 'Wall Clocks', subcategory: 'Quartz Clocks' },
+  { id: 10, name: 'Framed Radha Krishna Art', category: 'Backlit LED Frames', subcategory: 'Framed Art' },
+  { id: 11, name: 'Shiva Backlit Sanctum Frame', category: 'Backlit LED Frames', subcategory: 'Devotional Frames' },
+  { id: 12, name: 'Hanuman Ji Wall Hanging', category: 'Wall Hangings', subcategory: 'Sacred Art' },
+];
 
 // 1. Hero slides verification
 const heroSlides = [
   { id: 1, name: 'Devotional Collection', category: 'Wall Hangings', url: '#/shop?category=Wall%20Hangings' },
-  { id: 2, name: 'Car Décor Collection', category: 'Dashboard Idols', url: '#/shop?category=Dashboard%20Idols' },
-  { id: 3, name: 'Wall Décor Collection', category: 'Metal Wall Art', url: '#/shop?category=Metal%20Wall%20Art' },
+  { id: 2, name: 'Car Decor Collection', category: 'Dashboard Idols', url: '#/shop?category=Dashboard%20Idols' },
+  { id: 3, name: 'Wall Decor Collection', category: 'Metal Wall Art', url: '#/shop?category=Metal%20Wall%20Art' },
 ];
 
 // 2. Style Collections verification
@@ -18,16 +32,16 @@ const styleCollections = [
 ];
 
 function filterCategory(activeCategory) {
-  if (!activeCategory || activeCategory === 'All') return products;
+  if (!activeCategory || activeCategory === 'All') return mockTestProducts;
   const target = activeCategory.toLowerCase().trim();
-  return products.filter((p) => {
+  return mockTestProducts.filter((p) => {
     const cat = (p.category || '').toLowerCase();
     const sub = (p.subcategory || '').toLowerCase();
     const name = (p.name || '').toLowerCase();
 
     if (cat === target || sub === target) return true;
 
-    if (target === 'devotional' || target === 'devotional décor' || target === 'devotional decor') {
+    if (target === 'devotional' || target === 'devotional decor' || target === 'devotional décor') {
       return (
         cat === 'backlit led frames' ||
         cat === 'desk standees' ||
@@ -38,11 +52,11 @@ function filterCategory(activeCategory) {
       );
     }
 
-    if (target === 'car décor' || target === 'car decor') {
+    if (target === 'car decor' || target === 'car décor' || target === 'car') {
       return cat === 'dashboard idols' || cat === 'car hangings' || sub.includes('car');
     }
 
-    if (target === 'wall décor' || target === 'wall decor') {
+    if (target === 'wall decor' || target === 'wall décor' || target === 'wall') {
       return (
         cat === 'metal wall art' ||
         cat === 'wall clocks' ||

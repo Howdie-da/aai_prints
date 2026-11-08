@@ -8,7 +8,7 @@ export default function PromoSection() {
         <div className="promo-banner-inner">
           <div className="promo-content">
             <span className="promo-eyebrow">For Corporate &amp; Celebrations</span>
-            <h2 className="promo-title">Custom Gift Combos &amp; Corporate Décor</h2>
+            <h2 className="promo-title">Custom Gift Combos &amp; Corporate Decor</h2>
             <p className="promo-desc">
               Customized devotional and desk decor sets for corporate gifting, festivals, and special occasions.
               Carefully packed in premium gift boxes.
@@ -43,10 +43,10 @@ export default function PromoSection() {
           </div>
           <div className="promo-content">
             <span className="promo-eyebrow promo-eyebrow-dark">Special Festive Curation</span>
-            <h2 className="promo-title promo-title-dark">Bless Your Home With Serenity</h2>
+            <h2 className="promo-title promo-title-dark">Enrich Your Home With Serenity</h2>
             <p className="promo-desc promo-desc-dark">
-              Bring divine grace and auspicious energy into your temple, living room, and workplace
-              with our handcrafted devotional collection.
+              Bring timeless grace and inspiring warmth into your living room, temple, and workplace
+              with our handcrafted decor collection.
             </p>
             <div className="promo-price-block">
               <span className="promo-sale-price">₹899</span>

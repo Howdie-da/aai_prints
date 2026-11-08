@@ -1,7 +1,8 @@
 import { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Heart, X, SlidersHorizontal, Filter, Check, ShoppingBag } from 'lucide-react';
+import { Search, Heart, X, SlidersHorizontal, Filter, Check, ShoppingBag, Package } from 'lucide-react';
 import { useWishlist } from '../context/WishlistContext';
+import { useAuth } from '../context/AuthContext';
 import './ShopPage.css';
 
 function StarRating({ rating, count }) {
@@ -33,6 +34,7 @@ export default function ShopPage({
   onSelectProduct,
 }) {
   const { isInWishlist, toggleWishlist, addToCart } = useWishlist();
+  const { user } = useAuth();
 
   // Filter & Sort States
   const [activeCategory, setActiveCategory] = useState(selectedCategory || 'All');
@@ -119,7 +121,7 @@ export default function ShopPage({
         if (cat === target || sub === target) return true;
 
         // Devotional collection umbrella
-        if (target === 'devotional' || target === 'devotional décor' || target === 'devotional decor') {
+        if (target === 'devotional' || target === 'devotional decor' || target === 'devotional décor') {
           return (
             cat === 'backlit led frames' ||
             cat === 'desk standees' ||
@@ -151,12 +153,12 @@ export default function ShopPage({
           );
         }
 
-        // Car décor collection umbrella
-        if (target === 'car décor' || target === 'car decor') {
+        // Car Decor collection umbrella
+        if (target === 'car decor' || target === 'car décor' || target === 'car') {
           return cat === 'dashboard idols' || cat === 'car hangings' || sub.includes('car');
         }
 
-        // Combo Sets subcategory under Car Décor
+        // Combo Sets subcategory under Car Decor
         if (target === 'combo sets' || target === 'combo') {
           return (
             sub.includes('combo') ||
@@ -167,8 +169,8 @@ export default function ShopPage({
           );
         }
 
-        // Wall décor collection umbrella
-        if (target === 'wall décor' || target === 'wall decor') {
+        // Wall Decor collection umbrella
+        if (target === 'wall decor' || target === 'wall décor' || target === 'wall') {
           return (
             cat === 'metal wall art' ||
             cat === 'wall clocks' ||
@@ -198,33 +200,33 @@ export default function ShopPage({
         }
 
         // Gifts / festive umbrella
-          if (target === 'gifts' || target === 'festive') {
-            return (
-              cat === 'desk standees' ||
-              cat === 'dashboard idols' ||
-              sub.includes('festive') ||
-              sub.includes('model') ||
-              name.includes('set')
-            );
-          }
+        if (target === 'gifts' || target === 'festive') {
+          return (
+            cat === 'desk standees' ||
+            cat === 'dashboard idols' ||
+            sub.includes('festive') ||
+            sub.includes('model') ||
+            name.includes('set')
+          );
+        }
 
-          // Gift Combos subcategory under Gifts
-          if (target === 'gift combos') {
-            return (
-              name.includes('combo') ||
-              name.includes('set') ||
-              sub.includes('model') ||
-              cat === 'dashboard idols'
-            );
-          }
+        // Gift Combos subcategory under Gifts
+        if (target === 'gift combos') {
+          return (
+            name.includes('combo') ||
+            name.includes('set') ||
+            sub.includes('model') ||
+            cat === 'dashboard idols'
+          );
+        }
 
-          // Return Gifts subcategory under Gifts
-          if (target === 'return gifts') {
-            return cat === 'car hangings' || cat === 'desk standees';
-          }
+        // Return Gifts subcategory under Gifts
+        if (target === 'return gifts') {
+          return cat === 'car hangings' || cat === 'desk standees';
+        }
 
-          return false;
-        });
+        return false;
+      });
     }
 
     // 2. Specific Subcategory Filter
@@ -402,7 +404,7 @@ export default function ShopPage({
             <h1 className="shop-title">{displayTitle}</h1>
             <p className="shop-subtitle">
               {activeCategory === 'All'
-                ? 'Explore authentic devotional idols, handcrafted wall hangings, and designer décor for your home and car.'
+                ? 'Explore authentic devotional idols, handcrafted wall hangings, and designer decor for your home and car.'
                 : `Handcrafted ${displayTitle.toLowerCase()} collection with authentic artisanal finishes.`}
             </p>
           </div>
@@ -700,7 +702,42 @@ export default function ShopPage({
           {/* Products Grid Content Area */}
           <main className="shop-products-area">
             {filteredProducts.length === 0 ? (
-              searchQuery.trim() ? (
+              products.length === 0 ? (
+                /* Entire Store Has 0 Products (Clean Empty Catalogue State) */
+                <div className="shop-no-results">
+                  <div className="no-results-icon" aria-hidden="true">
+                    <Package size={44} strokeWidth={1.5} style={{ color: 'var(--teal)' }} />
+                  </div>
+                  <h3 className="no-results-title">Collection In Preparation</h3>
+                  <p className="no-results-desc">
+                    Our collection of handcrafted devotional artworks, illuminated frames, and decor pieces is currently being updated.
+                    New creations will appear here shortly.
+                  </p>
+                  {user?.role === 'admin' ? (
+                    <div className="no-results-actions">
+                      <button
+                        type="button"
+                        className="no-results-btn no-results-btn--primary"
+                        onClick={() => {
+                          window.location.hash = '#/admin/add-product';
+                        }}
+                      >
+                        + Publish First Product (Admin)
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="no-results-actions">
+                      <button
+                        type="button"
+                        className="no-results-btn no-results-btn--primary"
+                        onClick={onNavigateHome}
+                      >
+                        Return to Storefront
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ) : searchQuery.trim() ? (
                 /* No search results state */
                 <div className="shop-no-results">
                   <div className="no-results-icon" aria-hidden="true">
@@ -913,128 +950,128 @@ export default function ShopPage({
               aria-modal="true"
               aria-label="Filter products"
             >
-            <div className="mobile-filter-header">
-              <h3>Filter Products</h3>
-              <button
-                type="button"
-                className="mobile-filter-close"
-                onClick={() => setMobileFilterOpen(false)}
-                aria-label="Close filter drawer"
-              >
-                <X size={20} strokeWidth={2} />
-              </button>
-            </div>
-
-            <div className="mobile-filter-body">
-              {/* Category */}
-              <div className="filter-group">
-                <h4 className="filter-group-title">Category</h4>
-                <div className="mobile-cat-chips">
-                  {categoryList.map((cat) => (
-                    <button
-                      key={cat}
-                      type="button"
-                      className={`mobile-cat-chip ${activeCategory === cat ? 'active' : ''}`}
-                      onClick={() => changeCategory(cat)}
-                    >
-                      {cat}
-                    </button>
-                  ))}
-                </div>
+              <div className="mobile-filter-header">
+                <h3>Filter Products</h3>
+                <button
+                  type="button"
+                  className="mobile-filter-close"
+                  onClick={() => setMobileFilterOpen(false)}
+                  aria-label="Close filter drawer"
+                >
+                  <X size={20} strokeWidth={2} />
+                </button>
               </div>
 
-              {/* Subcategories (if active category has subcategories) */}
-              {activeCategory !== 'All' && subcategoryMap[activeCategory]?.length > 0 && (
+              <div className="mobile-filter-body">
+                {/* Category */}
                 <div className="filter-group">
-                  <h4 className="filter-group-title">Subcategory</h4>
+                  <h4 className="filter-group-title">Category</h4>
                   <div className="mobile-cat-chips">
-                    {subcategoryMap[activeCategory].map((sub) => (
+                    {categoryList.map((cat) => (
                       <button
-                        key={sub}
+                        key={cat}
                         type="button"
-                        className={`mobile-cat-chip ${activeSubcategory === sub ? 'active' : ''}`}
-                        onClick={() => changeSubcategory(sub)}
+                        className={`mobile-cat-chip ${activeCategory === cat ? 'active' : ''}`}
+                        onClick={() => changeCategory(cat)}
                       >
-                        {sub}
+                        {cat}
                       </button>
                     ))}
                   </div>
                 </div>
-              )}
 
-              {/* Price Range */}
-              <div className="filter-group">
-                <h4 className="filter-group-title">Price Range</h4>
-                <div className="price-inputs-row">
-                  <div className="price-field">
-                    <span className="currency-prefix">₹</span>
-                    <input
-                      type="number"
-                      placeholder="Min"
-                      value={minPrice}
-                      onChange={(e) => setMinPrice(e.target.value)}
-                      aria-label="Minimum price"
-                    />
+                {/* Subcategories (if active category has subcategories) */}
+                {activeCategory !== 'All' && subcategoryMap[activeCategory]?.length > 0 && (
+                  <div className="filter-group">
+                    <h4 className="filter-group-title">Subcategory</h4>
+                    <div className="mobile-cat-chips">
+                      {subcategoryMap[activeCategory].map((sub) => (
+                        <button
+                          key={sub}
+                          type="button"
+                          className={`mobile-cat-chip ${activeSubcategory === sub ? 'active' : ''}`}
+                          onClick={() => changeSubcategory(sub)}
+                        >
+                          {sub}
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                  <span className="price-to-separator">to</span>
-                  <div className="price-field">
-                    <span className="currency-prefix">₹</span>
-                    <input
-                      type="number"
-                      placeholder="Max"
-                      value={maxPrice}
-                      onChange={(e) => setMaxPrice(e.target.value)}
-                      aria-label="Maximum price"
-                    />
-                  </div>
-                </div>
+                )}
 
-                <div className="price-quick-chips">
-                  <button
-                    type="button"
-                    className={`price-chip ${maxPrice === '500' && minPrice === '' ? 'active' : ''}`}
-                    onClick={() => { setMinPrice(''); setMaxPrice('500'); }}
-                  >
-                    Under ₹500
-                  </button>
-                  <button
-                    type="button"
-                    className={`price-chip ${minPrice === '500' && maxPrice === '1000' ? 'active' : ''}`}
-                    onClick={() => { setMinPrice('500'); setMaxPrice('1000'); }}
-                  >
-                    ₹500 – ₹1,000
-                  </button>
-                  <button
-                    type="button"
-                    className={`price-chip ${minPrice === '1000' && maxPrice === '' ? 'active' : ''}`}
-                    onClick={() => { setMinPrice('1000'); setMaxPrice(''); }}
-                  >
-                    Above ₹1,000
-                  </button>
+                {/* Price Range */}
+                <div className="filter-group">
+                  <h4 className="filter-group-title">Price Range</h4>
+                  <div className="price-inputs-row">
+                    <div className="price-field">
+                      <span className="currency-prefix">₹</span>
+                      <input
+                        type="number"
+                        placeholder="Min"
+                        value={minPrice}
+                        onChange={(e) => setMinPrice(e.target.value)}
+                        aria-label="Minimum price"
+                      />
+                    </div>
+                    <span className="price-to-separator">to</span>
+                    <div className="price-field">
+                      <span className="currency-prefix">₹</span>
+                      <input
+                        type="number"
+                        placeholder="Max"
+                        value={maxPrice}
+                        onChange={(e) => setMaxPrice(e.target.value)}
+                        aria-label="Maximum price"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="price-quick-chips">
+                    <button
+                      type="button"
+                      className={`price-chip ${maxPrice === '500' && minPrice === '' ? 'active' : ''}`}
+                      onClick={() => { setMinPrice(''); setMaxPrice('500'); }}
+                    >
+                      Under ₹500
+                    </button>
+                    <button
+                      type="button"
+                      className={`price-chip ${minPrice === '500' && maxPrice === '1000' ? 'active' : ''}`}
+                      onClick={() => { setMinPrice('500'); setMaxPrice('1000'); }}
+                    >
+                      ₹500 – ₹1,000
+                    </button>
+                    <button
+                      type="button"
+                      className={`price-chip ${minPrice === '1000' && maxPrice === '' ? 'active' : ''}`}
+                      onClick={() => { setMinPrice('1000'); setMaxPrice(''); }}
+                    >
+                      Above ₹1,000
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div className="mobile-filter-footer">
-              <button
-                type="button"
-                className="mobile-filter-clear-btn"
-                onClick={handleClearFilters}
-              >
-                Clear All
-              </button>
-              <button
-                type="button"
-                className="mobile-filter-apply-btn"
-                onClick={() => setMobileFilterOpen(false)}
-              >
-                Apply Filters ({filteredProducts.length})
-              </button>
-            </div>
+              <div className="mobile-filter-footer">
+                <button
+                  type="button"
+                  className="mobile-filter-clear-btn"
+                  onClick={handleClearFilters}
+                >
+                  Clear All
+                </button>
+                <button
+                  type="button"
+                  className="mobile-filter-apply-btn"
+                  onClick={() => setMobileFilterOpen(false)}
+                >
+                  Apply Filters ({filteredProducts.length})
+                </button>
+              </div>
+            </motion.div>
           </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
-  </div>
-);
+        )}
+      </AnimatePresence>
+    </div>
+  );
 }

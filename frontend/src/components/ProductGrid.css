@@ -256,6 +256,7 @@
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
   }
+
   .product-info {
     padding: 14px;
   }

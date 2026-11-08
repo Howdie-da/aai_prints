@@ -112,7 +112,7 @@
   font-size: 12.5px;
   color: #3d5e28;
   font-weight: 500;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
 }
 
 .hero-image-wrap {
@@ -134,13 +134,13 @@
   position: absolute;
   bottom: 20px;
   left: 20px;
-  background: rgba(255,255,255,0.95);
+  background: rgba(255, 255, 255, 0.95);
   border-radius: 12px;
   padding: 12px 18px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   backdrop-filter: blur(8px);
 }
 

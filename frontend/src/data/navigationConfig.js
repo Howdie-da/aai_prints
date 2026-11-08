@@ -11,17 +11,17 @@
  */
 
 export const CATEGORY_TO_PARENT_NAV = {
-  // Car Décor
-  'car décor': 'CAR DÉCOR',
-  'car decor': 'CAR DÉCOR',
-  'dashboard idols': 'CAR DÉCOR',
-  'car hangings': 'CAR DÉCOR',
-  'combo sets': 'CAR DÉCOR',
+  // Car Decor
+  'car decor': 'CAR DECOR',
+  'car décor': 'CAR DECOR',
+  'dashboard idols': 'CAR DECOR',
+  'car hangings': 'CAR DECOR',
+  'combo sets': 'CAR DECOR',
 
   // Devotional
   'devotional': 'DEVOTIONAL',
-  'devotional décor': 'DEVOTIONAL',
   'devotional decor': 'DEVOTIONAL',
+  'devotional décor': 'DEVOTIONAL',
   'wall hangings': 'DEVOTIONAL',
   'backlit led frames': 'DEVOTIONAL',
   'idols & tabletop': 'DEVOTIONAL',
@@ -29,13 +29,13 @@ export const CATEGORY_TO_PARENT_NAV = {
   'yantra & chakra': 'DEVOTIONAL',
   'yantra and chakra': 'DEVOTIONAL',
 
-  // Wall Décor
-  'wall décor': 'WALL DÉCOR',
-  'wall decor': 'WALL DÉCOR',
-  'metal wall art': 'WALL DÉCOR',
-  'wall clocks': 'WALL DÉCOR',
-  'framed art': 'WALL DÉCOR',
-  'framed wall art': 'WALL DÉCOR',
+  // Wall Decor
+  'wall decor': 'WALL DECOR',
+  'wall décor': 'WALL DECOR',
+  'metal wall art': 'WALL DECOR',
+  'wall clocks': 'WALL DECOR',
+  'framed art': 'WALL DECOR',
+  'framed wall art': 'WALL DECOR',
 
   // Festive
   'festive': 'FESTIVE',
@@ -75,9 +75,9 @@ export const getActiveNavLabel = (currentPage, selectedCategory) => {
 export const navLinks = [
   { label: 'HOME', href: '#/', page: 'home', category: 'All', hasDropdown: false },
   { label: 'SHOP', href: '#/shop', page: 'shop', category: 'All', hasDropdown: false },
-  { 
-    label: 'DEVOTIONAL', 
-    href: '#/shop?category=Devotional', 
+  {
+    label: 'DEVOTIONAL',
+    href: '#/shop?category=Devotional',
     page: 'shop',
     category: 'Devotional',
     hasDropdown: true,
@@ -88,11 +88,11 @@ export const navLinks = [
       { label: 'Yantra & Chakra', href: '#/shop?category=Yantra%20%26%20Chakra', category: 'Yantra & Chakra' },
     ]
   },
-  { 
-    label: 'CAR DÉCOR', 
-    href: '#/shop?category=Car%20D%C3%A9cor', 
+  {
+    label: 'CAR DECOR',
+    href: '#/shop?category=Car%20Decor',
     page: 'shop',
-    category: 'Car Décor',
+    category: 'Car Decor',
     hasDropdown: true,
     children: [
       { label: 'Dashboard Idols', href: '#/shop?category=Dashboard%20Idols', category: 'Dashboard Idols' },
@@ -100,11 +100,11 @@ export const navLinks = [
       { label: 'Combo Sets', href: '#/shop?category=Combo%20Sets', category: 'Combo Sets' },
     ]
   },
-  { 
-    label: 'WALL DÉCOR', 
-    href: '#/shop?category=Wall%20D%C3%A9cor', 
+  {
+    label: 'WALL DECOR',
+    href: '#/shop?category=Wall%20Decor',
     page: 'shop',
-    category: 'Wall Décor',
+    category: 'Wall Decor',
     hasDropdown: true,
     children: [
       { label: 'Metal Wall Art', href: '#/shop?category=Metal%20Wall%20Art', category: 'Metal Wall Art' },
@@ -112,9 +112,9 @@ export const navLinks = [
       { label: 'Framed Art', href: '#/shop?category=Framed%20Art', category: 'Framed Art' },
     ]
   },
-  { 
-    label: 'FESTIVE', 
-    href: '#/shop?category=Festive', 
+  {
+    label: 'FESTIVE',
+    href: '#/shop?category=Festive',
     page: 'shop',
     category: 'Festive',
     hasDropdown: true,
@@ -124,9 +124,9 @@ export const navLinks = [
       { label: 'Diwali', href: '#/shop?category=Diwali', category: 'Diwali' },
     ]
   },
-  { 
-    label: 'GIFTS', 
-    href: '#/shop?category=Gifts', 
+  {
+    label: 'GIFTS',
+    href: '#/shop?category=Gifts',
     page: 'shop',
     category: 'Gifts',
     hasDropdown: true,
