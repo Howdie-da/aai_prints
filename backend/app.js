@@ -16,20 +16,27 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 // CORS configuration (allow credentials for httpOnly cookies)
-const allowedOrigins = [
-  process.env.CLIENT_URL || 'http://localhost:5173',
-  'http://localhost:5173',
-  'http://localhost:3000'
-];
+const configuredOrigins = (process.env.CLIENT_URL || 'http://localhost:5173')
+  .split(',')
+  .map((url) => url.trim().replace(/\/+$/, ''));
+
+const defaultOrigins = ['http://localhost:5173', 'http://localhost:3000'];
+const allowedOrigins = Array.from(new Set([...configuredOrigins, ...defaultOrigins]));
 
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error('CORS policy: Not allowed by CORS'));
+      if (!origin) return callback(null, true);
+
+      const normalizedOrigin = origin.replace(/\/+$/, '');
+      if (
+        allowedOrigins.includes(normalizedOrigin) ||
+        (process.env.NODE_ENV !== 'production' && normalizedOrigin.includes('localhost')) ||
+        (normalizedOrigin.endsWith('.vercel.app'))
+      ) {
+        return callback(null, true);
       }
+      return callback(new Error(`CORS policy: Origin ${origin} not allowed`));
     },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
@@ -43,6 +50,11 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // Cookie parser for reading httpOnly auth token
 app.use(cookieParser());
+
+// Root ping endpoint
+app.get('/', (req, res) => {
+  res.status(200).json({ status: 'healthy', message: 'Aai Prints Backend API is active', version: 'v1' });
+});
 
 // Mount API v1 router
 app.use('/api/v1', apiRouter);
