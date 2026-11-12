@@ -15,6 +15,7 @@ import {
   ChevronRight,
   PlusCircle,
   Headphones,
+  Building2,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useWishlist } from '../context/WishlistContext';
@@ -186,11 +187,79 @@ export default function AccountDrawer({ isOpen, onClose, onNavigate }) {
 
               {/* 3. Admin Direct Access Banner (If Admin) */}
               {user.role === 'admin' && (
+                <>
+                  <div
+                    className="account-admin-card"
+                    onClick={() => {
+                      onClose();
+                      if (onNavigate) onNavigate('admin-add-product');
+                    }}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        onClose();
+                        if (onNavigate) onNavigate('admin-add-product');
+                      }
+                    }}
+                  >
+                    <div className="account-admin-card-icon">
+                      <PlusCircle size={22} />
+                    </div>
+                    <div className="account-admin-card-text">
+                      <div className="account-admin-card-title">
+                        <strong>Retail Catalog</strong>
+                        <span className="admin-chip">ADMIN ACCESS</span>
+                      </div>
+                      <p>Create &amp; publish retail products</p>
+                    </div>
+                    <ChevronRight size={18} className="account-admin-arrow" />
+                  </div>
+
+                  <div
+                    className="account-admin-card"
+                    style={{ borderColor: 'rgba(197, 155, 39, 0.45)' }}
+                    onClick={() => {
+                      onClose();
+                      if (onNavigate) onNavigate('admin-b2b');
+                    }}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        onClose();
+                        if (onNavigate) onNavigate('admin-b2b');
+                      }
+                    }}
+                  >
+                    <div className="account-admin-card-icon" style={{ background: '#fbf9f5', color: '#c59b27' }}>
+                      <Building2 size={22} />
+                    </div>
+                    <div className="account-admin-card-text">
+                      <div className="account-admin-card-title">
+                        <strong>Wholesale &amp; Bulk Hub</strong>
+                        <span className="admin-chip" style={{ background: '#133538', color: '#ffd54f' }}>
+                          WHOLESALE ADMIN
+                        </span>
+                      </div>
+                      <p>Manage wholesale catalog, tier rates &amp; view RFQs</p>
+                    </div>
+                    <ChevronRight size={18} className="account-admin-arrow" />
+                  </div>
+                </>
+              )}
+
+              {/* 4. Navigation Menu List */}
+              <div className="account-nav-list">
+                <span className="account-nav-section-title">ACCOUNT &amp; SERVICES</span>
+
                 <div
-                  className="account-admin-card"
+                  className="account-nav-item"
                   onClick={() => {
                     onClose();
-                    if (onNavigate) onNavigate('admin-add-product');
+                    if (onNavigate) onNavigate('b2b');
                   }}
                   role="button"
                   tabIndex={0}
@@ -198,27 +267,19 @@ export default function AccountDrawer({ isOpen, onClose, onNavigate }) {
                     if (e.key === 'Enter' || e.key === ' ') {
                       e.preventDefault();
                       onClose();
-                      if (onNavigate) onNavigate('admin-add-product');
+                      if (onNavigate) onNavigate('b2b');
                     }
                   }}
                 >
-                  <div className="account-admin-card-icon">
-                    <PlusCircle size={22} />
+                  <div className="account-nav-item-icon" style={{ color: '#235f64', background: 'rgba(35, 95, 100, 0.08)' }}>
+                    <Building2 size={18} />
                   </div>
-                  <div className="account-admin-card-text">
-                    <div className="account-admin-card-title">
-                      <strong>Add Product</strong>
-                      <span className="admin-chip">ADMIN ACCESS</span>
-                    </div>
-                    <p>Create &amp; publish new products</p>
+                  <div className="account-nav-item-content">
+                    <strong>Wholesale &amp; Bulk Orders Portal</strong>
+                    <span>Volume pricing, corporate gifting &amp; RFQs</span>
                   </div>
-                  <ChevronRight size={18} className="account-admin-arrow" />
+                  <ChevronRight size={16} className="account-nav-chevron" />
                 </div>
-              )}
-
-              {/* 4. Navigation Menu List */}
-              <div className="account-nav-list">
-                <span className="account-nav-section-title">ACCOUNT &amp; SERVICES</span>
 
                 <div className="account-nav-item">
                   <div className="account-nav-item-icon">

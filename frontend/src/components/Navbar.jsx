@@ -9,7 +9,7 @@ import {
   ChevronDown,
   ChevronRight,
   ArrowRight,
-  Crown
+  Building2
 } from 'lucide-react';
 import { useWishlist } from '../context/WishlistContext';
 import { useAuth } from '../context/AuthContext';
@@ -239,8 +239,25 @@ export default function Navbar({
           })}
         </nav>
 
-        {/* ── Right Icons: Search, Admin Portal, Account, Wishlist, Cart ── */}
+        {/* ── Right Icons: Search, Wholesale Portal, Admin Portal, Account, Wishlist, Cart ── */}
         <div className="navbar-icons">
+          {/* Wholesale / Bulk Portal Trigger Button */}
+          <a
+            href="#/b2b"
+            className={`navbar-wholesale-btn ${currentPage === 'b2b' ? 'active' : ''}`}
+            title="Wholesale & Bulk Orders"
+            onClick={(e) => {
+              if (onNavigate) {
+                e.preventDefault();
+                onNavigate('b2b');
+              }
+            }}
+          >
+            <Building2 size={13} strokeWidth={2.4} className="navbar-wholesale-icon" />
+            <span className="navbar-wholesale-text">Wholesale / Bulk</span>
+            <span className="navbar-wholesale-dot" />
+          </a>
+
           {/* Quick Search Trigger */}
           <button
             className={`icon-btn search-trigger-btn ${searchOpen ? 'icon-btn--active' : ''}`}
@@ -251,22 +268,6 @@ export default function Navbar({
           >
             <Search size={19} strokeWidth={2} />
           </button>
-
-          {/* Admin Badge Shortcut */}
-          {isAuthenticated && user?.role === 'admin' && (
-            <button
-              className="admin-header-pill"
-              onClick={() => {
-                if (onNavigate) onNavigate('admin-add-product');
-                else window.location.hash = '#/admin/add-product';
-              }}
-              title="Admin Portal"
-              aria-label="Admin Portal"
-            >
-              <Crown size={14} strokeWidth={2.2} style={{ color: '#92400e' }} />
-              <span className="admin-label">Admin</span>
-            </button>
-          )}
 
           <button
             className="icon-btn pos-rel"
@@ -534,6 +535,31 @@ export default function Navbar({
                 </div>
               );
             })}
+
+            {/* Quick Switch to Wholesale / Bulk for Mobile */}
+            <div className="mobile-wholesale-wrap">
+              <a
+                href="#/b2b"
+                className={`mobile-wholesale-card ${currentPage === 'b2b' ? 'active' : ''}`}
+                onClick={(e) => {
+                  if (onNavigate) {
+                    e.preventDefault();
+                    onNavigate('b2b');
+                    setMenuOpen(false);
+                  }
+                }}
+              >
+                <div className="mobile-wholesale-card-content">
+                  <div className="mobile-wholesale-badge-top">
+                    <Building2 size={13} strokeWidth={2.4} />
+                    <span>WHOLESALE DIVISION</span>
+                  </div>
+                  <strong>Wholesale / Bulk Orders Portal</strong>
+                  <p>Factory-direct tiered volume rates &amp; custom branding</p>
+                </div>
+                <span className="mobile-wholesale-arrow">→</span>
+              </a>
+            </div>
 
             {/* Quick Access Actions for Mobile Menu */}
             <div className="mobile-menu-footer">

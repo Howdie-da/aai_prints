@@ -80,78 +80,80 @@ export default function HeroSlider({ onSelectCategory }) {
       {/* Atmospheric gradient overlay for contrast */}
       <div className="hero-gradient-overlay" aria-hidden="true" />
 
-      {/* Overlay content with snappy, lightweight transition */}
+      {/* Overlay content with steady card container and smooth buffered text swap */}
       <div className="hero-content">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={s.id}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.22 }}
-            className="hero-text-block"
-          >
-            <div className="hero-eyebrow">
-              <span className="hero-eyebrow-icon">✦</span>
-              <span>{s.tag}</span>
-              <span className="hero-eyebrow-icon">✦</span>
-            </div>
-
-            <h1 className="hero-title">
-              {s.title.split('\n').map((line, i) => (
-                <span key={i} className="hero-title-line">
-                  {line}
-                </span>
-              ))}
-            </h1>
-
-            <p className="hero-subtitle">{s.subtitle}</p>
-
-            <div className="hero-bullets">
-              <div className="hero-bullet">
-                <span className="bullet-diamond">✦</span>
-                <span>{s.bullet1}</span>
+        <div className="hero-text-block">
+          <AnimatePresence mode="popLayout" initial={false}>
+            <motion.div
+              key={s.id}
+              initial={{ opacity: 0, y: 12, filter: 'blur(3px)' }}
+              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              exit={{ opacity: 0, y: -12, filter: 'blur(3px)' }}
+              transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+              className="hero-text-inner"
+            >
+              <div className="hero-eyebrow">
+                <span className="hero-eyebrow-icon">✦</span>
+                <span>{s.tag}</span>
+                <span className="hero-eyebrow-icon">✦</span>
               </div>
-              <div className="hero-bullet">
-                <span className="bullet-diamond">✦</span>
-                <span>{s.bullet2}</span>
-              </div>
-              <div className="hero-bullet">
-                <span className="bullet-diamond">✦</span>
-                <span>{s.bullet3}</span>
-              </div>
-            </div>
 
-            <div className="hero-actions">
-              <a
-                href={s.ctaHref}
-                className="hero-cta btn-gold"
-                onClick={(e) => {
-                  if (onSelectCategory) {
-                    e.preventDefault();
-                    onSelectCategory(s.category);
-                  }
-                }}
-              >
-                <span>{s.cta}</span>
-                <ArrowRight size={15} strokeWidth={2.4} style={{ marginLeft: '4px', verticalAlign: 'middle' }} />
-              </a>
+              <h1 className="hero-title">
+                {s.title.split('\n').map((line, i) => (
+                  <span key={i} className="hero-title-line">
+                    {line}
+                  </span>
+                ))}
+              </h1>
 
-              <a
-                href="#/shop"
-                className="hero-secondary-cta"
-                onClick={(e) => {
-                  if (onSelectCategory) {
-                    e.preventDefault();
-                    onSelectCategory('All');
-                  }
-                }}
-              >
-                <span>ALL PIECES</span>
-              </a>
-            </div>
-          </motion.div>
-        </AnimatePresence>
+              <p className="hero-subtitle">{s.subtitle}</p>
+
+              <div className="hero-bullets">
+                <div className="hero-bullet">
+                  <span className="bullet-diamond">✦</span>
+                  <span>{s.bullet1}</span>
+                </div>
+                <div className="hero-bullet">
+                  <span className="bullet-diamond">✦</span>
+                  <span>{s.bullet2}</span>
+                </div>
+                <div className="hero-bullet">
+                  <span className="bullet-diamond">✦</span>
+                  <span>{s.bullet3}</span>
+                </div>
+              </div>
+
+              <div className="hero-actions">
+                <a
+                  href={s.ctaHref}
+                  className="hero-cta btn-gold"
+                  onClick={(e) => {
+                    if (onSelectCategory) {
+                      e.preventDefault();
+                      onSelectCategory(s.category);
+                    }
+                  }}
+                >
+                  <span>{s.cta}</span>
+                  <ArrowRight size={15} strokeWidth={2.4} style={{ marginLeft: '4px', verticalAlign: 'middle' }} />
+                </a>
+
+                <a
+                  href="#/shop"
+                  className="hero-secondary-cta"
+                  onClick={(e) => {
+                    if (onSelectCategory) {
+                      e.preventDefault();
+                      onSelectCategory('All');
+                    }
+                  }}
+                >
+                  <span>ALL PIECES</span>
+                </a>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
       </div>
 
       {/* Prev / Next arrows with Lucide icons */}

@@ -592,7 +592,7 @@
 }
 
 /* Tag Badge */
-.prod-tag {
+.shop-card .prod-tag {
   position: absolute;
   top: 10px;
   left: 10px;
@@ -606,12 +606,12 @@
   text-transform: uppercase;
 }
 
-.prod-tag--best-seller {
+.shop-card .prod-tag--best-seller {
   background: #1e5257;
   color: #fff;
 }
 
-.prod-tag--new-arrival {
+.shop-card .prod-tag--new-arrival {
   background: #c27803;
   color: #fff;
 }

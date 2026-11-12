@@ -10,6 +10,7 @@ const reviewRouter = require('./review.router');
 const couponRouter = require('./coupon.router');
 const orderRouter = require('./order.router');
 const mediaRouter = require('./media.router');
+const b2bRouter = require('./b2b.router');
 
 router.use('/auth', authRouter);
 router.use('/categories', categoryRouter);
@@ -20,6 +21,7 @@ router.use('/reviews', reviewRouter);
 router.use('/coupons', couponRouter);
 router.use('/orders', orderRouter);
 router.use('/media', mediaRouter);
+router.use('/b2b', b2bRouter);
 
 // Health check endpoint
 router.get('/health', (req, res) => {

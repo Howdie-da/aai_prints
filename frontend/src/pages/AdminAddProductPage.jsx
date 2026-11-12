@@ -2,8 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 import { api } from '../services/api';
 import './AdminAddProductPage.css';
 
-const PRESET_BADGES = ['Bestseller', 'New Launch', 'Devotional', 'Handcrafted', 'Sale', 'Trending'];
-
 export default function AdminAddProductPage({ onNavigateHome, onProductCreated }) {
   // Form State
   const [name, setName] = useState('');
@@ -14,8 +12,6 @@ export default function AdminAddProductPage({ onNavigateHome, onProductCreated }
   const [stock, setStock] = useState('10');
   const [inStock, setInStock] = useState(true);
   const [dispatchTimeInfo, setDispatchTimeInfo] = useState('Ready to Dispatch within 24-48 Hours');
-  const [badges, setBadges] = useState(['Devotional']);
-  const [customBadge, setCustomBadge] = useState('');
 
   // Images state
   const [images, setImages] = useState([]);
@@ -84,22 +80,6 @@ export default function AdminAddProductPage({ onNavigateHome, onProductCreated }
       isMounted = false;
     };
   }, []);
-
-  // Handle Badge toggle
-  const toggleBadge = (b) => {
-    if (badges.includes(b)) {
-      setBadges(badges.filter((item) => item !== b));
-    } else {
-      setBadges([...badges, b]);
-    }
-  };
-
-  const addCustomBadge = () => {
-    if (customBadge.trim() && !badges.includes(customBadge.trim())) {
-      setBadges([...badges, customBadge.trim()]);
-      setCustomBadge('');
-    }
-  };
 
   // Handle File Upload to Cloudinary
   const handleFileUpload = async (e) => {
@@ -247,7 +227,8 @@ export default function AdminAddProductPage({ onNavigateHome, onProductCreated }
       stock: Number(stock) || 10,
       inStock,
       dispatchTimeInfo: dispatchTimeInfo.trim(),
-      badges,
+      badges: [],
+      tag: '',
       images: finalImageUrls,
       hasVariants: Boolean(hasVariants && formattedVariants.length > 0),
       variants: formattedVariants
@@ -299,9 +280,30 @@ export default function AdminAddProductPage({ onNavigateHome, onProductCreated }
             Publish authentic artwork, frames, and decor items directly to the live catalog.
           </p>
         </div>
-        <button type="button" className="admin-back-link" onClick={onNavigateHome}>
-          ← Return to Storefront
-        </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <a
+            href="#/admin/b2b"
+            className="admin-b2b-switch-btn"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              background: 'rgba(197, 155, 39, 0.15)',
+              border: '1px solid rgba(197, 155, 39, 0.4)',
+              color: '#8a6508',
+              padding: '8px 14px',
+              borderRadius: '8px',
+              fontSize: '13px',
+              fontWeight: '600',
+              textDecoration: 'none',
+            }}
+          >
+            🏢 Wholesale &amp; Bulk Hub →
+          </a>
+          <button type="button" className="admin-back-link" onClick={onNavigateHome}>
+            ← Return to Storefront
+          </button>
+        </div>
       </div>
 
       {/* ── Error Banner ── */}
@@ -408,45 +410,6 @@ export default function AdminAddProductPage({ onNavigateHome, onProductCreated }
                   onChange={(e) => setDescription(e.target.value)}
                   required
                 />
-              </div>
-
-              <div className="admin-form-group full-width">
-                <label>Badges &amp; Tags</label>
-                <div className="admin-badges-list">
-                  {PRESET_BADGES.map((b) => (
-                    <button
-                      key={b}
-                      type="button"
-                      className={`admin-badge-chip ${badges.includes(b) ? 'selected' : ''}`}
-                      onClick={() => toggleBadge(b)}
-                    >
-                      {badges.includes(b) ? '✓ ' : '+ '} {b}
-                    </button>
-                  ))}
-                </div>
-                <div style={{ display: 'flex', gap: '8px', marginTop: '10px' }}>
-                  <input
-                    type="text"
-                    className="admin-input"
-                    style={{ maxWidth: '240px' }}
-                    placeholder="Custom badge (e.g. Rare)"
-                    value={customBadge}
-                    onChange={(e) => setCustomBadge(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
-                        e.preventDefault();
-                        addCustomBadge();
-                      }
-                    }}
-                  />
-                  <button
-                    type="button"
-                    className="admin-btn-secondary"
-                    onClick={addCustomBadge}
-                  >
-                    Add Tag
-                  </button>
-                </div>
               </div>
             </div>
           </div>

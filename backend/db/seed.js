@@ -11,6 +11,8 @@ const Review = require('../models/review.model');
 const Coupon = require('../models/coupon.model');
 const Order = require('../models/order.model');
 const RefreshToken = require('../models/refreshToken.model');
+const B2BProduct = require('../models/b2bProduct.model');
+const B2BInquiry = require('../models/b2bInquiry.model');
 
 const seedData = async () => {
   try {
@@ -27,7 +29,9 @@ const seedData = async () => {
       Review.deleteMany({}),
       Coupon.deleteMany({}),
       Order.deleteMany({}),
-      RefreshToken.deleteMany({})
+      RefreshToken.deleteMany({}),
+      B2BProduct.deleteMany({}),
+      B2BInquiry.deleteMany({})
     ]);
 
     // 1. Create Foundational Accounts

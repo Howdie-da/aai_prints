@@ -35,6 +35,7 @@ export default function Footer({ onNavigate }) {
   const quickLinks = [
     { label: 'Home', href: '#/', page: 'home' },
     { label: 'Shop All Products', href: '#/shop', page: 'shop', category: 'All' },
+    { label: 'Wholesale & Bulk Orders', href: '#/b2b', page: 'b2b' },
     { label: 'My Wishlist', href: '#/wishlist', page: 'wishlist' },
     { label: 'Shopping Cart', href: '#/cart', page: 'cart' },
     { label: 'Customer Reviews', href: '#reviews', page: 'home' },
@@ -152,6 +153,21 @@ export default function Footer({ onNavigate }) {
                 </li>
               ))}
             </ul>
+          </div>
+        </div>
+
+        {/* ── Venture & Corporate Gifting Spotlight ── */}
+        <div className="footer-venture-strip">
+          <div className="footer-venture-card">
+            <span className="footer-venture-badge">Corporate Gifting &amp; Decor Venture</span>
+            <div className="footer-venture-img-wrap">
+              <img
+                src="/our-online-decor-logo.png"
+                alt="OurONLINE Decor - Corporate Gifts, Home Decor, Personalised Gifts, Promotional Products - अपनों के लिए कुछ खास"
+                className="footer-venture-img"
+                loading="lazy"
+              />
+            </div>
           </div>
         </div>
 

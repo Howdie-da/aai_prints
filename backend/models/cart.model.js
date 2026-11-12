@@ -4,8 +4,13 @@ const cartItemSchema = new mongoose.Schema(
   {
     product: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Product',
+      refPath: 'itemModel',
       required: [true, 'Product is required']
+    },
+    itemModel: {
+      type: String,
+      enum: ['Product', 'B2BProduct'],
+      default: 'Product'
     },
     variantId: {
       type: mongoose.Schema.Types.ObjectId,

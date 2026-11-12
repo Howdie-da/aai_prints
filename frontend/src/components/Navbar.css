@@ -181,6 +181,135 @@
   border: 1.5px solid #ffffff;
 }
 
+/* ========================================================
+   Wholesale / Bulk Switch Button (Header & Mobile)
+   ======================================================== */
+.navbar-wholesale-btn,
+.navbar-b2b-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: linear-gradient(135deg, #0d282b 0%, #163f43 100%);
+  border: 1.5px solid rgba(197, 155, 39, 0.55);
+  border-radius: var(--radius-full, 9999px);
+  padding: 6px 14px;
+  font-family: var(--font-serif, 'Cinzel', serif);
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #ffd54f !important;
+  letter-spacing: 0.8px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 8px rgba(13, 40, 43, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+.navbar-wholesale-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.18), transparent);
+  transition: left 0.6s ease;
+}
+
+.navbar-wholesale-btn:hover::after {
+  left: 140%;
+}
+
+.navbar-wholesale-btn:hover,
+.navbar-b2b-badge:hover {
+  background: linear-gradient(135deg, #c59b27 0%, #dfbe59 100%);
+  color: #0d282b !important;
+  border-color: #ffd54f;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(197, 155, 39, 0.45);
+}
+
+.navbar-wholesale-btn.active {
+  background: linear-gradient(135deg, #c59b27 0%, #dfbe59 100%);
+  color: #0d282b !important;
+  border-color: #ffd54f;
+  box-shadow: 0 0 0 2px rgba(197, 155, 39, 0.3), 0 4px 12px rgba(197, 155, 39, 0.35);
+}
+
+.navbar-wholesale-icon {
+  flex-shrink: 0;
+}
+
+.navbar-wholesale-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 6px rgba(34, 197, 94, 0.9);
+  flex-shrink: 0;
+}
+
+/* Mobile Wholesale Switch Card */
+.mobile-wholesale-wrap {
+  padding: 12px 18px 4px;
+}
+
+.mobile-wholesale-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(135deg, #091c1e 0%, #133538 100%);
+  border: 1.5px solid rgba(197, 155, 39, 0.5);
+  border-radius: 12px;
+  padding: 14px 16px;
+  text-decoration: none;
+  color: #ffffff;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+}
+
+.mobile-wholesale-card:hover,
+.mobile-wholesale-card:active {
+  border-color: #ffd54f;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(197, 155, 39, 0.3);
+}
+
+.mobile-wholesale-badge-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-serif, 'Cinzel', serif);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  color: #ffd54f;
+  margin-bottom: 4px;
+}
+
+.mobile-wholesale-card-content strong {
+  display: block;
+  font-family: var(--font-serif, 'Cinzel', serif);
+  font-size: 14px;
+  color: #ffffff;
+  margin-bottom: 2px;
+}
+
+.mobile-wholesale-card-content p {
+  font-size: 11.5px;
+  color: #d1d5db;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.mobile-wholesale-arrow {
+  font-size: 18px;
+  color: #ffd54f;
+  font-weight: 700;
+  padding-left: 10px;
+}
+
 /* Admin Header Pill */
 .admin-header-pill {
   display: inline-flex;

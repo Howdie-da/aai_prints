@@ -28,6 +28,16 @@ const decrementStockAtomically = async (orderItems) => {
           },
           { $inc: { stock: -item.quantity } }
         );
+        if (updateResult.modifiedCount === 0) {
+          const B2BProduct = require('../models/b2bProduct.model');
+          updateResult = await B2BProduct.updateOne(
+            {
+              _id: item.product,
+              stock: { $gte: item.quantity }
+            },
+            { $inc: { stock: -item.quantity } }
+          );
+        }
       }
 
       if (updateResult.modifiedCount === 0) {
@@ -51,6 +61,11 @@ const decrementStockAtomically = async (orderItems) => {
           { _id: item.product },
           { $inc: { stock: item.quantity } }
         ).catch(() => null);
+        const B2BProduct = require('../models/b2bProduct.model');
+        await B2BProduct.updateOne(
+          { _id: item.product },
+          { $inc: { stock: item.quantity } }
+        ).catch(() => null);
       }
     }
     throw err;
@@ -67,6 +82,11 @@ const restockOrderItems = async (orderItems) => {
       ).catch(() => null);
     } else {
       await Product.updateOne(
+        { _id: item.product },
+        { $inc: { stock: item.quantity } }
+      ).catch(() => null);
+      const B2BProduct = require('../models/b2bProduct.model');
+      await B2BProduct.updateOne(
         { _id: item.product },
         { $inc: { stock: item.quantity } }
       ).catch(() => null);
@@ -108,7 +128,7 @@ const getCheckoutPreview = async (req, res, next) => {
 
     for (const item of cart.items) {
       const product = item.product;
-      let unitPrice = product.basePrice;
+      let unitPrice = product.basePrice != null ? product.basePrice : (product.price || 0);
       let variantName = null;
       let availableStock = product.stock;
 
@@ -222,7 +242,7 @@ const createOrder = async (req, res, next) => {
     // 1. Verify stock and prepare order items
     for (const item of cart.items) {
       const product = item.product;
-      let unitPrice = product.basePrice;
+      let unitPrice = product.basePrice != null ? product.basePrice : (product.price || 0);
       let variantName = null;
       let availableStock = product.stock;
 

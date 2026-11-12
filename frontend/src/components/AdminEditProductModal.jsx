@@ -434,45 +434,6 @@ export default function AdminEditProductModal({
                     required
                   />
                 </div>
-
-                <div className="admin-form-group full-width">
-                  <label>Badges &amp; Tags</label>
-                  <div className="admin-badges-list">
-                    {PRESET_BADGES.map((b) => (
-                      <button
-                        key={b}
-                        type="button"
-                        className={`admin-badge-chip ${badges.includes(b) ? 'selected' : ''}`}
-                        onClick={() => toggleBadge(b)}
-                      >
-                        {badges.includes(b) ? '✓ ' : '+ '} {b}
-                      </button>
-                    ))}
-                  </div>
-                  <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
-                    <input
-                      type="text"
-                      className="admin-input"
-                      style={{ maxWidth: '220px' }}
-                      placeholder="Custom tag"
-                      value={customBadge}
-                      onChange={(e) => setCustomBadge(e.target.value)}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter') {
-                          e.preventDefault();
-                          addCustomBadge();
-                        }
-                      }}
-                    />
-                    <button
-                      type="button"
-                      className="admin-btn-secondary"
-                      onClick={addCustomBadge}
-                    >
-                      Add Tag
-                    </button>
-                  </div>
-                </div>
               </div>
             </div>
 

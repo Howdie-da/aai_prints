@@ -87,6 +87,10 @@ export default function AnnouncementBar() {
         >
           <ChevronRight size={14} strokeWidth={2.4} />
         </button>
+
+        <a href="#/b2b" className="ann-b2b-link" title="Factory-Direct Wholesale & Bulk Supply">
+          📦 Wholesale / Bulk Orders →
+        </a>
       </div>
     </aside>
   );

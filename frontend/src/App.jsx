@@ -18,6 +18,8 @@ import CartPage from './pages/CartPage';
 import WishlistPage from './pages/WishlistPage';
 import AdminGuard from './components/AdminGuard';
 import AdminAddProductPage from './pages/AdminAddProductPage';
+import B2BPortalPage from './pages/B2BPortalPage';
+import AdminB2BPage from './pages/AdminB2BPage';
 import { WishlistProvider } from './context/WishlistContext';
 import { AuthProvider } from './context/AuthContext';
 import {
@@ -95,8 +97,14 @@ function App() {
     if (typeof window !== 'undefined') {
       const hash = window.location.hash;
       const path = window.location.pathname;
+      if (hash.startsWith('#/admin/b2b') || path.startsWith('/admin/b2b')) {
+        return 'admin-b2b';
+      }
       if (hash.startsWith('#/admin/add-product') || path.startsWith('/admin/add-product')) {
         return 'admin-add-product';
+      }
+      if (hash.startsWith('#/b2b') || path.startsWith('/b2b') || hash === '#b2b') {
+        return 'b2b';
       }
       if (hash.startsWith('#/product/') || path.startsWith('/product/')) {
         return 'product';
@@ -158,8 +166,12 @@ function App() {
       const hash = window.location.hash;
       const path = window.location.pathname;
       const search = window.location.search;
-      if (hash.startsWith('#/admin/add-product') || path.startsWith('/admin/add-product')) {
+      if (hash.startsWith('#/admin/b2b') || path.startsWith('/admin/b2b')) {
+        setCurrentPage('admin-b2b');
+      } else if (hash.startsWith('#/admin/add-product') || path.startsWith('/admin/add-product')) {
         setCurrentPage('admin-add-product');
+      } else if (hash.startsWith('#/b2b') || path.startsWith('/b2b') || hash === '#b2b') {
+        setCurrentPage('b2b');
       } else if (hash.startsWith('#/product/') || path.startsWith('/product/')) {
         const slug = hash.startsWith('#/product/')
           ? hash.replace('#/product/', '').split('?')[0]
@@ -236,6 +248,10 @@ function App() {
       window.history.pushState(null, '', '#/wishlist');
     } else if (page === 'admin-add-product') {
       window.history.pushState(null, '', '#/admin/add-product');
+    } else if (page === 'b2b') {
+      window.history.pushState(null, '', '#/b2b');
+    } else if (page === 'admin-b2b') {
+      window.history.pushState(null, '', '#/admin/b2b');
     } else if (page === 'home' && (param === 'reviews' || param === '#reviews')) {
       setSelectedCategory('reviews');
       window.history.pushState(null, '', '#/reviews');
@@ -347,6 +363,19 @@ function App() {
                   }}
                 />
               </AdminGuard>
+            ) : currentPage === 'admin-b2b' ? (
+              <AdminGuard onNavigateHome={() => navigateTo('home')}>
+                <AdminB2BPage
+                  onNavigateHome={() => navigateTo('home')}
+                  onNavigateB2BPortal={() => navigateTo('b2b')}
+                />
+              </AdminGuard>
+            ) : currentPage === 'b2b' ? (
+              <B2BPortalPage
+                onNavigateHome={() => navigateTo('home')}
+                onNavigateAdminB2B={() => navigateTo('admin-b2b')}
+                onNavigateCart={() => navigateTo('cart')}
+              />
             ) : (
               <main>
                 {/* Hero banner slider */}

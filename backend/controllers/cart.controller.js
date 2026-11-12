@@ -13,7 +13,7 @@ const formatCartResponse = (cart) => {
     .map((item) => {
       const product = item.product;
       let selectedVariant = null;
-      let unitPrice = product.basePrice;
+      let unitPrice = product.basePrice != null ? product.basePrice : (product.price || 0);
       let originalPrice = product.originalPrice || null;
       let variantName = null;
       let availableStock = product.stock;
@@ -119,14 +119,24 @@ const addItemToCart = async (req, res, next) => {
       return next(new ApiError(400, 'Quantity must be at least 1'));
     }
 
-    // Verify product exists and is active
-    const product = await Product.findOne({ _id: productId, isActive: true, isDeleted: false });
+    // Verify product exists and is active (supports retail Product or wholesale B2BProduct)
+    let product = await Product.findOne({ _id: productId, isActive: true, isDeleted: false });
+    let itemModel = 'Product';
+
+    if (!product) {
+      const B2BProduct = require('../models/b2bProduct.model');
+      product = await B2BProduct.findOne({ _id: productId, isActive: true, isDeleted: false });
+      if (product) {
+        itemModel = 'B2BProduct';
+      }
+    }
+
     if (!product) {
       return next(new ApiError(404, 'Product not found or currently unavailable'));
     }
 
     // Verify variant if provided or required
-    if (variantId) {
+    if (variantId && product.variants) {
       const variant = product.variants.id(variantId);
       if (!variant) {
         return next(new ApiError(404, 'Selected product option/variant does not exist'));
@@ -134,9 +144,11 @@ const addItemToCart = async (req, res, next) => {
       if (variant.stock < qty) {
         return next(new ApiError(400, `Only ${variant.stock} units available for this option`));
       }
-    } else if (product.hasVariants && product.variants.length > 0) {
+    } else if (product.hasVariants && product.variants && product.variants.length > 0) {
       // Auto-assign default variant if none specified
       req.body.variantId = product.defaultVariantId || product.variants[0]._id;
+    } else if (product.stock < qty) {
+      return next(new ApiError(400, `Only ${product.stock} units available for this product`));
     }
 
     let cart = await Cart.findOne({ user: req.user._id });
@@ -158,6 +170,7 @@ const addItemToCart = async (req, res, next) => {
     } else {
       cart.items.push({
         product: productId,
+        itemModel,
         variantId: targetVariantId || null,
         quantity: qty
       });

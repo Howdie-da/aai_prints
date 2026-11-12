@@ -124,7 +124,8 @@ export default function ProductSection({
                     size={18}
                     strokeWidth={2}
                     fill={isFav ? '#dc2626' : 'none'}
-                    color={isFav ? '#dc2626' : '#2d3748'}
+                    color={isFav ? '#dc2626' : '#374151'}
+                    className="prod-wishlist-heart"
                   />
                 </button>
 
