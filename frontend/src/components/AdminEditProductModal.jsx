@@ -692,52 +692,6 @@ export default function AdminEditProductModal({
                       })}
                     </div>
                   </div>
-
-                  {/* Custom Badge Add */}
-                  <div className="custom-badge-row">
-                    <input
-                      type="text"
-                      className="admin-modal-input"
-                      placeholder="Add custom badge (e.g. Limited Edition, Pure Brass)..."
-                      value={customBadge}
-                      onChange={(e) => setCustomBadge(e.target.value)}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter') {
-                          e.preventDefault();
-                          addCustomBadge();
-                        }
-                      }}
-                    />
-                    <button
-                      type="button"
-                      className="admin-btn-secondary"
-                      onClick={addCustomBadge}
-                    >
-                      <Plus size={14} /> Add Badge
-                    </button>
-                  </div>
-
-                  {/* Active Badges List */}
-                  {badges.length > 0 && (
-                    <div className="active-badges-tray">
-                      <span className="tray-label">Current Badges:</span>
-                      <div className="tray-chips">
-                        {badges.map((b, i) => (
-                          <span key={i} className="active-badge-chip">
-                            <span>{b}</span>
-                            <button
-                              type="button"
-                              className="chip-remove"
-                              onClick={() => removeBadge(b)}
-                              title="Remove badge"
-                            >
-                              ×
-                            </button>
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  )}
                 </div>
               </div>
 

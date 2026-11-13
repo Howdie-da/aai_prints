@@ -926,28 +926,6 @@ export default function AdminAddProductPage({
                   })}
                 </div>
 
-                <div className="custom-badge-row">
-                  <input
-                    type="text"
-                    className="form-input"
-                    placeholder="Add custom badge (e.g. Festival Special)..."
-                    value={customBadge}
-                    onChange={(e) => setCustomBadge(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
-                        e.preventDefault();
-                        addCustomBadge();
-                      }
-                    }}
-                  />
-                  <button
-                    type="button"
-                    className="admin-btn-secondary"
-                    onClick={addCustomBadge}
-                  >
-                    + Add Badge
-                  </button>
-                </div>
               </div>
 
               {/* ── Card Section 4: Media & Photos ── */}
