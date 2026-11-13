@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, X, Trash2, ShoppingBag, ArrowRight } from 'lucide-react';
@@ -44,12 +44,25 @@ export default function WishlistDrawer({
     };
   }, [isWishlistOpen]);
 
+  const timersRef = useRef({});
+
   const handleAddToCart = (product) => {
+    const prodId = product.id || product._id;
+    if (addedIds[prodId]) {
+      setIsWishlistOpen(false);
+      window.location.hash = '#/cart';
+      return;
+    }
+
     addToCart(product);
-    setAddedIds((prev) => ({ ...prev, [product.id]: true }));
-    setTimeout(() => {
-      setAddedIds((prev) => ({ ...prev, [product.id]: false }));
-    }, 1800);
+    setAddedIds((prev) => ({ ...prev, [prodId]: true }));
+
+    if (timersRef.current[prodId]) {
+      clearTimeout(timersRef.current[prodId]);
+    }
+    timersRef.current[prodId] = setTimeout(() => {
+      setAddedIds((prev) => ({ ...prev, [prodId]: false }));
+    }, 10000);
   };
 
   const handleGoToProduct = (item) => {
@@ -195,10 +208,11 @@ export default function WishlistDrawer({
                               whileHover={{ scale: 1.03 }}
                               whileTap={{ scale: 0.95 }}
                               type="button"
-                              className={`wishlist-add-cart-btn ${addedIds[item.id] ? 'added' : ''}`}
+                              className={`wishlist-add-cart-btn ${addedIds[item.id || item._id] ? 'added' : ''}`}
                               onClick={() => handleAddToCart(item)}
+                              aria-label={addedIds[item.id || item._id] ? `Go to cart with ${item.name}` : `Add ${item.name} to cart`}
                             >
-                              {addedIds[item.id] ? 'Added ✓' : 'Add to Cart'}
+                              {addedIds[item.id || item._id] ? 'Go to Cart →' : 'Add to Cart'}
                             </motion.button>
 
                             <motion.button

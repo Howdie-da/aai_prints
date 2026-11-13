@@ -2,11 +2,11 @@
    Luxury Editorial Footer
    ============================================== */
 .footer {
-  background: linear-gradient(180deg, #3B2F2F 0%, #231B1B 100%);
-  color: #D6C8C0;
+  background: #EDD9CC;
+  color: #4A3E3E;
   font-family: 'Montserrat', sans-serif;
   overflow-x: hidden;
-  border-top: 1.5px solid rgba(237, 217, 204, 0.4);
+  border-top: 1.5px solid rgba(197, 139, 89, 0.4);
   position: relative;
   z-index: 1;
 }
@@ -28,13 +28,22 @@
 }
 
 .footer-logo-text {
-  font-family: 'Cormorant', serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 38px;
   font-weight: 600;
-  font-style: italic;
-  color: #ffffff;
+  color: #3B2F2F;
   letter-spacing: 0.5px;
   line-height: 1;
+}
+
+.footer-logo-img {
+  max-width: 230px;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  object-position: left;
+  display: block;
+  margin-bottom: 8px;
 }
 
 .footer-brand-sub {
@@ -42,13 +51,13 @@
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 2.2px;
-  color: var(--gold-light);
+  color: var(--gold-dark, #AF7644);
 }
 
 .footer-desc {
   font-size: 13.5px;
   line-height: 1.65;
-  color: #D6C8C0;
+  color: #5C4B4B;
   margin-bottom: 18px;
   max-width: 340px;
 }
@@ -57,17 +66,19 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: rgba(197, 139, 89, 0.15);
-  border: 1px solid var(--gold-border);
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(197, 139, 89, 0.45);
   padding: 7px 14px;
   border-radius: var(--radius-sm);
   font-size: 11.5px;
-  color: var(--gold-light);
+  font-weight: 600;
+  color: #3B2F2F;
   margin-bottom: 22px;
+  box-shadow: 0 2px 6px rgba(59, 47, 47, 0.05);
 }
 
 .footer-badge-gem {
-  color: var(--gold-light);
+  color: var(--gold-dark, #AF7644);
   font-size: 10px;
 }
 
@@ -84,18 +95,19 @@
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  border: 1px solid var(--taupe-border);
-  background: rgba(255, 255, 255, 0.04);
-  color: #D6C8C0;
+  border: 1.5px solid rgba(158, 123, 102, 0.35);
+  background: #ffffff;
+  color: #3B2F2F;
+  box-shadow: 0 2px 6px rgba(59, 47, 47, 0.06);
   transition: all var(--transition-normal);
 }
 
 .social-link:hover {
   color: #ffffff;
-  border-color: var(--gold);
-  background: var(--gold-gradient);
+  border-color: var(--gold-dark, #AF7644);
+  background: var(--gold-gradient, linear-gradient(135deg, #C58B59 0%, #AF7644 100%));
   transform: translateY(-2px);
-  box-shadow: var(--shadow-gold);
+  box-shadow: 0 4px 12px rgba(197, 139, 89, 0.35);
 }
 
 /* Headings */
@@ -105,8 +117,21 @@
   font-weight: 700;
   letter-spacing: 1.6px;
   text-transform: uppercase;
-  color: var(--gold-light);
+  color: #3B2F2F;
   margin-bottom: 18px;
+  position: relative;
+  display: inline-block;
+}
+
+.footer-heading::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 22px;
+  height: 2px;
+  background: var(--gold, #C58B59);
+  border-radius: 2px;
 }
 
 /* Links */
@@ -121,14 +146,15 @@
 
 .footer-links li a {
   font-size: 13.5px;
-  color: #D6C8C0;
+  color: #5C4B4B;
+  font-weight: 500;
   text-decoration: none;
   transition: all var(--transition-fast);
   display: inline-block;
 }
 
 .footer-links li a:hover {
-  color: #ffffff;
+  color: var(--gold-dark, #AF7644);
   transform: translateX(4px);
 }
 
@@ -138,62 +164,64 @@
   padding: 0;
   font-family: 'Montserrat', sans-serif;
   font-size: 13.5px;
-  color: #D6C8C0;
+  font-weight: 500;
+  color: #5C4B4B;
   cursor: pointer;
   text-align: left;
   transition: all var(--transition-fast);
 }
 
 .footer-policy-btn:hover {
-  color: #ffffff;
+  color: var(--gold-dark, #AF7644);
   transform: translateX(4px);
 }
 
-/* ── Corporate & Gifting Venture Showcase ── */
+/* ── Corporate & Gifting Venture Showcase (Bottom Left) ── */
 .footer-venture-strip {
-  padding: 24px 0 32px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 24px 0 28px;
+  border-top: 1.5px solid rgba(158, 123, 102, 0.25);
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
 }
 
 .footer-venture-card {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   gap: 10px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid var(--taupe-border);
+  background: #ffffff;
+  border: 1.5px solid rgba(197, 139, 89, 0.35);
   border-radius: 12px;
-  padding: 14px 20px 18px;
-  max-width: 520px;
+  padding: 14px 20px 16px;
+  max-width: 480px;
   width: 100%;
   box-sizing: border-box;
-  text-align: center;
+  text-align: left;
+  box-shadow: 0 4px 16px rgba(59, 47, 47, 0.05);
   transition: all 0.3s ease;
 }
 
 .footer-venture-card:hover {
-  border-color: rgba(197, 155, 39, 0.5);
-  background: rgba(255, 255, 255, 0.05);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  border-color: var(--gold, #C58B59);
+  box-shadow: 0 6px 20px rgba(197, 139, 89, 0.16);
+  transform: translateY(-2px);
 }
 
 .footer-venture-badge {
   font-family: 'Cinzel', serif;
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: 2px;
+  letter-spacing: 1.8px;
   text-transform: uppercase;
-  color: var(--gold-light, #dfbe59);
+  color: var(--gold-dark, #AF7644);
 }
 
 .footer-venture-img-wrap {
-  background: #fdf6ec;
-  border: 1px solid rgba(197, 155, 39, 0.3);
+  background: var(--bg-primary-solid, #FAF2EA);
+  border: 1px solid rgba(148, 107, 71, 0.3);
   border-radius: 8px;
-  padding: 8px 16px;
+  padding: 10px 18px;
   width: 100%;
   box-sizing: border-box;
   display: flex;
@@ -205,15 +233,16 @@
 .footer-venture-img {
   max-width: 100%;
   height: auto;
-  max-height: 85px;
+  max-height: 105px;
   object-fit: contain;
+  object-position: left;
   display: block;
 }
 
 /* Bottom Bar */
 .footer-bottom {
   padding: 24px 0 32px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1.5px solid rgba(158, 123, 102, 0.28);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -223,12 +252,13 @@
 
 .footer-copy {
   font-size: 12.5px;
-  color: #8fa7a9;
+  color: #6D584D;
   margin: 0;
 }
 
 .footer-copy strong {
-  color: #ffffff;
+  color: #3B2F2F;
+  font-weight: 600;
 }
 
 .footer-payment-strip {
@@ -242,18 +272,19 @@
   font-family: 'Montserrat', sans-serif;
   font-size: 11px;
   font-weight: 600;
-  color: #c8dfe0;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  padding: 3px 8px;
-  border-radius: 4px;
+  color: #3B2F2F;
+  background: #ffffff;
+  border: 1px solid rgba(158, 123, 102, 0.35);
+  padding: 4px 10px;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(59, 47, 47, 0.05);
 }
 
 /* Policy Dialog */
 .policy-modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(14, 42, 45, 0.65);
+  background: rgba(59, 47, 47, 0.55);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   z-index: 99999;
@@ -275,12 +306,12 @@
 }
 
 .policy-modal {
-  background: #ffffff;
+  background: #FAF2EA;
   max-width: 580px;
   width: 100%;
   border-radius: var(--radius-lg);
-  border: 1px solid var(--gold-border);
-  box-shadow: var(--shadow-hover);
+  border: 1.5px solid rgba(197, 139, 89, 0.4);
+  box-shadow: 0 20px 48px rgba(59, 47, 47, 0.2);
   overflow: hidden;
   animation: modalScaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -302,27 +333,27 @@
   align-items: center;
   justify-content: space-between;
   padding: 20px 24px;
-  background: var(--cream);
-  border-bottom: 1px solid var(--cream-border);
+  background: #EDD9CC;
+  border-bottom: 1px solid rgba(158, 123, 102, 0.3);
 }
 
 .policy-modal-title {
-  font-family: 'Cormorant', serif;
-  font-size: 24px;
+  font-family: 'Cinzel', serif;
+  font-size: 20px;
   font-weight: 700;
-  color: var(--teal-deep);
+  color: #3B2F2F;
   margin: 0;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.8px;
   text-transform: uppercase;
 }
 
 .policy-modal-close {
-  background: rgba(35, 95, 100, 0.08);
-  border: 1px solid var(--teal-border);
+  background: rgba(59, 47, 47, 0.08);
+  border: 1px solid rgba(158, 123, 102, 0.3);
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  color: var(--teal-deep);
+  color: #3B2F2F;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -331,7 +362,7 @@
 }
 
 .policy-modal-close:hover {
-  background: var(--teal);
+  background: #3B2F2F;
   color: #ffffff;
 }
 
@@ -341,7 +372,7 @@
   overflow-y: auto;
   font-size: 14px;
   line-height: 1.7;
-  color: var(--text-secondary);
+  color: #4A3E3E;
 }
 
 .policy-modal-body p {

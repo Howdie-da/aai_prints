@@ -55,7 +55,6 @@ export default function Testimonials() {
           transition={{ duration: 0.3 }}
           className="sec-header"
         >
-          <span className="sec-eyebrow">CUSTOMER EXPERIENCES</span>
           <h2 className="sec-title">Customer Reviews &amp; Testimonials</h2>
           <p className="sec-subtitle">
             Authentic feedback from verified customers across India.

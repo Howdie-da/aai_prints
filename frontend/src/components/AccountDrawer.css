@@ -455,8 +455,8 @@
   height: 40px;
   min-width: 40px;
   border-radius: 10px;
-  background: rgba(226, 190, 88, 0.18);
-  color: var(--gold-light);
+  background: #FAF2EA;
+  color: #C58B59;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -502,7 +502,7 @@
 }
 
 .account-admin-arrow {
-  color: var(--gold-light);
+  color: var(--gold-light); 
   opacity: 0.8;
   transition: transform 0.2s ease;
 }

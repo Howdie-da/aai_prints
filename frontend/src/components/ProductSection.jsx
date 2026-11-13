@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Heart, ShoppingBag, Star, ArrowRight } from 'lucide-react';
 import { useWishlist } from '../context/WishlistContext';
 import './ProductSection.css';
@@ -37,13 +37,24 @@ export default function ProductSection({
 }) {
   const { isInWishlist, toggleWishlist, addToCart } = useWishlist();
   const [addedIds, setAddedIds] = useState({});
+  const timersRef = useRef({});
 
   const handleAddToCart = (product) => {
+    const prodId = product.id || product._id;
+    if (addedIds[prodId]) {
+      window.location.hash = '#/cart';
+      return;
+    }
+
     addToCart(product, 1);
-    setAddedIds((prev) => ({ ...prev, [product.id]: true }));
-    setTimeout(() => {
-      setAddedIds((prev) => ({ ...prev, [product.id]: false }));
-    }, 1800);
+    setAddedIds((prev) => ({ ...prev, [prodId]: true }));
+
+    if (timersRef.current[prodId]) {
+      clearTimeout(timersRef.current[prodId]);
+    }
+    timersRef.current[prodId] = setTimeout(() => {
+      setAddedIds((prev) => ({ ...prev, [prodId]: false }));
+    }, 10000);
   };
 
   if (!products || products.length === 0) {
@@ -54,16 +65,16 @@ export default function ProductSection({
     <section className="prod-section" id={sectionId} aria-labelledby={`${sectionId}-title`}>
       <div className="section-wrap">
         <div className="sec-header">
-          <span className="sec-eyebrow">ARTISAN CRAFTSMANSHIP</span>
           <h2 className="sec-title" id={`${sectionId}-title`}>{title}</h2>
           {subtitle && <p className="sec-subtitle">{subtitle}</p>}
         </div>
 
         <div className="prod-grid">
           {products.map((p) => {
-            const isFav = isInWishlist(p.id);
-            const isAdded = Boolean(addedIds[p.id]);
-            const productHref = `#/product/${p.slug || p.id}`;
+            const prodId = p.id || p._id;
+            const isFav = isInWishlist(prodId);
+            const isAdded = Boolean(addedIds[prodId]);
+            const productHref = `#/product/${p.slug || prodId}`;
 
             const handleProductClick = (e) => {
               if (onSelectProduct) {
@@ -191,10 +202,10 @@ export default function ProductSection({
                     type="button"
                     className={`prod-cart-btn ${isAdded ? 'added' : ''}`}
                     onClick={() => handleAddToCart(p)}
-                    aria-label={`Add ${p.name} to cart`}
+                    aria-label={isAdded ? `Go to cart with ${p.name}` : `Add ${p.name} to cart`}
                   >
                     <ShoppingBag size={15} strokeWidth={2.2} style={{ marginRight: '6px' }} />
-                    <span>{isAdded ? 'Added to Cart ✓' : 'Add to Cart'}</span>
+                    <span>{isAdded ? 'Go to Cart →' : 'Add to Cart'}</span>
                   </button>
                 </div>
               </article>
@@ -209,7 +220,7 @@ export default function ProductSection({
             onClick={onViewMore || (() => { window.location.hash = '#/shop'; })}
             aria-label={`View more ${title}`}
           >
-            <span>VIEW MORE {title.toUpperCase()}</span>
+            <span>VIEW MORE</span>
             <ArrowRight size={14} strokeWidth={2.4} style={{ marginLeft: '6px' }} />
           </button>
         </div>

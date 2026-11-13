@@ -19,12 +19,18 @@ const getProducts = async (req, res, next) => {
       minPrice,
       maxPrice,
       inStock,
+      trending,
       sort = 'featured',
       page = 1,
       limit = 12
     } = req.query;
 
     const query = { isActive: true, isDeleted: false };
+
+    // 0. Trending filter
+    if (trending === 'true' || trending === true || trending === '1') {
+      query.isTrending = true;
+    }
 
     // 1. Category filter (by ID or Slug, resolving subcategories if parent)
     if (category) {
@@ -192,7 +198,9 @@ const createProduct = async (req, res, next) => {
       stock,
       dispatchTimeInfo,
       hasVariants,
-      variants
+      variants,
+      isTrending,
+      trending
     } = req.body;
 
     const slug = slugify(name);
@@ -227,7 +235,8 @@ const createProduct = async (req, res, next) => {
       stock: stock != null ? Number(stock) : 10,
       dispatchTimeInfo: dispatchTimeInfo || 'Ready to Dispatch within 24-48 Hours',
       hasVariants: Boolean(hasVariants && variants && variants.length > 0),
-      variants: variants || []
+      variants: variants || [],
+      isTrending: isTrending !== undefined ? Boolean(isTrending) : (trending !== undefined ? Boolean(trending) : false)
     };
 
     const product = await Product.create(productData);
@@ -294,6 +303,12 @@ const updateProduct = async (req, res, next) => {
 
     if (updates.hasVariants !== undefined) {
       updates.hasVariants = Boolean(updates.hasVariants && updates.variants && updates.variants.length > 0);
+    }
+
+    if (updates.isTrending !== undefined) {
+      updates.isTrending = Boolean(updates.isTrending);
+    } else if (updates.trending !== undefined) {
+      updates.isTrending = Boolean(updates.trending);
     }
 
     Object.assign(product, updates);

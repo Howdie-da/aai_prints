@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, Trash2, X, ShoppingBag, Check, AlertCircle } from 'lucide-react';
@@ -26,18 +26,29 @@ export default function WishlistPage({
     addToCart,
   } = useWishlist();
 
-  // Added-to-cart temporary state per product id
+  // Added-to-cart temporary state per product id (10s "Go to Cart" window)
   const [addedIds, setAddedIds] = useState({});
+  const timersRef = useRef({});
 
   // Confirmation modal for Clear All Wishlist
   const [showClearConfirm, setShowClearConfirm] = useState(false);
 
   const handleAddToCart = (product) => {
+    const prodId = product.id || product._id;
+    if (addedIds[prodId]) {
+      window.location.hash = '#/cart';
+      return;
+    }
+
     addToCart(product, 1);
-    setAddedIds((prev) => ({ ...prev, [product.id]: true }));
-    setTimeout(() => {
-      setAddedIds((prev) => ({ ...prev, [product.id]: false }));
-    }, 1800);
+    setAddedIds((prev) => ({ ...prev, [prodId]: true }));
+
+    if (timersRef.current[prodId]) {
+      clearTimeout(timersRef.current[prodId]);
+    }
+    timersRef.current[prodId] = setTimeout(() => {
+      setAddedIds((prev) => ({ ...prev, [prodId]: false }));
+    }, 10000);
   };
 
   const handleProductClick = (product) => {
@@ -168,7 +179,7 @@ export default function WishlistPage({
                   }
                 }
 
-                const isAdded = Boolean(addedIds[product.id]);
+                const isAdded = Boolean(addedIds[product.id || product._id]);
 
                 return (
                   <motion.article
@@ -289,14 +300,14 @@ export default function WishlistPage({
                           onClick={() => handleAddToCart(product)}
                           aria-label={
                             isAdded
-                              ? `${product.name} added to cart`
+                              ? `Go to cart with ${product.name}`
                               : `Add ${product.name} to cart`
                           }
                         >
                           {isAdded ? (
                             <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-                              <Check size={16} strokeWidth={2.5} />
-                              Added to Cart
+                              <ShoppingBag size={16} />
+                              Go to Cart →
                             </span>
                           ) : (
                             <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>

@@ -14,6 +14,11 @@ import {
   Pencil,
   ArrowLeft,
   ExternalLink,
+  Save,
+  Sparkles,
+  DollarSign,
+  Package,
+  Image as ImageIcon,
 } from 'lucide-react';
 import { api } from '../services/api';
 import {
@@ -26,7 +31,7 @@ import {
 import './AdminB2BPage.css';
 
 export default function AdminB2BPage({ onNavigateHome, onNavigateB2BPortal }) {
-  const [activeTab, setActiveTab] = useState('add'); // 'add' | 'products'
+  const [activeTab, setActiveTab] = useState('products'); // 'add' | 'products'
   const [b2bProducts, setB2bProducts] = useState([]);
   const [isLoadingProducts, setIsLoadingProducts] = useState(false);
   const [feedback, setFeedback] = useState(null);
@@ -64,10 +69,35 @@ export default function AdminB2BPage({ onNavigateHome, onNavigateB2BPortal }) {
   const [editUploadError, setEditUploadError] = useState(null);
   const [showEditManualUrl, setShowEditManualUrl] = useState(false);
   const [isUpdatingProduct, setIsUpdatingProduct] = useState(false);
+  const [isEditDragging, setIsEditDragging] = useState(false);
   const editFileInputRef = useRef(null);
 
   // Variable Pricing Entries State for Edit Modal
   const [editPriceEntries, setEditPriceEntries] = useState([]);
+
+  // Keyboard Shortcuts for Wholesale Edit Modal (Esc to close, Ctrl/Cmd + S to save)
+  useEffect(() => {
+    if (!editingProduct) return;
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setEditingProduct(null);
+      } else if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+        e.preventDefault();
+        const form = document.getElementById('admin-b2b-edit-form');
+        if (form) form.requestSubmit();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [editingProduct]);
+
+  // Smooth scroll to section in edit modal
+  const scrollToEditSection = (id) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
 
   // Load Wholesale Catalog
   const loadProducts = async () => {
@@ -424,7 +454,7 @@ export default function AdminB2BPage({ onNavigateHome, onNavigateB2BPortal }) {
 
   // ── Delete Wholesale Product ──
   const handleDeleteProduct = async (id, prodName) => {
-    if (!window.confirm(`Are you sure you want to remove "${prodName}" from the Wholesale catalog?`)) {
+    if (!window.confirm(`Are you sure you want to permanently remove "${prodName}" from the Wholesale catalog? This action cannot be undone.`)) {
       return;
     }
     try {
@@ -433,6 +463,13 @@ export default function AdminB2BPage({ onNavigateHome, onNavigateB2BPortal }) {
       // optimistic
     }
     setB2bProducts(b2bProducts.filter((p) => p.id !== id && p._id !== id));
+    setFeedback({
+      type: 'success',
+      message: `Wholesale product "${prodName}" removed from catalog.`,
+    });
+    if (editingProduct && ((editingProduct._id || editingProduct.id) === id)) {
+      setEditingProduct(null);
+    }
   };
 
   const totalStockUnits = b2bProducts.reduce(
@@ -496,19 +533,19 @@ export default function AdminB2BPage({ onNavigateHome, onNavigateB2BPortal }) {
         <div className="admin-b2b-tabs">
           <button
             type="button"
-            className={`admin-b2b-tab ${activeTab === 'add' ? 'active' : ''}`}
-            onClick={() => setActiveTab('add')}
-          >
-            <PackagePlus size={16} />
-            + Add Wholesale Product
-          </button>
-          <button
-            type="button"
             className={`admin-b2b-tab ${activeTab === 'products' ? 'active' : ''}`}
             onClick={() => setActiveTab('products')}
           >
             <Layers size={16} />
             Wholesale Catalog ({b2bProducts.length})
+          </button>
+          <button
+            type="button"
+            className={`admin-b2b-tab ${activeTab === 'add' ? 'active' : ''}`}
+            onClick={() => setActiveTab('add')}
+          >
+            <PackagePlus size={16} />
+            + Add Wholesale Product
           </button>
         </div>
 
@@ -929,233 +966,424 @@ export default function AdminB2BPage({ onNavigateHome, onNavigateB2BPortal }) {
 
         {/* ════ EDIT WHOLESALE PRODUCT MODAL (Portaled to document.body) ════ */}
         {editingProduct && createPortal(
-          <div className="admin-b2b-modal-overlay" onClick={() => setEditingProduct(null)}>
-            <div className="admin-b2b-modal" onClick={(e) => e.stopPropagation()}>
+          <div className="admin-b2b-modal-overlay" onClick={() => setEditingProduct(null)} role="presentation">
+            <div
+              className="admin-b2b-modal"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="b2b-modal-edit-title"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* ── Luxury Header ── */}
               <div className="admin-b2b-modal-header">
-                <div>
-                  <h3>Edit Wholesale Product</h3>
-                  <small style={{ color: '#64748b' }}>{editingProduct.name}</small>
+                <div className="admin-b2b-modal-header-left">
+                  <div className="admin-b2b-modal-thumb">
+                    {editImageUrl ? (
+                      <img
+                        src={editImageUrl}
+                        alt={editName || 'Wholesale Product'}
+                        onError={(e) => {
+                          e.currentTarget.src = '/new-images/product-placeholder.jpg';
+                        }}
+                      />
+                    ) : (
+                      <div className="thumb-placeholder">
+                        <Building2 size={22} />
+                      </div>
+                    )}
+                  </div>
+                  <div className="admin-b2b-modal-header-titles">
+                    <div className="admin-b2b-modal-header-meta">
+                      <span className="admin-b2b-modal-tag">WHOLESALE HUB</span>
+                      <span className="admin-b2b-modal-cat-chip">{editCategory}</span>
+                      <span className="admin-b2b-modal-moq-chip">
+                        MOQ: {editPriceEntries[0]?.minQty || 25} units
+                      </span>
+                      <span className="admin-b2b-modal-stock-chip">
+                        ● {editStock} Units in Stock
+                      </span>
+                    </div>
+                    <h2 id="b2b-modal-edit-title" className="admin-b2b-modal-title">
+                      {editName ? editName : 'Edit Wholesale Product'}
+                    </h2>
+                    <div className="admin-b2b-modal-subtitle">
+                      <span>Wholesale Catalog</span>
+                      {editingProduct && (
+                        <>
+                          <span className="meta-sep">•</span>
+                          <span className="modal-id-text">
+                            ID: {String(editingProduct._id || editingProduct.id).slice(-6)}
+                          </span>
+                        </>
+                      )}
+                    </div>
+                  </div>
                 </div>
-                <button
-                  type="button"
-                  className="admin-b2b-modal-close"
-                  onClick={() => setEditingProduct(null)}
-                  title="Close"
-                >
-                  <X size={20} />
-                </button>
+
+                <div className="admin-b2b-modal-header-right">
+                  <button
+                    type="button"
+                    className="admin-b2b-modal-close"
+                    onClick={() => setEditingProduct(null)}
+                    aria-label="Close modal"
+                    title="Close (Esc)"
+                  >
+                    <X size={20} />
+                  </button>
+                </div>
               </div>
 
-              <form onSubmit={handleSaveEditProduct}>
-                <div className="admin-b2b-modal-body">
-                  <div className="admin-b2b-form-grid">
-                    <div className="admin-b2b-field">
-                      <label>Product Title *</label>
-                      <input
-                        type="text"
-                        className="admin-b2b-input"
-                        value={editName}
-                        onChange={(e) => setEditName(e.target.value)}
-                        required
-                      />
-                    </div>
-                    <div className="admin-b2b-field">
-                      <label>Category *</label>
-                      <select
-                        className="admin-b2b-input"
-                        value={editCategory}
-                        onChange={(e) => setEditCategory(e.target.value)}
-                        required
-                      >
-                        {B2B_CATEGORIES.filter((c) => c !== 'All').map((cat) => (
-                          <option key={cat} value={cat}>
-                            {cat}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
+              {/* ── Quick Anchor Nav Bar (Sticky Single-Page Navigation) ── */}
+              <div className="admin-b2b-modal-quicknav">
+                <span className="quicknav-label">Jump to:</span>
+                <div className="quicknav-links">
+                  <button
+                    type="button"
+                    className="quicknav-btn"
+                    onClick={() => scrollToEditSection('b2b-sec-general')}
+                  >
+                    <Package size={13} />
+                    <span>General Info</span>
+                  </button>
 
-                  <div className="admin-b2b-field">
-                    <label>Description *</label>
-                    <textarea
-                      rows={2}
-                      className="admin-b2b-input"
-                      value={editDescription}
-                      onChange={(e) => setEditDescription(e.target.value)}
-                      required
-                    />
-                  </div>
+                  <button
+                    type="button"
+                    className="quicknav-btn"
+                    onClick={() => scrollToEditSection('b2b-sec-pricing')}
+                  >
+                    <DollarSign size={13} />
+                    <span>Volume Tier Pricing ({editPriceEntries.length})</span>
+                  </button>
 
-                  {/* ── Variable Pricing Entries in Edit Modal ── */}
-                  <div className="admin-b2b-section-box">
-                    <div className="section-box-header">
-                      <div>
-                        <h4 className="section-box-title">Variable Pricing Entries *</h4>
-                        <p className="section-box-sub">
-                          The first entry sets the MOQ. Add subsequent entries for volume discounts.
-                        </p>
+                  <button
+                    type="button"
+                    className="quicknav-btn"
+                    onClick={() => scrollToEditSection('b2b-sec-specs')}
+                  >
+                    <Layers size={13} />
+                    <span>Specifications &amp; Stock</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    className="quicknav-btn"
+                    onClick={() => scrollToEditSection('b2b-sec-media')}
+                  >
+                    <ImageIcon size={13} />
+                    <span>Product Photograph</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* ── Modal Body Content (All sections rendered continuously on ONE page) ── */}
+              <div className="admin-b2b-modal-body">
+                {editUploadError && (
+                  <div className="admin-modal-alert-error" role="alert">
+                    <AlertCircle size={18} />
+                    <div className="alert-text">
+                      <strong>Attention:</strong> {editUploadError}
+                    </div>
+                    <button
+                      type="button"
+                      className="alert-dismiss"
+                      onClick={() => setEditUploadError(null)}
+                    >
+                      ✕
+                    </button>
+                  </div>
+                )}
+
+                <form id="admin-b2b-edit-form" onSubmit={handleSaveEditProduct} className="admin-single-page-form">
+                  {/* ════════ SECTION 1: GENERAL INFO ════════ */}
+                  <div id="b2b-sec-general" className="admin-pane-card">
+                    <div className="card-section-header">
+                      <div className="section-title-wrap">
+                        <Sparkles size={16} className="text-gold" />
+                        <h4>Wholesale Product Overview &amp; Categorization</h4>
                       </div>
-                      <button
-                        type="button"
-                        className="admin-b2b-btn-secondary"
-                        onClick={handleAddEditPriceEntry}
-                      >
-                        <Plus size={13} /> + Add Another Price Entry
-                      </button>
+                      <span className="card-hint">Essential catalog details for B2B wholesale buyers</span>
                     </div>
 
-                    <div className="admin-price-entries-list">
-                      {editPriceEntries.map((entry, idx) => (
-                        <div key={idx} className="admin-price-entry-row">
-                          <div className="entry-col">
-                            <label>
-                              Min Qty * {idx === 0 && <small className="text-teal">(MOQ)</small>}
-                            </label>
-                            <input
-                              type="number"
-                              min="1"
-                              className="admin-b2b-input"
-                              value={entry.minQty}
-                              onChange={(e) => handleUpdateEditPriceEntry(idx, 'minQty', e.target.value)}
-                              required
-                            />
-                          </div>
-                          <div className="entry-col">
-                            <label>Max Qty (blank for "+")</label>
-                            <input
-                              type="number"
-                              className="admin-b2b-input"
-                              value={entry.maxQty}
-                              onChange={(e) => handleUpdateEditPriceEntry(idx, 'maxQty', e.target.value)}
-                              placeholder="e.g. 49"
-                            />
-                          </div>
-                          <div className="entry-col">
-                            <label>Unit Price (₹) *</label>
-                            <input
-                              type="number"
-                              min="1"
-                              className="admin-b2b-input"
-                              value={entry.unitPrice}
-                              onChange={(e) => handleUpdateEditPriceEntry(idx, 'unitPrice', e.target.value)}
-                              required
-                            />
-                          </div>
-                          <button
-                            type="button"
-                            className="entry-del-btn"
-                            onClick={() => handleRemoveEditPriceEntry(idx)}
-                            disabled={editPriceEntries.length <= 1}
-                            title="Remove price entry"
-                          >
-                            <Trash2 size={16} />
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+                    <div className="admin-modal-grid-2">
+                      <div className="admin-form-group">
+                        <label htmlFor="b2b-edit-name">
+                          Product Title <span className="required">*</span>
+                        </label>
+                        <input
+                          id="b2b-edit-name"
+                          type="text"
+                          className="admin-modal-input"
+                          placeholder="e.g. Lord Ganesha Laser-Cut Wooden Frame"
+                          value={editName}
+                          onChange={(e) => setEditName(e.target.value)}
+                          required
+                        />
+                      </div>
 
-                  {/* Stock, Dimensions, Materials */}
-                  <div className="admin-b2b-form-grid three-col">
-                    <div className="admin-b2b-field">
-                      <label>Stock (Units) *</label>
-                      <input
-                        type="number"
-                        min="0"
-                        className="admin-b2b-input"
-                        value={editStock}
-                        onChange={(e) => setEditStock(e.target.value)}
+                      <div className="admin-form-group">
+                        <label htmlFor="b2b-edit-category">
+                          Wholesale Category <span className="required">*</span>
+                        </label>
+                        <select
+                          id="b2b-edit-category"
+                          className="admin-modal-select"
+                          value={editCategory}
+                          onChange={(e) => setEditCategory(e.target.value)}
+                          required
+                        >
+                          {B2B_CATEGORIES.filter((c) => c !== 'All').map((cat) => (
+                            <option key={cat} value={cat}>
+                              {cat}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="admin-form-group full-width" style={{ marginTop: '16px' }}>
+                      <div className="label-with-counter">
+                        <label htmlFor="b2b-edit-desc">
+                          Description &amp; Craftsmanship <span className="required">*</span>
+                        </label>
+                        <span className="char-counter">{editDescription.length} chars</span>
+                      </div>
+                      <textarea
+                        id="b2b-edit-desc"
+                        rows={3}
+                        className="admin-modal-textarea"
+                        placeholder="Describe specifications, finish, bulk packaging, and customization possibilities..."
+                        value={editDescription}
+                        onChange={(e) => setEditDescription(e.target.value)}
                         required
                       />
                     </div>
-                    <div className="admin-b2b-field">
-                      <label>Dimensions</label>
-                      <input
-                        type="text"
-                        className="admin-b2b-input"
-                        value={editDimensions}
-                        onChange={(e) => setEditDimensions(e.target.value)}
-                      />
+                  </div>
+
+                  {/* ════════ SECTION 2: VOLUME PRICING TIERS & MOQ ════════ */}
+                  <div id="b2b-sec-pricing" className="admin-pane-card">
+                    <div className="card-section-header">
+                      <div className="section-title-wrap">
+                        <DollarSign size={16} className="text-gold" />
+                        <h4>Variable Volume Pricing &amp; MOQ Tiers</h4>
+                      </div>
+                      <span className="card-hint">
+                        First entry sets Minimum Order Quantity (MOQ). Add tiers for volume discounts.
+                      </span>
                     </div>
-                    <div className="admin-b2b-field">
-                      <label>Materials</label>
-                      <input
-                        type="text"
-                        className="admin-b2b-input"
-                        value={editMaterial}
-                        onChange={(e) => setEditMaterial(e.target.value)}
-                      />
+
+                    <div className="b2b-tier-pricing-wrap">
+                      <div className="admin-price-entries-list">
+                        {editPriceEntries.map((entry, idx) => (
+                          <div key={idx} className="admin-price-entry-row">
+                            <div className="entry-col">
+                              <label>
+                                Min Qty * {idx === 0 && <span className="moq-indicator">(MOQ)</span>}
+                              </label>
+                              <input
+                                type="number"
+                                min="1"
+                                className="admin-modal-input"
+                                value={entry.minQty}
+                                onChange={(e) => handleUpdateEditPriceEntry(idx, 'minQty', e.target.value)}
+                                placeholder="e.g. 25"
+                                required
+                              />
+                            </div>
+                            <div className="entry-col">
+                              <label>Max Qty (blank for "+")</label>
+                              <input
+                                type="number"
+                                className="admin-modal-input"
+                                value={entry.maxQty}
+                                onChange={(e) => handleUpdateEditPriceEntry(idx, 'maxQty', e.target.value)}
+                                placeholder="e.g. 49"
+                              />
+                            </div>
+                            <div className="entry-col">
+                              <label>Unit Price (₹) *</label>
+                              <div className="input-currency-wrap">
+                                <span className="currency-prefix">₹</span>
+                                <input
+                                  type="number"
+                                  min="1"
+                                  className="admin-modal-input with-prefix"
+                                  value={entry.unitPrice}
+                                  onChange={(e) => handleUpdateEditPriceEntry(idx, 'unitPrice', e.target.value)}
+                                  placeholder="e.g. 450"
+                                  required
+                                />
+                              </div>
+                            </div>
+                            <button
+                              type="button"
+                              className="entry-del-btn"
+                              onClick={() => handleRemoveEditPriceEntry(idx)}
+                              disabled={editPriceEntries.length <= 1}
+                              title="Remove volume price tier"
+                            >
+                              <Trash2 size={16} />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="add-tier-action-row">
+                        <button
+                          type="button"
+                          className="admin-btn-secondary"
+                          onClick={handleAddEditPriceEntry}
+                        >
+                          <Plus size={14} /> + Add Another Price Tier
+                        </button>
+                      </div>
                     </div>
                   </div>
 
-                  {/* Single Image Upload Section for Edit */}
-                  <div className="admin-b2b-field">
-                    <div className="admin-b2b-field-header">
-                      <label>Product Photograph (1 Image) *</label>
-                      <span className="admin-b2b-field-sub">Upload new photo or change URL</span>
+                  {/* ════════ SECTION 3: INVENTORY & SPECIFICATIONS ════════ */}
+                  <div id="b2b-sec-specs" className="admin-pane-card">
+                    <div className="card-section-header">
+                      <div className="section-title-wrap">
+                        <Layers size={16} className="text-gold" />
+                        <h4>Inventory &amp; Technical Specifications</h4>
+                      </div>
+                      <span className="card-hint">Stock levels and material details</span>
+                    </div>
+
+                    <div className="admin-modal-grid-3">
+                      <div className="admin-form-group">
+                        <label htmlFor="b2b-edit-stock">
+                          Available Stock (Units) <span className="required">*</span>
+                        </label>
+                        <input
+                          id="b2b-edit-stock"
+                          type="number"
+                          min="0"
+                          className="admin-modal-input"
+                          value={editStock}
+                          onChange={(e) => setEditStock(e.target.value)}
+                          placeholder="e.g. 500"
+                          required
+                        />
+                      </div>
+
+                      <div className="admin-form-group">
+                        <label htmlFor="b2b-edit-dims">Dimensions</label>
+                        <input
+                          id="b2b-edit-dims"
+                          type="text"
+                          className="admin-modal-input"
+                          value={editDimensions}
+                          onChange={(e) => setEditDimensions(e.target.value)}
+                          placeholder="e.g. 18x24 inches / Customizable"
+                        />
+                      </div>
+
+                      <div className="admin-form-group">
+                        <label htmlFor="b2b-edit-mat">Materials</label>
+                        <input
+                          id="b2b-edit-mat"
+                          type="text"
+                          className="admin-modal-input"
+                          value={editMaterial}
+                          onChange={(e) => setEditMaterial(e.target.value)}
+                          placeholder="e.g. Solid Pine Wood, Matte Acrylic"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* ════════ SECTION 4: PRODUCT PHOTOGRAPH & MEDIA ════════ */}
+                  <div id="b2b-sec-media" className="admin-pane-card">
+                    <div className="card-section-header">
+                      <div className="section-title-wrap">
+                        <ImageIcon size={16} className="text-gold" />
+                        <h4>Wholesale Photograph &amp; Asset</h4>
+                      </div>
+                      <span className="card-hint">High-resolution catalog preview for corporate clients</span>
                     </div>
 
                     {editImageUrl ? (
-                      <div className="admin-b2b-image-card">
-                        <img
-                          src={editImageUrl}
-                          alt="Edit preview"
-                          className="admin-b2b-image-thumb"
-                          onError={(e) => {
-                            e.currentTarget.src = '/new-images/product-placeholder.jpg';
-                          }}
-                        />
-                        <div className="admin-b2b-image-details">
-                          <div className="admin-b2b-image-status">
-                            <CheckCircle2 size={15} style={{ color: '#059669' }} />
-                            <span>Current Wholesale Image</span>
+                      <div className="b2b-edit-image-card">
+                        <div className="b2b-edit-image-thumb-wrap">
+                          <img
+                            src={editImageUrl}
+                            alt="Wholesale preview"
+                            className="b2b-edit-image-thumb"
+                            onError={(e) => {
+                              e.currentTarget.src = '/new-images/product-placeholder.jpg';
+                            }}
+                          />
+                        </div>
+                        <div className="b2b-edit-image-info">
+                          <div className="b2b-edit-image-status">
+                            <CheckCircle2 size={16} style={{ color: '#059669' }} />
+                            <strong>Current Wholesale Catalog Image</strong>
                           </div>
-                          <span className="admin-b2b-image-filename" title={editImageUrl}>
-                            {editImageUrl.length > 40 ? `${editImageUrl.slice(0, 37)}...` : editImageUrl}
+                          <span className="b2b-edit-image-url" title={editImageUrl}>
+                            {editImageUrl.length > 55 ? `${editImageUrl.slice(0, 52)}...` : editImageUrl}
                           </span>
-                          <div className="admin-b2b-image-actions">
+                          <div className="b2b-edit-image-actions">
                             <button
                               type="button"
-                              className="admin-b2b-action-link"
+                              className="admin-btn-secondary"
                               onClick={() => editFileInputRef.current && editFileInputRef.current.click()}
                               disabled={isUploadingEditImage}
                             >
-                              <UploadCloud size={13} /> Upload New Image
+                              <UploadCloud size={13} /> Upload New Photo
                             </button>
-                            <span className="divider">•</span>
                             <button
                               type="button"
-                              className="admin-b2b-action-link text-danger"
+                              className="admin-modal-btn-danger"
+                              style={{ padding: '6px 12px', fontSize: '12px' }}
                               onClick={() => {
                                 setEditImageUrl('');
                                 if (editFileInputRef.current) editFileInputRef.current.value = '';
                               }}
                             >
-                              <Trash2 size={13} /> Remove
+                              <Trash2 size={13} /> Remove Photo
                             </button>
                           </div>
                         </div>
                       </div>
                     ) : (
                       <div
-                        className={`admin-b2b-upload-dropzone ${isUploadingEditImage ? 'uploading' : ''}`}
+                        className={`admin-modal-upload-zone ${isEditDragging ? 'drag-over' : ''} ${isUploadingEditImage ? 'uploading' : ''}`}
                         onClick={() =>
                           !isUploadingEditImage && editFileInputRef.current && editFileInputRef.current.click()
                         }
+                        onDragOver={(e) => {
+                          e.preventDefault();
+                          setIsEditDragging(true);
+                        }}
+                        onDragLeave={(e) => {
+                          e.preventDefault();
+                          setIsEditDragging(false);
+                        }}
+                        onDrop={(e) => {
+                          e.preventDefault();
+                          setIsEditDragging(false);
+                          const file = e.dataTransfer.files?.[0];
+                          if (file) handleEditSingleFileUpload(file);
+                        }}
                       >
-                        {isUploadingEditImage ? (
-                          <div className="admin-b2b-upload-content">
-                            <Loader2 size={24} className="admin-b2b-spin" style={{ color: 'var(--teal)' }} />
-                            <strong>Uploading new image to Cloudinary...</strong>
-                          </div>
-                        ) : (
-                          <div className="admin-b2b-upload-content">
-                            <UploadCloud size={24} style={{ color: 'var(--teal)' }} />
-                            <strong>Click to upload product image</strong>
-                            <small>Supports PNG, JPG, WEBP up to 10MB</small>
-                          </div>
-                        )}
+                        <div className="upload-zone-icon">
+                          {isUploadingEditImage ? (
+                            <Loader2 size={30} className="admin-b2b-spin" />
+                          ) : (
+                            <UploadCloud size={30} />
+                          )}
+                        </div>
+                        <div className="upload-zone-text">
+                          <h5>
+                            {isUploadingEditImage
+                              ? 'Uploading to Cloudinary...'
+                              : 'Upload Wholesale Product Photograph'}
+                          </h5>
+                          <p>Drag and drop image here, or click to browse file</p>
+                          <span className="upload-formats">
+                            Supports PNG, JPG, WEBP up to 10MB • Fast Cloudinary CDN Hosting
+                          </span>
+                        </div>
                       </div>
                     )}
 
@@ -1171,14 +1399,7 @@ export default function AdminB2BPage({ onNavigateHome, onNavigateB2BPortal }) {
                       disabled={isUploadingEditImage}
                     />
 
-                    {editUploadError && (
-                      <div className="admin-b2b-upload-error">
-                        <AlertCircle size={14} />
-                        <span>{editUploadError}</span>
-                      </div>
-                    )}
-
-                    <div className="admin-b2b-manual-toggle">
+                    <div className="admin-b2b-manual-toggle" style={{ marginTop: '14px' }}>
                       <button
                         type="button"
                         className="admin-b2b-link-toggle"
@@ -1189,20 +1410,36 @@ export default function AdminB2BPage({ onNavigateHome, onNavigateB2BPortal }) {
                       {showEditManualUrl && (
                         <input
                           type="text"
-                          className="admin-b2b-input manual-url-input"
-                          placeholder="https://... or /new-images/..."
+                          className="admin-modal-input"
+                          style={{ marginTop: '8px' }}
+                          placeholder="https://res.cloudinary.com/... or /new-images/..."
                           value={editImageUrl}
                           onChange={(e) => setEditImageUrl(e.target.value)}
                         />
                       )}
                     </div>
                   </div>
-                </div>
+                </form>
+              </div>
 
-                <div className="admin-b2b-modal-footer">
+              {/* ── Sticky Luxury Footer ── */}
+              <div className="admin-b2b-modal-footer">
+                <div className="admin-b2b-modal-footer-left">
                   <button
                     type="button"
-                    className="admin-b2b-btn-secondary"
+                    className="admin-modal-btn-danger"
+                    onClick={() => handleDeleteProduct(editingProduct._id || editingProduct.id, editingProduct.name)}
+                    disabled={isUpdatingProduct}
+                  >
+                    <Trash2 size={15} />
+                    <span>Delete Wholesale Product</span>
+                  </button>
+                </div>
+
+                <div className="admin-b2b-modal-footer-right">
+                  <button
+                    type="button"
+                    className="admin-modal-btn-cancel"
                     onClick={() => setEditingProduct(null)}
                     disabled={isUpdatingProduct}
                   >
@@ -1210,13 +1447,16 @@ export default function AdminB2BPage({ onNavigateHome, onNavigateB2BPortal }) {
                   </button>
                   <button
                     type="submit"
-                    className="admin-b2b-submit-btn"
+                    form="admin-b2b-edit-form"
+                    className="admin-modal-btn-save"
                     disabled={isUpdatingProduct || isUploadingEditImage}
+                    title="Save Changes (Ctrl+S)"
                   >
-                    {isUpdatingProduct ? 'Saving Changes...' : 'Save Product Changes'}
+                    <Save size={16} />
+                    <span>{isUpdatingProduct ? 'Saving Changes...' : 'Save Product Changes'}</span>
                   </button>
                 </div>
-              </form>
+              </div>
             </div>
           </div>,
           document.body

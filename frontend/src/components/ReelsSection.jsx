@@ -605,9 +605,6 @@ export default function ReelsSection({ onSelectProduct }) {
                   />
 
                   <div className="reel-modal-product-details">
-                    <span className="reel-modal-product-category">
-                      {activeReel.product.category || 'Aai Prints Creation'}
-                    </span>
                     <h4 className="reel-modal-product-name">{activeReel.product.name}</h4>
                     <div className="reel-modal-product-pricing">
                       <span className="reel-modal-product-price">

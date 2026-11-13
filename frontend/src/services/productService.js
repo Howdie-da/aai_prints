@@ -53,6 +53,9 @@ export function normalizeProduct(p) {
     rating: p.rating != null ? Number(p.rating) : (p.ratingAverage != null ? Number(p.ratingAverage) : 5.0),
     reviews: p.reviews != null ? Number(p.reviews) : (p.reviewCount != null ? Number(p.reviewCount) : 0),
     tag: p.tag || (p.badges && p.badges[0]) || '',
+    isTrending: Boolean(p.isTrending ?? p.trending ?? false),
+    trending: Boolean(p.isTrending ?? p.trending ?? false),
+    createdAt: p.createdAt || null,
     variants: (p.variants || []).map((v) => ({
       ...v,
       id: v.id || v._id,

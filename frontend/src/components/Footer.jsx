@@ -69,14 +69,13 @@ export default function Footer({ onNavigate }) {
           <div className="footer-col footer-brand">
             <div className="footer-logo">
               <span className="footer-logo-text">Aai Prints</span>
-              <span className="footer-brand-sub">ANANTA ART INTERNATIONAL</span>
             </div>
             <p className="footer-desc">
               Handcrafted devotional frames, illuminated backlit LED frames, and contemporary wall art designed to bring elegance, serenity, and premium aesthetics into every home and vehicle.
             </p>
             <div className="footer-badge">
               <Sparkles size={13} style={{ color: 'var(--gold, #d4af37)' }} />
-              <span>Artisan Craftsmanship • 100% Handcrafted in India</span>
+              <span>100% Handcrafted in India</span>
             </div>
             <div className="footer-socials" aria-label="Connect with us">
               <a href="#" className="social-link" aria-label="Chat with Customer Support" onClick={(e) => e.preventDefault()} title="Customer Support">
@@ -163,7 +162,7 @@ export default function Footer({ onNavigate }) {
             <span className="footer-venture-badge">Corporate Gifting &amp; Decor Venture</span>
             <div className="footer-venture-img-wrap">
               <img
-                src="/our-online-decor-logo.png"
+                src="/our-online-decor-logo.png?v=3"
                 alt="OurONLINE Decor - Corporate Gifts, Home Decor, Personalised Gifts, Promotional Products - अपनों के लिए कुछ खास"
                 className="footer-venture-img"
                 loading="lazy"

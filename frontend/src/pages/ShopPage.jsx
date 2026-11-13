@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Heart, X, SlidersHorizontal, Filter, Check, ShoppingBag, Package } from 'lucide-react';
@@ -97,13 +97,25 @@ export default function ShopPage({
     };
   }, [products]);
 
-  // Handle Add to Cart with visual feedback
+  const timersRef = useRef({});
+
+  // Handle Add to Cart: shows "Go to Cart →" for 10 seconds; clicking again redirects to full cart
   const handleAddToCart = (product) => {
+    const prodId = product.id || product._id;
+    if (addedIds[prodId]) {
+      window.location.hash = '#/cart';
+      return;
+    }
+
     addToCart(product);
-    setAddedIds((prev) => ({ ...prev, [product.id]: true }));
-    setTimeout(() => {
-      setAddedIds((prev) => ({ ...prev, [product.id]: false }));
-    }, 1600);
+    setAddedIds((prev) => ({ ...prev, [prodId]: true }));
+
+    if (timersRef.current[prodId]) {
+      clearTimeout(timersRef.current[prodId]);
+    }
+    timersRef.current[prodId] = setTimeout(() => {
+      setAddedIds((prev) => ({ ...prev, [prodId]: false }));
+    }, 10000);
   };
 
   // Filtered and sorted products
@@ -913,11 +925,11 @@ export default function ShopPage({
                           whileHover={{ scale: 1.02 }}
                           whileTap={{ scale: 0.96 }}
                           type="button"
-                          className={`shop-card-cart-btn ${addedIds[p.id] ? 'added' : ''}`}
+                          className={`shop-card-cart-btn ${addedIds[p.id || p._id] ? 'added' : ''}`}
                           onClick={() => handleAddToCart(p)}
-                          aria-label={`Add ${p.name} to cart`}
+                          aria-label={addedIds[p.id || p._id] ? `Go to cart with ${p.name}` : `Add ${p.name} to cart`}
                         >
-                          {addedIds[p.id] ? 'Added to Cart ✓' : 'Add to Cart'}
+                          {addedIds[p.id || p._id] ? 'Go to Cart →' : 'Add to Cart'}
                         </motion.button>
                       </div>
                     </motion.article>

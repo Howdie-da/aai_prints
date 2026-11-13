@@ -48,49 +48,21 @@ function App() {
     };
   }, []);
 
-  const devotionalProducts = useMemo(
-    () =>
-      allProducts.filter((p) => {
-        const cat = (p.category || '').toLowerCase();
-        const sub = (p.subcategory || '').toLowerCase();
-        const slug = (p.categorySlug || '').toLowerCase();
-        return (
-          cat === 'devotional' ||
-          slug.includes('devotional') ||
-          sub === 'backlit led frames' ||
-          sub === 'desk standees' ||
-          sub === 'wall hangings' ||
-          cat === 'backlit led frames' ||
-          cat === 'desk standees' ||
-          cat === 'wall hangings'
-        );
-      }),
+  // 1. Trending Products (marked with trending: on)
+  const trendingProducts = useMemo(
+    () => allProducts.filter((p) => p.isTrending || p.trending),
     [allProducts]
   );
 
-  const wallAndCarProducts = useMemo(
-    () =>
-      allProducts.filter((p) => {
-        const cat = (p.category || '').toLowerCase();
-        const sub = (p.subcategory || '').toLowerCase();
-        const slug = (p.categorySlug || '').toLowerCase();
-        return (
-          cat.includes('wall') ||
-          cat.includes('car') ||
-          slug.includes('wall') ||
-          slug.includes('car') ||
-          sub === 'metal wall art' ||
-          sub === 'dashboard idols' ||
-          sub === 'car hangings' ||
-          sub === 'wall clocks' ||
-          cat === 'metal wall art' ||
-          cat === 'dashboard idols' ||
-          cat === 'car hangings' ||
-          cat === 'wall clocks'
-        );
-      }),
-    [allProducts]
-  );
+  // 2. New Comer / New Arrivals (latest 7-10 products)
+  const newComerProducts = useMemo(() => {
+    const sorted = [...allProducts].sort((a, b) => {
+      const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+      const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+      return dateB - dateA;
+    });
+    return sorted.slice(0, 10);
+  }, [allProducts]);
 
   // UI state for account drawer
   const [isAccountOpen, setIsAccountOpen] = useState(false);
@@ -379,13 +351,28 @@ function App() {
               <AdminGuard onNavigateHome={() => navigateTo('home')}>
                 <AdminAddProductPage
                   onNavigateHome={() => navigateTo('home')}
-                  onProductCreated={(createdProd) => {
+                  onNavigateShop={() => navigateTo('shop', 'All')}
+                  onNavigateB2B={() => navigateTo('admin-b2b')}
+                  onProductCreated={() => {
                     fetchAllProducts().then((live) => {
                       if (live && live.length > 0) {
                         setAllProducts([...live]);
                       }
                     });
-                    handleSelectProduct(createdProd);
+                  }}
+                  onProductUpdated={() => {
+                    fetchAllProducts().then((live) => {
+                      if (live && live.length > 0) {
+                        setAllProducts([...live]);
+                      }
+                    });
+                  }}
+                  onProductDeleted={() => {
+                    fetchAllProducts().then((live) => {
+                      if (live && live.length > 0) {
+                        setAllProducts([...live]);
+                      }
+                    });
                   }}
                 />
               </AdminGuard>
@@ -414,24 +401,26 @@ function App() {
                 {/* Hero banner slider */}
                 <HeroSlider onSelectCategory={(cat) => navigateTo('shop', cat)} />
 
-                {/* Devotional Decor product section */}
-                <ProductSection
-                  sectionId="devotional"
-                  title="Devotional Decor"
-                  subtitle="Wall Hangings, Backlit LED Frames, Tabletop Idols & Spiritual Decor"
-                  products={devotionalProducts}
-                  onSelectProduct={handleSelectProduct}
-                  onViewMore={() => navigateTo('shop', 'Wall Hangings')}
-                />
+                {/* 1. Trending Now product section (all products marked with trending: on) */}
+                {trendingProducts.length > 0 && (
+                  <ProductSection
+                    sectionId="trending"
+                    title="Trending Now"
+                    subtitle="Most popular and trending handcrafted artworks chosen by our collectors"
+                    products={trendingProducts}
+                    onSelectProduct={handleSelectProduct}
+                    onViewMore={() => navigateTo('shop', 'All')}
+                  />
+                )}
 
-                {/* Wall & Car Decor product section */}
+                {/* 2. New Comer product section (latest 7-10 products) */}
                 <ProductSection
-                  sectionId="wall-decor"
-                  title="Wall & Car Decor"
-                  subtitle="Framed Wall Art, Modern Metal Wall Decor, Designer Clocks, Car Dashboard Idols & Hangings"
-                  products={wallAndCarProducts}
+                  sectionId="new-comer"
+                  title="Newcomer"
+                  subtitle="Fresh handcrafted additions, contemporary designs & newly released artisan decor"
+                  products={newComerProducts}
                   onSelectProduct={handleSelectProduct}
-                  onViewMore={() => navigateTo('shop', 'Metal Wall Art')}
+                  onViewMore={() => navigateTo('shop', 'All')}
                 />
 
                 {/* Clean notice when catalogue is empty / being populated */}
@@ -461,11 +450,11 @@ function App() {
                 {/* Whatmore-style Short Videos / Reels Showcase (Homepage only) */}
                 <ReelsSection onSelectProduct={handleSelectProduct} />
 
-                {/* "Your Style, Your Collection" horizontal scroll */}
-                <StyleCollection onSelectCategory={(cat) => navigateTo('shop', cat)} />
-
                 {/* Customer reviews section (resolves REVIEWS navbar link) */}
                 <Testimonials />
+
+                {/* "Your Style, Your Collection" horizontal scroll */}
+                <StyleCollection onSelectCategory={(cat) => navigateTo('shop', cat)} />
 
                 {/* Full-width promo strip (Free Shipping + ₹100 OFF) */}
                 <PromoBanner onNavigateShop={() => navigateTo('shop', 'All')} />

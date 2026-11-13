@@ -14,15 +14,10 @@ import {
   Minus,
   Plus,
   X,
-  Edit3,
-  Trash2,
   Check,
   ArrowRight,
 } from 'lucide-react';
 import { useWishlist } from '../context/WishlistContext';
-import { useAuth } from '../context/AuthContext';
-import AdminEditProductModal from '../components/AdminEditProductModal';
-import { api } from '../services/api';
 import { normalizeProduct } from '../services/productService';
 import './ProductDetailPage.css';
 
@@ -57,50 +52,14 @@ export default function ProductDetailPage({
   onNavigateHome,
   onNavigateShop,
   onSelectProduct,
-  onProductUpdated,
-  onProductDeleted
 }) {
   const { isInWishlist, toggleWishlist, addToCart } = useWishlist();
-  const { user, isAuthenticated } = useAuth();
-  const isAdmin = isAuthenticated && user?.role === 'admin';
 
   const [product, setProduct] = useState(initialProduct);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     setProduct(initialProduct);
   }, [initialProduct]);
-
-  const handleProductUpdated = (updated) => {
-    const normalized = normalizeProduct(updated);
-    setProduct(normalized);
-    if (onProductUpdated) {
-      onProductUpdated(normalized);
-    }
-  };
-
-  const handleDirectDelete = async () => {
-    const confirmed = window.confirm(
-      `Are you sure you want to permanently delete "${product.name}" from the database? This action cannot be undone.`
-    );
-    if (!confirmed) return;
-
-    try {
-      setIsDeleting(true);
-      const targetId = product._id || product.id;
-      await api.delete(`/products/${targetId}?hard=true`);
-      if (onProductDeleted) {
-        onProductDeleted(targetId);
-      } else if (onNavigateShop) {
-        onNavigateShop('All');
-      }
-    } catch (err) {
-      alert(`Delete failed: ${err.data?.message || err.message}`);
-    } finally {
-      setIsDeleting(false);
-    }
-  };
 
   // Selected quantity
   const [quantity, setQuantity] = useState(1);
@@ -116,9 +75,9 @@ export default function ProductDetailPage({
   // Accordion active tab
   const [openAccordion, setOpenAccordion] = useState('description');
 
-  // Add to Cart visual feedback state & duplicate click prevention
+  // Add to Cart visual feedback state (10s "Go to Cart" window)
   const [addedToast, setAddedToast] = useState(false);
-  const [isAdding, setIsAdding] = useState(false);
+  const cartTimerRef = useRef(null);
 
   // Zoom modal state
   const [isZoomOpen, setIsZoomOpen] = useState(false);
@@ -224,10 +183,12 @@ export default function ProductDetailPage({
     setQuantity((prev) => Math.max(1, prev + delta));
   };
 
-  // Add to Cart with debounce to prevent duplicate clicks
+  // Add to Cart: shows "GO TO CART →" for 10 seconds; clicking again redirects to full cart
   const handleAddToCart = () => {
-    if (isAdding) return;
-    setIsAdding(true);
+    if (addedToast) {
+      window.location.hash = '#/cart';
+      return;
+    }
 
     const itemToAdd = selectedVariant
       ? {
@@ -240,10 +201,10 @@ export default function ProductDetailPage({
     addToCart(itemToAdd, quantity);
     setAddedToast(true);
 
-    setTimeout(() => {
+    if (cartTimerRef.current) clearTimeout(cartTimerRef.current);
+    cartTimerRef.current = setTimeout(() => {
       setAddedToast(false);
-      setIsAdding(false);
-    }, 2000);
+    }, 10000);
   };
 
   const toggleAccordionSection = (sectionKey) => {
@@ -289,32 +250,6 @@ export default function ProductDetailPage({
       {/* ── 2. Main Product Section (2-Column Desktop Layout) ── */}
       <section className="pdp-main-section">
         <div className="pdp-container">
-          {isAdmin && (
-            <div className="pdp-admin-bar">
-              <div className="pdp-admin-badge">
-                <ShieldCheck size={16} />
-                <span>ADMIN ACCESS: Live Product Controls</span>
-              </div>
-              <div className="pdp-admin-actions">
-                <button
-                  type="button"
-                  className="pdp-admin-btn pdp-admin-btn--edit"
-                  onClick={() => setIsEditModalOpen(true)}
-                >
-                  <Edit3 size={15} /> Edit Product &amp; Photos
-                </button>
-                <button
-                  type="button"
-                  className="pdp-admin-btn pdp-admin-btn--delete"
-                  onClick={handleDirectDelete}
-                  disabled={isDeleting}
-                >
-                  <Trash2 size={15} /> {isDeleting ? 'Deleting...' : 'Delete Product'}
-                </button>
-              </div>
-            </div>
-          )}
-
           <div className="pdp-grid">
 
             {/* ── LEFT COLUMN: Product Gallery ── */}
@@ -535,12 +470,11 @@ export default function ProductDetailPage({
                   type="button"
                   className={`pdp-btn-add-cart ${addedToast ? 'added' : ''}`}
                   onClick={handleAddToCart}
-                  disabled={isAdding}
-                  aria-label={addedToast ? "Product added to cart" : "Add product to cart"}
+                  aria-label={addedToast ? "Go to cart" : "Add product to cart"}
                 >
                   {addedToast ? (
-                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-                      <Check size={16} strokeWidth={2.5} /> Added to Cart
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                      <ShoppingBag size={18} /> GO TO CART →
                     </span>
                   ) : (
                     <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
@@ -869,20 +803,6 @@ export default function ProductDetailPage({
           </div>
         </div>,
         document.body
-      )}
-
-      {/* ── 6. Admin Edit Product Modal ── */}
-      {isAdmin && (
-        <AdminEditProductModal
-          isOpen={isEditModalOpen}
-          onClose={() => setIsEditModalOpen(false)}
-          product={product}
-          onProductUpdated={handleProductUpdated}
-          onProductDeleted={(deletedId) => {
-            if (onProductDeleted) onProductDeleted(deletedId);
-            else if (onNavigateShop) onNavigateShop('All');
-          }}
-        />
       )}
     </div>
   );

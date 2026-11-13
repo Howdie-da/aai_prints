@@ -173,6 +173,11 @@ const productSchema = new mongoose.Schema(
       default: true,
       index: true
     },
+    isTrending: {
+      type: Boolean,
+      default: false,
+      index: true
+    },
     isDeleted: {
       type: Boolean,
       default: false,
@@ -197,6 +202,10 @@ productSchema.virtual('image').get(function () {
 
 productSchema.virtual('availability').get(function () {
   return this.inStock ? 'in_stock' : 'out_of_stock';
+});
+
+productSchema.virtual('trending').get(function () {
+  return Boolean(this.isTrending);
 });
 
 productSchema.virtual('stockCount').get(function () {
