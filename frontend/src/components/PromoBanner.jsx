@@ -32,7 +32,7 @@ export default function PromoBanner({ onNavigateShop }) {
 
         {/* Centre: gift & promo badge */}
         <div className="promo-center-badge" aria-hidden="true">
-          <Gift size={42} strokeWidth={1.8} style={{ color: '#ffd54f' }} />
+          <Gift size={42} strokeWidth={1.8} style={{ color: 'var(--gold-light)' }} />
         </div>
 
         {/* Right text */}

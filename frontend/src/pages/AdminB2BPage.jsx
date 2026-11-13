@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import {
   Building2,
   PackagePlus,
@@ -926,8 +927,8 @@ export default function AdminB2BPage({ onNavigateHome, onNavigateB2BPortal }) {
           </div>
         )}
 
-        {/* ════ EDIT WHOLESALE PRODUCT MODAL ════ */}
-        {editingProduct && (
+        {/* ════ EDIT WHOLESALE PRODUCT MODAL (Portaled to document.body) ════ */}
+        {editingProduct && createPortal(
           <div className="admin-b2b-modal-overlay" onClick={() => setEditingProduct(null)}>
             <div className="admin-b2b-modal" onClick={(e) => e.stopPropagation()}>
               <div className="admin-b2b-modal-header">
@@ -1217,7 +1218,8 @@ export default function AdminB2BPage({ onNavigateHome, onNavigateB2BPortal }) {
                 </div>
               </form>
             </div>
-          </div>
+          </div>,
+          document.body
         )}
       </div>
     </div>

@@ -107,9 +107,47 @@ const getPresignedSignature = async (req, res, next) => {
   }
 };
 
+// @desc    Upload a single video to Cloudinary
+// @route   POST /api/v1/media/upload-video
+// @access  Private/Admin
+const uploadVideo = async (req, res, next) => {
+  try {
+    if (!req.file) {
+      return next(new ApiError(400, 'Please select a video file to upload'));
+    }
+
+    const folder = req.body.folder || 'aai_prints/reels';
+    const result = await uploadStream(req.file.buffer, {
+      folder,
+      resource_type: 'video'
+    });
+
+    // Cloudinary auto-generates high-res poster image for any uploaded video
+    let posterUrl = result.url;
+    if (posterUrl && posterUrl.includes('/upload/')) {
+      posterUrl = posterUrl.replace(/\.[^/.]+$/, '.jpg');
+    }
+
+    return ApiResponse.send(
+      res,
+      201,
+      {
+        asset: {
+          ...result,
+          thumbnailUrl: posterUrl
+        }
+      },
+      'Video uploaded successfully to Cloudinary'
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   uploadSingle,
   uploadMultiple,
+  uploadVideo,
   deleteMedia,
   getPresignedSignature
 };

@@ -1,11 +1,14 @@
 /* ==============================================
    Aai Prints – Luxury Home & Devotional Decor Design System
    Brand: Ananta Art International
-   Fonts: Cinzel (royal accents) + Big Shoulders Display (headings) + Jost (body)
-   Palette: Heritage Teal #235f64 • Warm Artisan Gold #c59b27 • Classic Cream #fdfbf7
+   Fonts: Cormorant (display/headings) + Montserrat (body/UI) + Cinzel (eyebrows/accents)
+   Palette (60-30-10):
+     • 60% Surfaces: #FAF6F2 (Warm Alabaster) & #edd9cc (Warm Desert Sand)
+     • 30% Structure & Text: #3B2F2F (Deep Espresso) & #9E7B66 (Warm Taupe)
+     • 10% Accent: #C58B59 (Muted Ochre)
    ============================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;600;700;800;900&family=Cinzel:wght@500;600;700;800;900&family=Jost:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500;600;700&family=Cinzel:wght@500;600;700&display=swap');
 
 /* Reset & Box Sizing */
 *,
@@ -16,19 +19,20 @@
 
 html {
   font-size: 16px;
+  overflow-x: clip;
 }
 
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Jost', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Montserrat', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-size: 15px;
-  line-height: 1.6;
-  color: #17191a;
-  background-color: var(--cream);
+  line-height: 1.65;
+  color: var(--text-primary, #3B2F2F);
+  background-color: var(--bg-primary, #faf2ea);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
+  overflow-x: clip;
   text-rendering: optimizeLegibility;
 }
 
@@ -36,7 +40,7 @@ body {
   width: 100%;
   max-width: 100%;
   margin: 0;
-  overflow-x: hidden;
+  overflow-x: clip;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -49,10 +53,11 @@ h4,
 h5,
 h6 {
   margin: 0;
-  line-height: 1.18;
-  color: var(--teal-deep);
-  font-family: 'Big Shoulders Display', sans-serif;
-  letter-spacing: 0.5px;
+  line-height: 1.15;
+  color: var(--text-primary, #3B2F2F);
+  font-family: 'Cormorant', 'Georgia', serif;
+  letter-spacing: 0.3px;
+  font-weight: 600;
 }
 
 p {
@@ -81,8 +86,9 @@ button {
 
 /* Page View Instant Snappy Fade-in */
 .page-view-fade {
-  animation: pageFadeIn 0.16s ease-out forwards;
-  will-change: opacity;
+  position: relative;
+  z-index: 1;
+  animation: pageFadeIn 0.16s ease-out;
 }
 
 @keyframes pageFadeIn {
@@ -103,69 +109,134 @@ ol {
 }
 
 /* ==============================================
-   DESIGN TOKENS
+   DESIGN TOKENS (60-30-10 RULE)
    ============================================== */
 :root {
-  /* Brand Heritage Teal */
-  --teal: #235f64;
-  --teal-dark: #164044;
-  --teal-deep: #0e2a2d;
-  --teal-light: #eef7f8;
-  --teal-surface: #f2f8f9;
-  --teal-border: rgba(35, 95, 100, 0.22);
-  --teal-border-light: rgba(35, 95, 100, 0.12);
-  --teal-glow: rgba(35, 95, 100, 0.18);
+  /* ── Stacking Context & Z-Index Tokens ── */
+  --z-base: 1;
+  --z-sticky-nav: 1000;
+  --z-dropdown: 1020;
+  --z-drawer: 90000;
+  --z-modal: 99999;
+  --z-toast: 100000;
 
-  /* Warm Artisan Gold Accents */
-  --gold: #c59b27;
-  --gold-light: #dfbe59;
-  --gold-dark: #9c7717;
-  --gold-pale: #fcf8eb;
-  --gold-border: rgba(197, 155, 39, 0.35);
-  --gold-border-light: rgba(197, 155, 39, 0.18);
-  --gold-gradient: linear-gradient(135deg, #dfbe59 0%, #c59b27 50%, #9c7717 100%);
-  --gold-shimmer: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.4) 50%, transparent 100%);
+  /* ── Sticky Navbar Dimensions ── */
+  --navbar-height: 97px;
 
-  /* Warm Temple Cream & Stone */
-  --cream: #fdfbf7;
-  --cream-surface: #f8f4ee;
-  --cream-card: #ffffff;
-  --cream-border: #ede6dc;
+  /* ── 60% Surfaces: Warm Ivory Primary Canvas & Desert Sand Accent Surfaces ── */
+  --bg-primary: rgba(250, 242, 234, 0.94);
+  /* Primary background as requested */
+  --bg-primary-solid: #faf2ea;
+  --cream: #faf2ea;
+  /* Primary background container surface */
+  --cream-surface: #edd9cc;
+  /* Smart Desert Sand secondary surface tone */
+  --cream-card: #FAF6F2;
+  /* Content cards in Warm Alabaster */
+  --cream-border: rgba(158, 123, 102, 0.3);
+  /* Warm Taupe neutral divider */
+  --cream-2: #edd9cc;
+  --cream-deep: #D4B9A5;
+  --cream-pale: #FAF6F2;
+  --bg-alabaster: #FAF6F2;
+  --off-white: #FAF7F2;
+  /* Delicate warm off-white cream tint */
+  --white: #FAF7F2;
+  /* Light cream-ish off-white */
 
-  /* Editorial Typography Colors */
-  --text-primary: #17191a;
-  --text-secondary: #4a5154;
-  --text-muted: #7a8286;
-  --text-inverse: #ffffff;
+  /* ── Dedicated Warm Desert Sand Accent Tokens (#edd9cc) ── */
+  --sand-accent: #edd9cc;
+  --sand-accent-light: rgba(237, 217, 204, 0.45);
+  --sand-accent-subtle: rgba(237, 217, 204, 0.25);
+  --sand-accent-border: rgba(212, 185, 165, 0.6);
+  --sand-accent-gradient: linear-gradient(135deg, #FAF2EA 0%, #EDD9CC 100%);
+  --sand-vignette: radial-gradient(circle at 50% 45%, #faf2ea 30%, #edd9cc 100%);
+
+  /* ── 30% Structure & Contrast: Deep Espresso & Warm Taupe ── */
+  --espresso: #3B2F2F;
+  /* Deep Espresso charcoal-brown */
+  --espresso-dark: #2A2121;
+  --espresso-deep: #1E1616;
+  --espresso-light: #524242;
+
+  --taupe: #9E7B66;
+  /* Warm Taupe mid-tone neutral */
+  --taupe-light: rgba(158, 123, 102, 0.18);
+  --taupe-border: rgba(158, 123, 102, 0.32);
+
+  --text-primary: #3B2F2F;
+  /* Deep Espresso readable text */
+  --text-secondary: #5C4B4B;
+  /* Softer charcoal espresso */
+  --text-muted: #9E7B66;
+  /* Warm Taupe */
+  --text-inverse: #FAF6F2;
+  --text-dark: #3B2F2F;
+
+  /* ── 10% Accent: Muted Ochre for CTAs, active states, and links ── */
+  --ochre: #C58B59;
+  /* Muted Ochre warm bronze-gold */
+  --ochre-hover: #AF7644;
+  --ochre-dark: #8E5A2D;
+  --ochre-light: #DDB084;
+  --ochre-pale: #F8EDE3;
+  --ochre-border: rgba(197, 139, 89, 0.45);
+  --ochre-border-light: rgba(197, 139, 89, 0.22);
+  --ochre-gradient: linear-gradient(135deg, #D49C6B 0%, #C58B59 50%, #A87142 100%);
+  --ochre-shimmer: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.4) 50%, transparent 100%);
+
+  /* Token aliases for total backwards compatibility */
+  --teal: var(--ochre);
+  --teal-dark: var(--ochre-hover);
+  --teal-deep: var(--espresso);
+  --teal-light: var(--ochre-pale);
+  --teal-surface: var(--bg-alabaster);
+  --teal-border: var(--ochre-border);
+  --teal-border-light: var(--ochre-border-light);
+  --teal-glow: rgba(197, 139, 89, 0.22);
+
+  --gold: var(--ochre);
+  --gold-light: var(--ochre-light);
+  --gold-dark: var(--ochre-hover);
+  --gold-pale: var(--ochre-pale);
+  --gold-border: var(--ochre-border);
+  --gold-border-light: var(--ochre-border-light);
+  --gold-gradient: var(--ochre-gradient);
+  --gold-shimmer: var(--ochre-shimmer);
 
   /* Functional Status */
-  --star-gold: #f59e0b;
-  --badge-discount: #dc2626;
-  --badge-discount-bg: #fef2f2;
-  --badge-bestseller: #c59b27;
-  --badge-new: #235f64;
-  --badge-success: #15803d;
+  --star-gold: #C58B59;
+  --badge-discount: #A84936;
+  --badge-discount-bg: #FAECE9;
+  --badge-bestseller: var(--ochre);
+  --badge-new: var(--espresso);
+  --badge-success: #446E4A;
 
   /* Layout & Geometry */
   --max-w: 1340px;
-  --radius-xs: 4px;
-  --radius-sm: 8px;
-  --radius-md: 14px;
-  --radius-lg: 20px;
-  --radius-xl: 28px;
+  --radius-xs: 3px;
+  --radius-sm: 7px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 26px;
   --radius-full: 9999px;
 
-  /* Layered Shadows (Soft luxury elevation) */
-  --shadow-subtle: 0 2px 8px -2px rgba(17, 24, 39, 0.05);
-  --shadow-card: 0 4px 20px -4px rgba(22, 64, 68, 0.08), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
-  --shadow-hover: 0 18px 40px -8px rgba(22, 64, 68, 0.16), 0 6px 14px -2px rgba(0, 0, 0, 0.06);
-  --shadow-drawer: -12px 0 45px -10px rgba(14, 42, 45, 0.28);
-  --shadow-gold: 0 6px 20px -4px rgba(197, 155, 39, 0.35);
+  /* Warm-tinted layered shadows */
+  --shadow-subtle: 0 2px 8px -2px rgba(59, 47, 47, 0.05);
+  --shadow-card: 0 4px 20px -4px rgba(59, 47, 47, 0.08), 0 2px 6px -1px rgba(59, 47, 47, 0.03);
+  --shadow-hover: 0 16px 36px -6px rgba(59, 47, 47, 0.14), 0 6px 14px -2px rgba(59, 47, 47, 0.05);
+  --shadow-drawer: -12px 0 48px -10px rgba(59, 47, 47, 0.35);
+  --shadow-gold: 0 6px 22px -4px rgba(197, 139, 89, 0.38);
 
   /* Transitions */
   --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-smooth: 350ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-normal: 260ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: 380ms cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Typography scale */
+  --font-display: 'Cormorant', 'Georgia', serif;
+  --font-eyebrow: 'Cinzel', serif;
+  --font-body: 'Montserrat', system-ui, sans-serif;
 }
 
 /* ==============================================
@@ -197,10 +268,10 @@ ol {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-family: 'Cinzel', serif;
-  font-size: 11px;
+  font-family: var(--font-eyebrow);
+  font-size: 10.5px;
   font-weight: 600;
-  letter-spacing: 2.6px;
+  letter-spacing: 2.8px;
   text-transform: uppercase;
   color: var(--gold);
   margin-bottom: 8px;
@@ -214,38 +285,37 @@ ol {
 }
 
 .sec-title {
-  font-family: 'Big Shoulders Display', 'Cinzel', sans-serif;
-  font-size: 38px;
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-size: 42px;
+  font-weight: 600;
   color: var(--teal-deep);
   text-align: center;
-  letter-spacing: 0.8px;
-  line-height: 1.15;
-  margin-bottom: 8px;
-  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  line-height: 1.12;
+  margin-bottom: 10px;
+  font-style: italic;
 }
 
 @media (max-width: 768px) {
   .sec-title {
-    font-size: 30px;
+    font-size: 32px;
   }
 }
 
 .sec-subtitle {
-  font-family: 'Jost', sans-serif;
+  font-family: var(--font-body);
   font-size: 14px;
   color: var(--text-muted);
   text-align: center;
   margin-bottom: 0;
-  line-height: 1.6;
+  line-height: 1.65;
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
+  font-weight: 400;
+  letter-spacing: 0.1px;
 }
 
-/* ==============================================
-   LUXURY BUTTONS & MICRO-INTERACTIONS
-   ============================================== */
 .btn-view-more {
   display: inline-flex;
   align-items: center;
@@ -254,17 +324,17 @@ ol {
   width: fit-content;
   margin: 40px auto 0;
   background: var(--teal);
-  color: #ffffff;
-  font-family: 'Jost', sans-serif;
-  font-size: 12px;
+  color: var(--text-inverse);
+  font-family: var(--font-body);
+  font-size: 11.5px;
   font-weight: 600;
-  letter-spacing: 2px;
+  letter-spacing: 1.8px;
   text-transform: uppercase;
-  padding: 14px 40px;
+  padding: 14px 42px;
   border-radius: var(--radius-full);
-  border: 1px solid var(--teal-border);
+  border: 1px solid var(--ochre-border);
   cursor: pointer;
-  box-shadow: 0 4px 14px -2px rgba(35, 95, 100, 0.3);
+  box-shadow: 0 4px 16px -2px rgba(197, 139, 89, 0.35);
   transition: all var(--transition-normal);
   text-decoration: none;
   position: relative;
@@ -272,10 +342,10 @@ ol {
 }
 
 .btn-view-more:hover {
-  background: var(--teal-dark);
+  background: var(--ochre-hover);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px -4px rgba(22, 64, 68, 0.4);
-  color: #ffffff;
+  box-shadow: 0 10px 28px -4px rgba(175, 118, 68, 0.45);
+  color: var(--text-inverse);
 }
 
 .btn-view-more:active {
@@ -290,14 +360,14 @@ ol {
   gap: 10px;
   background: var(--gold-gradient);
   color: #ffffff;
-  font-family: 'Jost', sans-serif;
-  font-size: 13px;
+  font-family: var(--font-body);
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: 1.8px;
   text-transform: uppercase;
-  padding: 14px 36px;
+  padding: 14px 38px;
   border-radius: var(--radius-full);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.28);
   box-shadow: var(--shadow-gold);
   cursor: pointer;
   transition: all var(--transition-normal);
@@ -308,7 +378,7 @@ ol {
 
 .btn-gold:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 26px -2px rgba(197, 155, 39, 0.5);
+  box-shadow: 0 10px 28px -2px rgba(184, 137, 30, 0.5);
 }
 
 .btn-gold:active {
@@ -323,12 +393,12 @@ ol {
   gap: 8px;
   background: transparent;
   color: var(--teal);
-  font-family: 'Jost', sans-serif;
-  font-size: 12px;
+  font-family: var(--font-body);
+  font-size: 11.5px;
   font-weight: 600;
   letter-spacing: 1.8px;
   text-transform: uppercase;
-  padding: 13px 32px;
+  padding: 13px 34px;
   border-radius: var(--radius-full);
   border: 1.5px solid var(--teal);
   cursor: pointer;
@@ -358,10 +428,23 @@ ol {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #d4ccbf;
+  background: var(--taupe);
   border-radius: 999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--teal);
+  background: var(--ochre);
+}
+
+/* ── Sticky Navbar Responsive Height Variables ── */
+@media (max-width: 900px) {
+  :root {
+    --navbar-height: 83px;
+  }
+}
+
+@media (max-width: 600px) {
+  :root {
+    --navbar-height: 73px;
+  }
 }

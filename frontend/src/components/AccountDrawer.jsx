@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   User,
@@ -16,6 +17,7 @@ import {
   PlusCircle,
   Headphones,
   Building2,
+  Film,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useWishlist } from '../context/WishlistContext';
@@ -112,7 +114,7 @@ export default function AccountDrawer({ isOpen, onClose, onNavigate }) {
   const displayEmail = user?.email || '';
   const displayName = user?.name || displayEmail.split('@')[0] || 'User';
 
-  return (
+  return createPortal(
     <AnimatePresence>
       {isOpen && (
         <motion.div
@@ -210,7 +212,6 @@ export default function AccountDrawer({ isOpen, onClose, onNavigate }) {
                     <div className="account-admin-card-text">
                       <div className="account-admin-card-title">
                         <strong>Retail Catalog</strong>
-                        <span className="admin-chip">ADMIN ACCESS</span>
                       </div>
                       <p>Create &amp; publish retail products</p>
                     </div>
@@ -234,17 +235,43 @@ export default function AccountDrawer({ isOpen, onClose, onNavigate }) {
                       }
                     }}
                   >
-                    <div className="account-admin-card-icon" style={{ background: '#fbf9f5', color: '#c59b27' }}>
+                    <div className="account-admin-card-icon" style={{ background: 'var(--cream)', color: 'var(--gold)' }}>
                       <Building2 size={22} />
                     </div>
                     <div className="account-admin-card-text">
                       <div className="account-admin-card-title">
-                        <strong>Wholesale &amp; Bulk Hub</strong>
-                        <span className="admin-chip" style={{ background: '#133538', color: '#ffd54f' }}>
-                          WHOLESALE ADMIN
-                        </span>
+                        <strong>Wholesale Hub</strong>
                       </div>
-                      <p>Manage wholesale catalog, tier rates &amp; view RFQs</p>
+                      <p>Manage wholesale catalog</p>
+                    </div>
+                    <ChevronRight size={18} className="account-admin-arrow" />
+                  </div>
+
+                  <div
+                    className="account-admin-card"
+                    style={{ borderColor: 'rgba(197, 139, 89, 0.45)' }}
+                    onClick={() => {
+                      onClose();
+                      if (onNavigate) onNavigate('admin-reels');
+                    }}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        onClose();
+                        if (onNavigate) onNavigate('admin-reels');
+                      }
+                    }}
+                  >
+                    <div className="account-admin-card-icon" style={{ background: '#FAF6F2', color: '#C58B59' }}>
+                      <Film size={22} />
+                    </div>
+                    <div className="account-admin-card-text">
+                      <div className="account-admin-card-title">
+                        <strong>Shoppable Reels</strong>
+                      </div>
+                      <p>Upload videos &amp; link to products</p>
                     </div>
                     <ChevronRight size={18} className="account-admin-arrow" />
                   </div>
@@ -271,12 +298,12 @@ export default function AccountDrawer({ isOpen, onClose, onNavigate }) {
                     }
                   }}
                 >
-                  <div className="account-nav-item-icon" style={{ color: '#235f64', background: 'rgba(35, 95, 100, 0.08)' }}>
+                  <div className="account-nav-item-icon" style={{ color: 'var(--teal)', background: 'var(--teal-border-light)' }}>
                     <Building2 size={18} />
                   </div>
                   <div className="account-nav-item-content">
                     <strong>Wholesale &amp; Bulk Orders Portal</strong>
-                    <span>Volume pricing, corporate gifting &amp; RFQs</span>
+                    <span>Volume pricing, corporate gifting</span>
                   </div>
                   <ChevronRight size={16} className="account-nav-chevron" />
                 </div>
@@ -434,11 +461,11 @@ export default function AccountDrawer({ isOpen, onClose, onNavigate }) {
               {(localError || authError) && (
                 <div
                   style={{
-                    backgroundColor: '#fee2e2',
-                    border: '1px solid #ef4444',
-                    color: '#b91c1c',
+                    backgroundColor: 'var(--badge-discount-bg)',
+                    border: '1px solid rgba(184, 50, 50, 0.3)',
+                    color: 'var(--badge-discount)',
                     padding: '10px 14px',
-                    borderRadius: '8px',
+                    borderRadius: 'var(--radius-sm)',
                     fontSize: '13px',
                     marginBottom: '16px',
                     display: 'flex',
@@ -577,6 +604,7 @@ export default function AccountDrawer({ isOpen, onClose, onNavigate }) {
       </motion.aside>
     </motion.div>
   )}
-</AnimatePresence>
+</AnimatePresence>,
+    document.body
   );
 }

@@ -4,7 +4,7 @@
    ======================================================== */
 
 .wishlist-page {
-  background: var(--cream, #faf7f2);
+  background: var(--bg-primary, rgba(250, 242, 234, 0.94));
   min-height: 85vh;
   padding-bottom: 80px;
 }
@@ -18,10 +18,10 @@
 
 /* ── 1. Breadcrumbs ── */
 .wishlist-breadcrumb {
-  background: var(--white, #ffffff);
-  border-bottom: 1px solid rgba(45, 115, 121, 0.12);
+  background: var(--bg-primary, rgba(250, 242, 234, 0.94));
+  border-bottom: 1px solid var(--taupe-border);
   padding: 14px 0;
-  font-family: 'Jost', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 13.5px;
 }
 
@@ -44,7 +44,7 @@
 }
 
 .wishlist-breadcrumb .breadcrumb-link:hover {
-  color: var(--teal, #235f64);
+  color: var(--teal);
 }
 
 .wishlist-breadcrumb .breadcrumb-separator {
@@ -54,7 +54,7 @@
 }
 
 .wishlist-breadcrumb .breadcrumb-current {
-  color: var(--teal, #235f64);
+  color: var(--teal);
   font-weight: 600;
 }
 
@@ -64,7 +64,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 36px 0 24px;
-  border-bottom: 1px solid rgba(45, 115, 121, 0.15);
+  border-bottom: 1px solid var(--taupe-border);
   margin-bottom: 32px;
   gap: 16px;
   flex-wrap: wrap;
@@ -101,12 +101,12 @@
 }
 
 .wishlist-page-title {
-  font-family: 'Big Shoulders Display', sans-serif;
-  font-size: 34px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--teal-dark, #1b494d);
+  font-family: 'Cormorant', serif;
+  font-size: 42px;
+  font-weight: 600;
+  font-style: italic;
+  letter-spacing: 0.3px;
+  color: var(--teal-deep);
   margin: 0;
   line-height: 1.1;
 }
@@ -116,8 +116,8 @@
   align-items: center;
   justify-content: center;
   background: rgba(45, 115, 121, 0.1);
-  color: var(--teal, #235f64);
-  font-family: 'Jost', sans-serif;
+  color: var(--teal);
+  font-family: 'Montserrat', sans-serif;
   font-size: 13px;
   font-weight: 600;
   padding: 4px 12px;
@@ -126,7 +126,7 @@
 }
 
 .wishlist-subtitle {
-  font-family: 'Jost', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 14.5px;
   color: #666;
   margin: 0;
@@ -145,7 +145,7 @@
   background: transparent;
   border: 1px solid rgba(201, 56, 56, 0.3);
   color: #c93838;
-  font-family: 'Jost', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 13.5px;
   font-weight: 500;
   padding: 8px 16px;
@@ -184,7 +184,7 @@
 }
 
 .wishlist-empty-heading {
-  font-family: 'Big Shoulders Display', sans-serif;
+  font-family: 'Cormorant', serif;
   font-size: 28px;
   font-weight: 700;
   letter-spacing: 0.8px;
@@ -194,7 +194,7 @@
 }
 
 .wishlist-empty-description {
-  font-family: 'Jost', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 15px;
   color: #666;
   line-height: 1.6;
@@ -210,7 +210,7 @@
 }
 
 .wishlist-empty-btn {
-  font-family: 'Jost', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 14.5px;
   font-weight: 600;
   padding: 12px 26px;
@@ -223,7 +223,7 @@
 }
 
 .wishlist-empty-btn--primary {
-  background: var(--teal, #235f64);
+  background: var(--teal);
   color: var(--white, #ffffff);
   border: none;
 }
@@ -242,7 +242,7 @@
 
 .wishlist-empty-btn--secondary:hover {
   background: rgba(45, 115, 121, 0.06);
-  border-color: var(--teal, #235f64);
+  border-color: var(--teal);
 }
 
 /* ── 4. Responsive Product Grid ── */
@@ -305,9 +305,9 @@
   top: 10px;
   left: 10px;
   z-index: 2;
-  background: var(--teal, #235f64);
+  background: var(--teal);
   color: var(--white, #ffffff);
-  font-family: 'Jost', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
@@ -322,7 +322,7 @@
 }
 
 .wishlist-card-tag--new-arrival {
-  background: var(--teal, #235f64);
+  background: var(--teal);
 }
 
 /* 1:1 Image Container */
@@ -364,7 +364,7 @@
 }
 
 .wishlist-card-category {
-  font-family: 'Jost', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 11.5px;
   color: #888;
   text-transform: uppercase;
@@ -373,7 +373,7 @@
 }
 
 .wishlist-card-title {
-  font-family: 'Jost', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 15px;
   font-weight: 600;
   color: #1a1a1a;
@@ -389,7 +389,7 @@
 }
 
 .wishlist-card-title:hover {
-  color: var(--teal, #235f64);
+  color: var(--teal);
 }
 
 /* Price Row */
@@ -402,7 +402,7 @@
 }
 
 .wishlist-card-price {
-  font-family: 'Big Shoulders Display', sans-serif;
+  font-family: 'Cormorant', serif;
   font-size: 20px;
   font-weight: 700;
   color: var(--teal-dark, #1b494d);
@@ -410,14 +410,14 @@
 }
 
 .wishlist-card-orig-price {
-  font-family: 'Jost', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 13.5px;
   color: #999;
   text-decoration: line-through;
 }
 
 .wishlist-card-discount {
-  font-family: 'Jost', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 11.5px;
   font-weight: 700;
   color: #27ae60;
@@ -433,10 +433,10 @@
 
 .wishlist-card-cart-btn {
   width: 100%;
-  background: var(--teal, #235f64);
+  background: var(--teal);
   color: var(--white, #ffffff);
-  border: 1px solid var(--teal, #235f64);
-  font-family: 'Jost', sans-serif;
+  border: 1px solid var(--teal);
+  font-family: 'Montserrat', sans-serif;
   font-size: 13px;
   font-weight: 600;
   text-transform: uppercase;
@@ -475,7 +475,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 10000;
+  z-index: 99999;
   padding: 20px;
   animation: fadeIn 0.2s ease;
 }
@@ -525,7 +525,7 @@
 }
 
 .wishlist-modal-title {
-  font-family: 'Big Shoulders Display', sans-serif;
+  font-family: 'Cormorant', serif;
   font-size: 24px;
   font-weight: 700;
   text-transform: uppercase;
@@ -535,7 +535,7 @@
 }
 
 .wishlist-modal-desc {
-  font-family: 'Jost', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 14.5px;
   color: #666;
   line-height: 1.5;
@@ -549,7 +549,7 @@
 }
 
 .wishlist-modal-btn {
-  font-family: 'Jost', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 14px;
   font-weight: 600;
   padding: 10px 20px;

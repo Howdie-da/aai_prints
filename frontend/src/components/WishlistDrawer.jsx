@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, X, Trash2, ShoppingBag, ArrowRight } from 'lucide-react';
 import { useWishlist } from '../context/WishlistContext';
@@ -65,7 +66,7 @@ export default function WishlistDrawer({
     }
   };
 
-  return (
+  return createPortal(
     <AnimatePresence>
       {isWishlistOpen && (
         <motion.div
@@ -258,6 +259,7 @@ export default function WishlistDrawer({
           </motion.aside>
         </motion.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 }

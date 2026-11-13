@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Heart, X, SlidersHorizontal, Filter, Check, ShoppingBag, Package } from 'lucide-react';
 import { useWishlist } from '../context/WishlistContext';
@@ -928,9 +929,9 @@ export default function ShopPage({
         </div>
       </div>
 
-      {/* ── 6. Mobile Filter Drawer ── */}
+      {/* ── 6. Mobile Filter Drawer (Portaled to document.body) ── */}
       <AnimatePresence>
-        {mobileFilterOpen && (
+        {mobileFilterOpen && createPortal(
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -1069,7 +1070,8 @@ export default function ShopPage({
                 </button>
               </div>
             </motion.div>
-          </motion.div>
+          </motion.div>,
+          document.body
         )}
       </AnimatePresence>
     </div>

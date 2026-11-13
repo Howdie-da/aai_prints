@@ -12,8 +12,8 @@ function StarRating({ rating = 5.0, count }) {
             key={i}
             size={12}
             strokeWidth={1.8}
-            fill={i <= Math.floor(rating) ? '#c59b27' : '#e2e8f0'}
-            color={i <= Math.floor(rating) ? '#c59b27' : '#cbd5e1'}
+            fill={i <= Math.floor(rating) ? 'var(--star-gold)' : '#e4cbba'}
+            color={i <= Math.floor(rating) ? 'var(--star-gold)' : '#d6b9a3'}
           />
         ))}
       </span>

@@ -2,10 +2,10 @@
    Luxury Trust Bar
    ============================================== */
 .trust-bar {
-  background: linear-gradient(90deg, #0e2a2d 0%, #164044 50%, #0e2a2d 100%);
+  background: linear-gradient(90deg, #2A2121 0%, #3B2F2F 50%, #2A2121 100%);
   padding: 32px 0;
-  border-top: 1px solid rgba(197, 155, 39, 0.25);
-  border-bottom: 1px solid rgba(197, 155, 39, 0.25);
+  border-top: 1px solid rgba(237, 217, 204, 0.25);
+  border-bottom: 1px solid rgba(237, 217, 204, 0.25);
   position: relative;
   z-index: 10;
 }
@@ -33,7 +33,7 @@
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: rgba(197, 155, 39, 0.15);
+  background: rgba(197, 139, 89, 0.18);
   border: 1px solid var(--gold-border);
   color: var(--gold-light);
   display: flex;
@@ -46,7 +46,7 @@
 
 .trust-item:hover .trust-icon {
   background: var(--gold-gradient);
-  color: #0e2a2d;
+  color: var(--teal-deep);
   transform: scale(1.08);
 }
 
@@ -65,9 +65,9 @@
 }
 
 .trust-desc {
-  font-family: 'Jost', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 12.5px;
-  color: #b0c4c6;
+  color: #D6C8C0;
   margin: 3px 0 0;
   font-weight: 400;
 }

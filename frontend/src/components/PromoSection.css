@@ -8,11 +8,11 @@
 }
 
 .promo-dark {
-  background: #1a2e0a;
+  background: #3B2F2F;
 }
 
 .promo-light-green {
-  background: linear-gradient(135deg, #edf5e1 0%, #f5f9f0 100%);
+  background: linear-gradient(135deg, #FAF6F2 0%, #faf2ea 100%);
 }
 
 .promo-banner-inner {
@@ -36,11 +36,11 @@
   font-weight: 700;
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  color: #a8d080;
+  color: #C58B59;
 }
 
 .promo-eyebrow-dark {
-  color: #4a7c20;
+  color: #9E7B66;
 }
 
 .promo-title {
@@ -49,12 +49,12 @@
   color: #fff;
   margin: 0;
   line-height: 1.2;
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: 'Cormorant', Georgia, serif;
   letter-spacing: -0.5px;
 }
 
 .promo-title-dark {
-  color: #1a2e0a;
+  color: #3B2F2F;
 }
 
 .promo-desc {
@@ -66,7 +66,7 @@
 }
 
 .promo-desc-dark {
-  color: #4a5e3a;
+  color: #5C4B4B;
 }
 
 .promo-list {
@@ -93,7 +93,7 @@
 .promo-sale-price {
   font-size: 36px;
   font-weight: 800;
-  color: #2d5016;
+  color: #C58B59;
   line-height: 1;
 }
 
@@ -104,7 +104,7 @@
 }
 
 .promo-save-badge {
-  background: #2d5016;
+  background: #C58B59;
   color: #fff;
   font-size: 12px;
   font-weight: 700;
@@ -126,22 +126,22 @@
 
 .promo-btn-light {
   background: #fff;
-  color: #1a2e0a;
+  color: #3B2F2F;
 }
 
 .promo-btn-light:hover {
-  background: #a8d080;
+  background: #C58B59;
   transform: translateY(-2px);
 }
 
 .promo-btn-dark {
-  background: #2d5016;
+  background: #C58B59;
   color: #fff;
-  box-shadow: 0 4px 14px rgba(45, 80, 22, 0.25);
+  box-shadow: 0 4px 14px rgba(197, 139, 89, 0.3);
 }
 
 .promo-btn-dark:hover {
-  background: #1e3a0e;
+  background: #AF7644;
   transform: translateY(-2px);
 }
 

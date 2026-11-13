@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, Trash2, X, ShoppingBag, Check, AlertCircle } from 'lucide-react';
 import { useWishlist } from '../context/WishlistContext';
@@ -314,8 +315,8 @@ export default function WishlistPage({
         )}
       </div>
 
-      {/* ── 4. Clear Wishlist Confirmation Modal ── */}
-      {showClearConfirm && (
+      {/* ── 4. Clear Wishlist Confirmation Modal (Portaled to document.body) ── */}
+      {showClearConfirm && createPortal(
         <div
           className="wishlist-modal-backdrop"
           onClick={() => setShowClearConfirm(false)}
@@ -354,7 +355,8 @@ export default function WishlistPage({
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );

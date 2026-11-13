@@ -12,7 +12,7 @@ const products = [
     rating: 4.8,
     reviews: 245,
     tag: 'Bestseller',
-    tagColor: '#e8a020',
+    tagColor: 'var(--gold)',
   },
   {
     id: 'prod-2',
@@ -24,7 +24,7 @@ const products = [
     rating: 4.7,
     reviews: 183,
     tag: 'New',
-    tagColor: '#2d5016',
+    tagColor: 'var(--teal)',
   },
   {
     id: 'prod-3',
@@ -36,7 +36,7 @@ const products = [
     rating: 4.9,
     reviews: 312,
     tag: 'Popular',
-    tagColor: '#c04040',
+    tagColor: 'var(--badge-discount)',
   },
   {
     id: 'prod-4',
@@ -60,7 +60,7 @@ const products = [
     rating: 4.7,
     reviews: 154,
     tag: 'Spiritual',
-    tagColor: '#2d5016',
+    tagColor: 'var(--teal-dark)',
   },
   {
     id: 'prod-6',
@@ -72,7 +72,7 @@ const products = [
     rating: 4.8,
     reviews: 88,
     tag: 'New',
-    tagColor: '#2d5016',
+    tagColor: 'var(--teal)',
   },
   {
     id: 'prod-7',
@@ -84,7 +84,7 @@ const products = [
     rating: 4.9,
     reviews: 67,
     tag: 'Value Pack',
-    tagColor: '#8b5e00',
+    tagColor: 'var(--gold-dark)',
   },
   {
     id: 'prod-8',
@@ -96,7 +96,7 @@ const products = [
     rating: 4.8,
     reviews: 201,
     tag: 'Trending',
-    tagColor: '#c04040',
+    tagColor: 'var(--badge-discount)',
   },
 ];
 

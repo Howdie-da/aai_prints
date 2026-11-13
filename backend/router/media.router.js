@@ -4,13 +4,15 @@ const router = express.Router();
 const {
   uploadSingle,
   uploadMultiple,
+  uploadVideo,
   deleteMedia,
   getPresignedSignature
 } = require('../controllers/media.controller');
 const { protect, authorize } = require('../middlewares/auth.middleware');
 const {
   uploadSingle: multerSingle,
-  uploadArray: multerArray
+  uploadArray: multerArray,
+  uploadVideoSingle: multerVideo
 } = require('../middlewares/upload.middleware');
 
 // All media management endpoints are protected and restricted to Admin
@@ -21,6 +23,9 @@ router.post('/upload', multerSingle('image'), uploadSingle);
 
 // Upload multiple images (field name: 'images', max 8 images)
 router.post('/upload-multiple', multerArray('images', 8), uploadMultiple);
+
+// Upload single video to Cloudinary (field name: 'video', max 100MB)
+router.post('/upload-video', multerVideo('video'), uploadVideo);
 
 // Delete an asset from Cloudinary by publicId
 router.delete('/', deleteMedia);

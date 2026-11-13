@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShoppingBag, Trash2, Plus, Minus, Lock, ShieldCheck, CreditCard } from 'lucide-react';
 import { useWishlist } from '../context/WishlistContext';
@@ -15,6 +16,7 @@ function parsePrice(price) {
 export default function CartPage({
   onNavigateHome,
   onNavigateShop,
+  onNavigateCheckout,
   onSelectProduct,
 }) {
   const {
@@ -358,7 +360,13 @@ export default function CartPage({
                   whileTap={{ scale: 0.98 }}
                   type="button"
                   className="cart-checkout-cta"
-                  onClick={() => setShowCheckoutNotice(true)}
+                  onClick={() => {
+                    if (onNavigateCheckout) {
+                      onNavigateCheckout();
+                    } else {
+                      window.location.hash = '#/checkout';
+                    }
+                  }}
                   aria-label={`Proceed to checkout with total amount ₹${finalTotal.toLocaleString('en-IN')}`}
                   style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
                 >
@@ -384,8 +392,8 @@ export default function CartPage({
         )}
       </div>
 
-      {/* ── 4. Confirmation Dialog: Clear Entire Cart ── */}
-      {showClearModal && (
+      {/* ── 4. Confirmation Dialog: Clear Entire Cart (Portaled to document.body) ── */}
+      {showClearModal && createPortal(
         <div className="cart-modal-overlay" onClick={() => setShowClearModal(false)}>
           <div
             className="cart-modal-box"
@@ -415,11 +423,12 @@ export default function CartPage({
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
-      {/* ── 5. Customer Notice: Proceed to Checkout ── */}
-      {showCheckoutNotice && (
+      {/* ── 5. Customer Notice: Proceed to Checkout (Portaled to document.body) ── */}
+      {showCheckoutNotice && createPortal(
         <div className="cart-modal-overlay" onClick={() => setShowCheckoutNotice(false)}>
           <div
             className="cart-modal-box"
@@ -446,7 +455,8 @@ export default function CartPage({
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );

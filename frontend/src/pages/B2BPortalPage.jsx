@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
+import { createPortal } from 'react-dom';
 import {
   Building2,
   Package,
@@ -545,8 +546,8 @@ export default function B2BPortalPage({
         </div>
       </section>
 
-      {/* ── Contact Us Modal ── */}
-      {isContactModalOpen && (
+      {/* ── Contact Us Modal (Portaled to document.body) ── */}
+      {isContactModalOpen && createPortal(
         <div
           className="wholesale-modal-overlay"
           onClick={() => setIsContactModalOpen(false)}
@@ -649,7 +650,8 @@ export default function B2BPortalPage({
               </form>
             )}
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );

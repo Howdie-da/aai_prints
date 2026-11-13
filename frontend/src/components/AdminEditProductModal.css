@@ -20,15 +20,15 @@
 }
 
 .admin-modal-container {
-  background-color: #ffffff;
+  background-color: var(--white, #FAF7F2);
   border-radius: 16px;
   width: 100%;
   max-width: 900px;
   max-height: 90vh;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-  border: 1px solid #e2e8f0;
+  box-shadow: 0 25px 50px -12px rgba(59, 47, 47, 0.25);
+  border: 1px solid var(--taupe-border);
   overflow: hidden;
   animation: slideUp 0.25s ease-out;
 }
@@ -137,8 +137,8 @@
 
 /* Modal Form Styles */
 .admin-modal-section {
-  background-color: #ffffff;
-  border: 1px solid #e2e8f0;
+  background-color: var(--white, #FAF7F2);
+  border: 1px solid var(--taupe-border);
   border-radius: 12px;
   padding: 20px;
   margin-bottom: 20px;
@@ -206,7 +206,7 @@
 }
 
 .pdp-admin-btn--delete {
-  background-color: #ffffff;
+  background-color: var(--white, #FAF7F2);
   color: #dc2626;
   border: 1px solid #fca5a5;
 }

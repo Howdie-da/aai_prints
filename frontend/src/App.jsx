@@ -4,6 +4,7 @@ import AnnouncementBar from './components/AnnouncementBar';
 import Navbar from './components/Navbar';
 import CategoryScrollbar from './components/CategoryScrollbar';
 import HeroSlider from './components/HeroSlider';
+import ReelsSection from './components/ReelsSection';
 import ProductSection from './components/ProductSection';
 import StyleCollection from './components/StyleCollection';
 import Testimonials from './components/Testimonials';
@@ -16,10 +17,12 @@ import ShopPage from './pages/ShopPage';
 import ProductDetailPage from './pages/ProductDetailPage';
 import CartPage from './pages/CartPage';
 import WishlistPage from './pages/WishlistPage';
+import CheckoutPage from './pages/CheckoutPage';
 import AdminGuard from './components/AdminGuard';
 import AdminAddProductPage from './pages/AdminAddProductPage';
 import B2BPortalPage from './pages/B2BPortalPage';
 import AdminB2BPage from './pages/AdminB2BPage';
+import AdminReelsPage from './pages/AdminReelsPage';
 import { WishlistProvider } from './context/WishlistContext';
 import { AuthProvider } from './context/AuthContext';
 import {
@@ -97,6 +100,9 @@ function App() {
     if (typeof window !== 'undefined') {
       const hash = window.location.hash;
       const path = window.location.pathname;
+      if (hash.startsWith('#/admin/reels') || path.startsWith('/admin/reels')) {
+        return 'admin-reels';
+      }
       if (hash.startsWith('#/admin/b2b') || path.startsWith('/admin/b2b')) {
         return 'admin-b2b';
       }
@@ -108,6 +114,9 @@ function App() {
       }
       if (hash.startsWith('#/product/') || path.startsWith('/product/')) {
         return 'product';
+      }
+      if (hash.startsWith('#/checkout') || hash === '#checkout' || path.startsWith('/checkout')) {
+        return 'checkout';
       }
       if (hash.startsWith('#/cart') || hash === '#cart' || path.startsWith('/cart')) {
         return 'cart';
@@ -166,6 +175,9 @@ function App() {
       const hash = window.location.hash;
       const path = window.location.pathname;
       const search = window.location.search;
+      if (hash.startsWith('#/admin/reels') || path.startsWith('/admin/reels')) {
+        return 'admin-reels';
+      }
       if (hash.startsWith('#/admin/b2b') || path.startsWith('/admin/b2b')) {
         setCurrentPage('admin-b2b');
       } else if (hash.startsWith('#/admin/add-product') || path.startsWith('/admin/add-product')) {
@@ -178,6 +190,8 @@ function App() {
           : path.replace('/product/', '').split('?')[0];
         setActiveProductSlug(decodeURIComponent(slug));
         setCurrentPage('product');
+      } else if (hash.startsWith('#/checkout') || hash === '#checkout' || path.startsWith('/checkout')) {
+        setCurrentPage('checkout');
       } else if (hash.startsWith('#/cart') || hash === '#cart' || path.startsWith('/cart')) {
         setCurrentPage('cart');
       } else if (hash.startsWith('#/wishlist') || hash === '#wishlist' || path.startsWith('/wishlist')) {
@@ -242,6 +256,8 @@ function App() {
     } else if (page === 'product') {
       setActiveProductSlug(param);
       window.history.pushState(null, '', `#/product/${param}`);
+    } else if (page === 'checkout') {
+      window.history.pushState(null, '', '#/checkout');
     } else if (page === 'cart') {
       window.history.pushState(null, '', '#/cart');
     } else if (page === 'wishlist') {
@@ -252,6 +268,8 @@ function App() {
       window.history.pushState(null, '', '#/b2b');
     } else if (page === 'admin-b2b') {
       window.history.pushState(null, '', '#/admin/b2b');
+    } else if (page === 'admin-reels') {
+      window.history.pushState(null, '', '#/admin/reels');
     } else if (page === 'home' && (param === 'reviews' || param === '#reviews')) {
       setSelectedCategory('reviews');
       window.history.pushState(null, '', '#/reviews');
@@ -337,10 +355,18 @@ function App() {
                 onNavigateHome={() => navigateTo('home')}
                 onSelectProduct={handleSelectProduct}
               />
+            ) : currentPage === 'checkout' ? (
+              <CheckoutPage
+                onNavigateHome={() => navigateTo('home')}
+                onNavigateShop={() => navigateTo('shop', 'All')}
+                onNavigateCart={() => navigateTo('cart')}
+                onSelectProduct={handleSelectProduct}
+              />
             ) : currentPage === 'cart' ? (
               <CartPage
                 onNavigateHome={() => navigateTo('home')}
                 onNavigateShop={() => navigateTo('shop', 'All')}
+                onNavigateCheckout={() => navigateTo('checkout')}
                 onSelectProduct={handleSelectProduct}
               />
             ) : currentPage === 'wishlist' ? (
@@ -368,6 +394,13 @@ function App() {
                 <AdminB2BPage
                   onNavigateHome={() => navigateTo('home')}
                   onNavigateB2BPortal={() => navigateTo('b2b')}
+                />
+              </AdminGuard>
+            ) : currentPage === 'admin-reels' ? (
+              <AdminGuard onNavigateHome={() => navigateTo('home')}>
+                <AdminReelsPage
+                  onNavigateHome={() => navigateTo('home')}
+                  onSelectProduct={handleSelectProduct}
                 />
               </AdminGuard>
             ) : currentPage === 'b2b' ? (
@@ -408,22 +441,25 @@ function App() {
                       <span style={{ display: 'inline-block', color: 'var(--gold-dark, #9e7916)', letterSpacing: '2px', fontSize: '10.5px', fontWeight: '700', fontFamily: 'var(--font-serif, "Cinzel", serif)', textTransform: 'uppercase', marginBottom: '8px' }}>
                         STORE CATALOGUE
                       </span>
-                      <h2 style={{ fontFamily: 'var(--font-serif, "Cinzel", serif)', color: 'var(--teal-deep, #133538)', fontSize: '24px', margin: '0 0 10px', fontWeight: '700' }}>
+                      <h2 style={{ fontFamily: 'var(--font-display, "Cormorant", serif)', color: 'var(--teal-deep)', fontSize: '28px', margin: '0 0 10px', fontWeight: '600', fontStyle: 'italic' }}>
                         Collection In Preparation
                       </h2>
-                      <p style={{ color: 'var(--text-muted, #71717a)', fontSize: '13.5px', lineHeight: '1.6', maxWidth: '520px', margin: '0 auto 20px' }}>
+                      <p style={{ color: 'var(--text-muted)', fontSize: '14px', lineHeight: '1.65', maxWidth: '520px', margin: '0 auto 20px' }}>
                         Our handcrafted devotional artworks, illuminated frames, and decor pieces are currently being updated.
                       </p>
                       <button
                         type="button"
                         onClick={() => navigateTo('shop', 'All')}
-                        style={{ background: 'var(--teal, #235f64)', color: '#ffffff', border: 'none', padding: '11px 26px', borderRadius: '9999px', fontFamily: 'var(--font-sans, "Jost", sans-serif)', fontSize: '12.5px', fontWeight: '700', letterSpacing: '1px', textTransform: 'uppercase', cursor: 'pointer', boxShadow: '0 4px 12px rgba(35, 95, 100, 0.2)' }}
+                        style={{ background: 'var(--teal)', color: 'var(--text-inverse)', border: 'none', padding: '12px 28px', borderRadius: 'var(--radius-full)', fontFamily: 'var(--font-body, "Montserrat", sans-serif)', fontSize: '12px', fontWeight: '600', letterSpacing: '1.5px', textTransform: 'uppercase', cursor: 'pointer', boxShadow: '0 4px 14px rgba(30, 82, 87, 0.25)' }}
                       >
                         Browse Collection Categories
                       </button>
                     </div>
                   </section>
                 )}
+
+                {/* Whatmore-style Short Videos / Reels Showcase (Homepage only) */}
+                <ReelsSection onSelectProduct={handleSelectProduct} />
 
                 {/* "Your Style, Your Collection" horizontal scroll */}
                 <StyleCollection onSelectCategory={(cat) => navigateTo('shop', cat)} />
@@ -452,6 +488,7 @@ function App() {
             onSelectProduct={handleSelectProduct}
             onNavigateShop={() => navigateTo('shop', 'All')}
             onNavigateCart={() => navigateTo('cart')}
+            onNavigateCheckout={() => navigateTo('checkout')}
           />
 
           {/* ── 8. Account Slide-in Drawer ── */}

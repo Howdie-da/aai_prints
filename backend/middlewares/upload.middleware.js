@@ -34,13 +34,49 @@ const fileFilter = (req, file, cb) => {
 };
 
 const limits = {
-  fileSize: 10 * 1024 * 1024 // 10 MB per file limit
+  fileSize: 10 * 1024 * 1024 // 10 MB per image limit
 };
 
 const upload = multer({
   storage,
   fileFilter,
   limits
+});
+
+// Allowed Video MIME types
+const ALLOWED_VIDEO_MIME_TYPES = [
+  'video/mp4',
+  'video/webm',
+  'video/quicktime', // .mov
+  'video/x-msvideo', // .avi
+  'video/mpeg',
+  'video/ogg',
+  'video/3gpp'
+];
+
+const videoFileFilter = (req, file, cb) => {
+  const mime = (file.mimetype || '').toLowerCase();
+  if (ALLOWED_VIDEO_MIME_TYPES.includes(mime) || mime.startsWith('video/')) {
+    cb(null, true);
+  } else {
+    cb(
+      new ApiError(
+        400,
+        `Unsupported video file type: ${file.mimetype}. Allowed types: MP4, WebM, MOV.`
+      ),
+      false
+    );
+  }
+};
+
+const videoLimits = {
+  fileSize: 100 * 1024 * 1024 // 100 MB per video limit
+};
+
+const videoUpload = multer({
+  storage,
+  fileFilter: videoFileFilter,
+  limits: videoLimits
 });
 
 /**
@@ -68,5 +104,6 @@ const handleUpload = (multerMiddleware) => {
 module.exports = {
   uploadSingle: (fieldName = 'image') => handleUpload(upload.single(fieldName)),
   uploadArray: (fieldName = 'images', maxCount = 5) => handleUpload(upload.array(fieldName, maxCount)),
-  uploadFields: (fields) => handleUpload(upload.fields(fields))
+  uploadFields: (fields) => handleUpload(upload.fields(fields)),
+  uploadVideoSingle: (fieldName = 'video') => handleUpload(videoUpload.single(fieldName))
 };

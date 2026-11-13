@@ -4,7 +4,7 @@
    ======================================================== */
 
 .pdp-page {
-  background: var(--cream);
+  background: var(--bg-primary, rgba(250, 242, 234, 0.94));
   min-height: 90vh;
   padding-bottom: 80px;
 }
@@ -18,10 +18,10 @@
 
 /* ── 1. Breadcrumbs ── */
 .pdp-breadcrumb {
-  background: var(--white);
-  border-bottom: 1px solid rgba(45, 115, 121, 0.12);
+  background: var(--bg-primary, rgba(250, 242, 234, 0.94));
+  border-bottom: 1px solid var(--taupe-border);
   padding: 14px 0;
-  font-family: 'Jost', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 13.5px;
 }
 
@@ -35,7 +35,7 @@
 .pdp-breadcrumb .breadcrumb-link {
   background: none;
   border: none;
-  color: #666;
+  color: var(--text-muted);
   cursor: pointer;
   padding: 0;
   font-family: inherit;
@@ -48,7 +48,7 @@
 }
 
 .pdp-breadcrumb .breadcrumb-separator {
-  color: #bbb;
+  color: var(--cream-border);
   font-size: 12px;
   user-select: none;
 }
@@ -94,9 +94,9 @@
 .pdp-thumb-btn {
   width: 78px;
   height: 78px;
-  border: 1.5px solid var(--cream-border);
+  border: 1.5px solid rgba(212, 185, 165, 0.6);
   border-radius: var(--radius-sm);
-  background: var(--white);
+  background: rgba(237, 217, 204, 0.4);
   cursor: pointer;
   overflow: hidden;
   padding: 4px;
@@ -109,9 +109,11 @@
 
 .pdp-thumb-btn:hover {
   border-color: var(--gold);
+  background: var(--sand-accent, #edd9cc);
 }
 
 .pdp-thumb-btn.active {
+  background: var(--sand-accent, #edd9cc);
   border-color: var(--gold);
   box-shadow: 0 0 0 2px rgba(197, 155, 39, 0.35);
 }
@@ -128,8 +130,8 @@
   flex: 1;
   position: relative;
   aspect-ratio: 1 / 1;
-  background: var(--white);
-  border: 1px solid rgba(197, 155, 39, 0.22);
+  background: var(--cream-card);
+  border: 1px solid var(--taupe-border);
   border-radius: var(--radius-md);
   overflow: hidden;
   display: flex;
@@ -147,7 +149,7 @@
   justify-content: center;
   position: relative;
   overflow: hidden;
-  background: #faf8f5;
+  background: var(--sand-vignette, radial-gradient(circle at center, #faf2ea 30%, #edd9cc 100%));
 }
 
 .pdp-main-img {
@@ -165,7 +167,7 @@
 .pdp-main-image-empty {
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #faf7f2 0%, #f4eee5 100%);
+  background: linear-gradient(135deg, var(--cream) 0%, var(--cream-surface) 100%);
 }
 
 .pdp-zoom-hint {
@@ -175,10 +177,10 @@
   background: rgba(255, 255, 255, 0.92);
   padding: 6px 12px;
   border-radius: 20px;
-  font-family: 'Jost', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 11.5px;
   font-weight: 600;
-  color: #444;
+  color: var(--text-secondary);
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -210,7 +212,7 @@
 }
 
 .pdp-gallery-arrow:hover {
-  background: #ffffff;
+  background: var(--cream-card);
   transform: translateY(-50%) scale(1.12);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
   color: var(--teal-deep);
@@ -232,7 +234,7 @@
   position: absolute;
   top: 14px;
   left: 14px;
-  font-family: 'Jost', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.5px;
@@ -259,7 +261,7 @@
 }
 
 .pdp-category-tag {
-  font-family: 'Jost', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 12px;
   font-weight: 700;
   color: var(--teal);
@@ -268,13 +270,14 @@
 }
 
 .pdp-title {
-  font-family: 'Big Shoulders Display', sans-serif;
-  font-size: 40px;
-  font-weight: 800;
-  color: var(--text-dark);
-  line-height: 1.15;
+  font-family: 'Cormorant', serif;
+  font-size: 44px;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--teal-deep);
+  line-height: 1.1;
   margin: 0;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.3px;
 }
 
 .pdp-rating-row {
@@ -290,20 +293,20 @@
   flex-wrap: wrap;
   gap: 12px;
   padding-bottom: 14px;
-  border-bottom: 1px solid rgba(45, 115, 121, 0.15);
+  border-bottom: 1px solid var(--taupe-border);
 }
 
 .pdp-price {
-  font-family: 'Jost', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 32px;
   font-weight: 800;
   color: var(--teal-dark);
 }
 
 .pdp-price-original {
-  font-family: 'Jost', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 18px;
-  color: #999;
+  color: var(--text-muted);
   text-decoration: line-through;
 }
 
@@ -312,7 +315,7 @@
   color: #c62828;
   border: 1px solid #ffccbc;
   border-radius: 3px;
-  font-family: 'Jost', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 11.5px;
   font-weight: 700;
   padding: 3px 8px;
@@ -320,7 +323,7 @@
 }
 
 .pdp-tax-note {
-  font-family: 'Jost', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 12.5px;
   color: #777;
   width: 100%;
@@ -335,7 +338,7 @@
   border: 1px solid #c8e6c9;
   border-radius: 4px;
   padding: 8px 14px;
-  font-family: 'Jost', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 13px;
   font-weight: 600;
   color: #2e7d32;
@@ -350,10 +353,10 @@
 }
 
 .pdp-short-desc {
-  font-family: 'Jost', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 15px;
   line-height: 1.6;
-  color: #444;
+  color: var(--text-secondary);
   margin: 0;
 }
 
@@ -366,7 +369,7 @@
 }
 
 .pdp-variants-label {
-  font-family: 'Jost', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 13.5px;
   font-weight: 700;
   color: var(--text-dark);
@@ -379,10 +382,10 @@
 }
 
 .pdp-variant-chip {
-  background: var(--cream-2);
-  border: 1px solid rgba(45, 115, 121, 0.25);
+  background: rgba(237, 217, 204, 0.45);
+  border: 1px solid rgba(158, 123, 102, 0.28);
   color: var(--text-dark);
-  font-family: 'Jost', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 13px;
   font-weight: 500;
   padding: 8px 16px;
@@ -393,16 +396,17 @@
 }
 
 .pdp-variant-chip:hover {
-  border-color: var(--teal);
-  color: var(--teal);
+  background: var(--sand-accent, #edd9cc);
+  border-color: var(--gold);
+  color: var(--espresso);
 }
 
 .pdp-variant-chip.active {
-  background: var(--teal-light);
-  border-color: var(--teal);
-  color: var(--teal-dark);
+  background: var(--sand-accent, #edd9cc);
+  border-color: var(--gold);
+  color: var(--espresso);
   font-weight: 700;
-  box-shadow: 0 0 0 1px var(--teal);
+  box-shadow: 0 0 0 1px var(--gold);
 }
 
 /* Quantity Control */
@@ -414,7 +418,7 @@
 }
 
 .pdp-qty-label {
-  font-family: 'Jost', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 14px;
   font-weight: 700;
   color: var(--text-dark);
@@ -423,8 +427,8 @@
 .pdp-qty-control {
   display: inline-flex;
   align-items: center;
-  background: var(--white);
-  border: 1px solid rgba(45, 115, 121, 0.25);
+  background: var(--cream-pale);
+  border: 1px solid var(--taupe-border);
   border-radius: 4px;
   overflow: hidden;
   height: 44px;
@@ -433,7 +437,7 @@
 .pdp-qty-btn {
   width: 44px;
   height: 44px;
-  background: var(--cream-2);
+  background: rgba(237, 217, 204, 0.45);
   border: none;
   font-size: 18px;
   color: var(--text-dark);
@@ -445,8 +449,8 @@
 }
 
 .pdp-qty-btn:hover:not(:disabled) {
-  background: #eee7dc;
-  color: var(--teal);
+  background: var(--sand-accent, #edd9cc);
+  color: var(--espresso);
 }
 
 .pdp-qty-btn:disabled {
@@ -458,15 +462,15 @@
   width: 52px;
   height: 44px;
   border: none;
-  border-left: 1px solid rgba(45, 115, 121, 0.18);
-  border-right: 1px solid rgba(45, 115, 121, 0.18);
+  border-left: 1px solid var(--taupe-border);
+  border-right: 1px solid var(--taupe-border);
   text-align: center;
-  font-family: 'Jost', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 16px;
   font-weight: 700;
   color: var(--text-dark);
   outline: none;
-  background: var(--white);
+  background: var(--cream-pale);
   -moz-appearance: textfield;
 }
 
@@ -490,7 +494,7 @@
   border: 1px solid var(--teal-border);
   border-radius: var(--radius-full);
   padding: 14px 28px;
-  font-family: 'Jost', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 13px;
   font-weight: 700;
   letter-spacing: 1.5px;
@@ -518,12 +522,12 @@
 }
 
 .pdp-btn-wishlist {
-  background: var(--white);
+  background: var(--cream-pale);
   color: var(--teal-deep);
   border: 1.5px solid var(--teal-border);
   border-radius: var(--radius-full);
   padding: 14px 24px;
-  font-family: 'Jost', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
@@ -552,10 +556,10 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  background: var(--white);
-  border: 1px solid rgba(45, 115, 121, 0.16);
-  border-radius: 6px;
-  padding: 16px 18px;
+  background: linear-gradient(135deg, rgba(237, 217, 204, 0.45) 0%, rgba(250, 242, 234, 0.65) 100%);
+  border: 1px solid rgba(212, 185, 165, 0.65);
+  border-radius: var(--radius-md, 12px);
+  padding: 18px 20px;
   margin-top: 4px;
 }
 
@@ -578,15 +582,15 @@
 }
 
 .pdp-value-point strong {
-  font-family: 'Jost', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 13.5px;
   color: var(--text-dark);
 }
 
 .pdp-value-point span {
-  font-family: 'Jost', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 12px;
-  color: #666;
+  color: var(--text-muted);
 }
 
 /* ── 5. Accordion Section ── */
@@ -595,7 +599,7 @@
 }
 
 .pdp-accordions-card {
-  background: var(--white);
+  background: var(--cream-pale);
   border: 1px solid rgba(45, 115, 121, 0.16);
   border-radius: 6px;
   overflow: hidden;
@@ -618,7 +622,7 @@
   padding: 18px 24px;
   background: transparent;
   border: none;
-  font-family: 'Big Shoulders Display', sans-serif;
+  font-family: 'Cormorant', serif;
   font-size: 21px;
   font-weight: 700;
   color: var(--text-dark);
@@ -646,7 +650,7 @@
 
 .pdp-accordion-content {
   padding: 0 24px 22px;
-  font-family: 'Jost', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 14.5px;
   color: #4a4a4a;
   line-height: 1.65;
@@ -682,7 +686,7 @@
 }
 
 .pdp-specs-table td {
-  color: #555;
+  color: var(--text-secondary);
 }
 
 /* ── 6. Related Products Section ── */
@@ -692,7 +696,7 @@
 }
 
 .pdp-related-title {
-  font-family: 'Big Shoulders Display', sans-serif;
+  font-family: 'Cormorant', serif;
   font-size: 36px;
   font-weight: 800;
   text-align: center;
@@ -702,9 +706,9 @@
 }
 
 .pdp-related-subtitle {
-  font-family: 'Jost', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 14px;
-  color: #666;
+  color: var(--text-muted);
   text-align: center;
   margin: 0 0 30px;
 }
@@ -717,7 +721,7 @@
 
 .pdp-rel-card {
   position: relative;
-  background: var(--white);
+  background: var(--cream-pale);
   border: 1px solid rgba(45, 115, 121, 0.16);
   border-radius: 6px;
   overflow: hidden;
@@ -735,7 +739,7 @@
 
 .pdp-rel-img-wrap {
   aspect-ratio: 1 / 1;
-  background: #faf8f5;
+  background: var(--cream-pale);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -758,7 +762,7 @@
 .pdp-rel-img-empty {
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #faf7f2 0%, #f4eee5 100%);
+  background: linear-gradient(135deg, var(--cream) 0%, var(--cream-surface) 100%);
 }
 
 .pdp-rel-info {
@@ -770,7 +774,7 @@
 }
 
 .pdp-rel-cat {
-  font-family: 'Jost', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 11px;
   font-weight: 600;
   color: var(--teal);
@@ -779,7 +783,7 @@
 }
 
 .pdp-rel-name {
-  font-family: 'Jost', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 14px;
   font-weight: 600;
   color: var(--text-dark);
@@ -799,7 +803,7 @@
 }
 
 .pdp-rel-price {
-  font-family: 'Jost', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 16px;
   font-weight: 700;
   color: var(--teal-dark);
@@ -813,7 +817,7 @@
   border: 1px solid rgba(45, 115, 121, 0.25);
   border-radius: 4px;
   padding: 8px 12px;
-  font-family: 'Jost', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 12px;
   font-weight: 700;
   color: var(--teal-dark);
@@ -854,7 +858,7 @@
   position: relative;
   max-width: 90vw;
   max-height: 92vh;
-  background: #ffffff;
+  background: var(--cream-card);
   border-radius: 12px;
   padding: 24px;
   box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.45);
@@ -878,7 +882,7 @@
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  background: var(--cream-2, #f5f0e8);
+  background: var(--cream-2, #E8D3C4);
   border: 1px solid rgba(0, 0, 0, 0.08);
   font-size: 18px;
   cursor: pointer;
@@ -896,9 +900,9 @@
 }
 
 .pdp-zoom-caption {
-  font-family: 'Jost', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 14px;
-  color: #555;
+  color: var(--text-secondary);
   margin: 14px 0 0;
   text-align: center;
 }

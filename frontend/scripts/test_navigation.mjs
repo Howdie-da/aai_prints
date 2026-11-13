@@ -120,5 +120,36 @@ testUrls.forEach((url) => {
   console.log(`✓ URL: "${url}" => parsed category: "${cat}" (${prods.length} products)`);
 });
 
-console.log('\nALL 3 TEST SUITES PASSED SUCCESSFULLY!');
+console.log('\n--- TEST 4: CHECKOUT ROUTE RESOLUTION ---');
+function resolveRoute(hash, path = '/') {
+  if (hash.startsWith('#/admin/reels') || path.startsWith('/admin/reels')) return 'admin-reels';
+  if (hash.startsWith('#/admin/b2b') || path.startsWith('/admin/b2b')) return 'admin-b2b';
+  if (hash.startsWith('#/admin/add-product') || path.startsWith('/admin/add-product')) return 'admin-add-product';
+  if (hash.startsWith('#/b2b') || path.startsWith('/b2b') || hash === '#b2b') return 'b2b';
+  if (hash.startsWith('#/product/') || path.startsWith('/product/')) return 'product';
+  if (hash.startsWith('#/checkout') || hash === '#checkout' || path.startsWith('/checkout')) return 'checkout';
+  if (hash.startsWith('#/cart') || hash === '#cart' || path.startsWith('/cart')) return 'cart';
+  if (hash.startsWith('#/wishlist') || hash === '#wishlist' || path.startsWith('/wishlist')) return 'wishlist';
+  if (hash.startsWith('#/shop') || hash === '#shop' || path === '/shop') return 'shop';
+  return 'home';
+}
+
+const routeTests = [
+  { hash: '#/admin/reels', expected: 'admin-reels' },
+  { path: '/admin/reels', hash: '', expected: 'admin-reels' },
+  { hash: '#/checkout', expected: 'checkout' },
+  { hash: '#checkout', expected: 'checkout' },
+  { path: '/checkout', hash: '', expected: 'checkout' },
+  { hash: '#/cart', expected: 'cart' },
+  { hash: '#/shop', expected: 'shop' },
+  { hash: '', expected: 'home' }
+];
+
+routeTests.forEach((t) => {
+  const result = resolveRoute(t.hash, t.path);
+  if (result !== t.expected) throw new Error(`Route mismatch: expected ${t.expected}, got ${result}`);
+  console.log(`✓ Route "${t.hash || t.path}" => ${result}`);
+});
+
+console.log('\nALL 4 TEST SUITES PASSED SUCCESSFULLY!');
 

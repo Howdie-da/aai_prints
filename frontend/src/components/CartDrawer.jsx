@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShoppingBag, X, Minus, Plus, Trash2, Lock, ShieldCheck } from 'lucide-react';
 import { useWishlist } from '../context/WishlistContext';
@@ -14,7 +15,7 @@ function parsePrice(price) {
 
 const FREE_SHIPPING_THRESHOLD = 500;
 
-export default function CartDrawer({ onSelectProduct, onNavigateShop, onNavigateCart }) {
+export default function CartDrawer({ onSelectProduct, onNavigateShop, onNavigateCart, onNavigateCheckout }) {
   const {
     cart,
     cartCount,
@@ -73,7 +74,7 @@ export default function CartDrawer({ onSelectProduct, onNavigateShop, onNavigate
   const amountToFreeShipping = Math.max(0, FREE_SHIPPING_THRESHOLD - subtotal);
   const freeShippingProgress = Math.min(100, Math.round((subtotal / FREE_SHIPPING_THRESHOLD) * 100));
 
-  return (
+  return createPortal(
     <AnimatePresence>
       {isCartOpen && (
         <motion.div
@@ -281,7 +282,7 @@ export default function CartDrawer({ onSelectProduct, onNavigateShop, onNavigate
                   </span>
                 </div>
 
-                {/* High-Impact Checkout Action */}
+                {/* High-Impact Full Cart Navigation Action */}
                 <button
                   type="button"
                   className="cart-checkout-btn btn-gold"
@@ -294,8 +295,8 @@ export default function CartDrawer({ onSelectProduct, onNavigateShop, onNavigate
                     }
                   }}
                 >
-                  <Lock size={15} strokeWidth={2.2} style={{ marginRight: '6px' }} />
-                  <span>PROCEED TO SECURE CHECKOUT</span>
+                  <ShoppingBag size={16} strokeWidth={2.2} style={{ marginRight: '8px' }} />
+                  <span>VIEW FULL CART • ₹{subtotal.toLocaleString('en-IN')}</span>
                 </button>
 
                 {/* Trust Assurance Strip */}
@@ -308,6 +309,7 @@ export default function CartDrawer({ onSelectProduct, onNavigateShop, onNavigate
           </motion.aside>
         </motion.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 }

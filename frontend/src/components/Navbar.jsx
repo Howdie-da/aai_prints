@@ -169,7 +169,7 @@ export default function Navbar({
           }}
         >
           <img
-            src="/new-images/logo.png"
+            src="/new-images/logo.png?v=2"
             alt="aai Prints"
             className="site-logo"
           />

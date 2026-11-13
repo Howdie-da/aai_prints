@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { MessageCircle, Globe, Mail, Share2, Sparkles, X } from 'lucide-react';
 import './Footer.css';
 
@@ -189,7 +190,7 @@ export default function Footer({ onNavigate }) {
       </div>
 
       {/* ── Policy Modal ── */}
-      {activePolicy && (
+      {activePolicy && createPortal(
         <div
           className="policy-modal-overlay"
           onClick={() => setActivePolicy(null)}
@@ -223,7 +224,8 @@ export default function Footer({ onNavigate }) {
                 ))}
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </footer>
   );
