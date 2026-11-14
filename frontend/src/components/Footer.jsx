@@ -73,14 +73,12 @@ export default function Footer({ onNavigate }) {
             <p className="footer-desc">
               Devotional frames, illuminated backlit LED frames, and contemporary wall art designed to bring elegance, serenity, and premium aesthetics into every home and vehicle.
             </p>
-            <div className="footer-venture-img-wrap">
-              <img
-                src="/our-online-decor-logo.png?v=3"
-                alt="OurONLINE Decor - Corporate Gifts, Home Decor, Personalised Gifts, Promotional Products - अपनों के लिए कुछ खास"
-                className="footer-venture-img"
-                loading="lazy"
-              />
-            </div>
+            <img
+              src="/our-online-decor-logo.png?v=3"
+              alt="OurONLINE Decor - Corporate Gifts, Home Decor, Personalised Gifts, Promotional Products - अपनों के लिए कुछ खास"
+              className="footer-venture-img"
+              loading="lazy"
+            />
             <div className="footer-socials" aria-label="Connect with us">
               <a href="#" className="social-link" aria-label="Chat with Customer Support" onClick={(e) => e.preventDefault()} title="Customer Support">
                 <MessageCircle size={17} />
