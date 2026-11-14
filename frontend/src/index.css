@@ -1,14 +1,17 @@
 /* ==============================================
    Aai Prints – Luxury Home & Devotional Decor Design System
-   Brand: Ananta Art International
-   Fonts: Cormorant (display/headings) + Montserrat (body/UI) + Cinzel (eyebrows/accents)
-   Palette (60-30-10):
-     • 60% Surfaces: #FAF6F2 (Warm Alabaster) & #edd9cc (Warm Desert Sand)
-     • 30% Structure & Text: #3B2F2F (Deep Espresso) & #9E7B66 (Warm Taupe)
-     • 10% Accent: #C58B59 (Muted Ochre)
+   Brand: Aai Prints – A Sub Brand of Our Online Decor®
+   Tagline: Made with Love. Cherished Forever.
+   Concept: Premium Luxury · Minimal · Elegant · Artistic
+   Palette (65-20-10-5 Rule):
+     • ~65% Light Ivory/White: #F6F0E7 (Warm Ivory) & #FFFFFF (Pure White surfaces)
+     • ~20% Champagne Beige: #E8D9C7 (Sections & product backdrops)
+     • ~10% Deep Burgundy: #702F42 (Buttons, highlights, brand identity)
+     • ~5% Antique Gold: #C1A16A (Borders, icons & subtle luxury accents)
+     • Anchoring Headings & Footer: #382D2D (Espresso Brown)
    ============================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500;600;700&family=Cinzel:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500;600;700;800&family=Cinzel:wght@500;600;700&display=swap');
 
 /* Reset & Box Sizing */
 *,
@@ -28,8 +31,8 @@ body {
   font-family: 'Montserrat', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-size: 15px;
   line-height: 1.65;
-  color: var(--text-primary, #3B2F2F);
-  background-color: var(--bg-primary, #faf2ea);
+  color: var(--text-primary, #382D2D);
+  background-color: var(--bg-primary, #F6F0E7);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: clip;
@@ -54,7 +57,7 @@ h5,
 h6 {
   margin: 0;
   line-height: 1.15;
-  color: var(--text-primary, #3B2F2F);
+  color: var(--text-primary, #382D2D);
   font-family: 'Cormorant', 'Georgia', serif;
   letter-spacing: 0.3px;
   font-weight: 600;
@@ -109,7 +112,7 @@ ol {
 }
 
 /* ==============================================
-   DESIGN TOKENS (60-30-10 RULE)
+   DESIGN TOKENS (65-20-10-5 RULE)
    ============================================== */
 :root {
   /* ── Stacking Context & Z-Index Tokens ── */
@@ -123,110 +126,113 @@ ol {
   /* ── Sticky Navbar Dimensions ── */
   --navbar-height: 97px;
 
-  /* ── 60% Surfaces: Warm Ivory Primary Canvas & Desert Sand Accent Surfaces ── */
-  --bg-primary: rgba(250, 242, 234, 0.94);
-  /* Primary background as requested */
-  --bg-primary-solid: #faf2ea;
-  --cream: #faf2ea;
-  /* Primary background container surface */
-  --cream-surface: #edd9cc;
-  /* Smart Desert Sand secondary surface tone */
-  --cream-card: #FAF6F2;
-  /* Content cards in Warm Alabaster */
-  --cream-border: rgba(158, 123, 102, 0.3);
-  /* Warm Taupe neutral divider */
-  --cream-2: #edd9cc;
-  --cream-deep: #D4B9A5;
-  --cream-pale: #FAF6F2;
-  --bg-alabaster: #FAF6F2;
-  --off-white: #FAF7F2;
-  /* Delicate warm off-white cream tint */
-  --white: #FAF7F2;
-  /* Light cream-ish off-white */
+  /* ── 65% Light Ivory & Pure White Surfaces ── */
+  --bg-primary: #F6F0E7; /* Warm Ivory main website background */
+  --bg-primary-solid: #F6F0E7;
+  --bg-ivory: #F6F0E7;
+  --cream: #F6F0E7;
+  --cream-pale: #FBF8F4;
+  --bg-alabaster: #FBF8F4;
+  --off-white: #FFFFFF;
+  --white: #FFFFFF; /* Pure White product cards & content surfaces */
+  --cream-card: #FFFFFF; /* Product cards in Pure White */
 
-  /* ── Dedicated Warm Desert Sand Accent Tokens (#edd9cc) ── */
-  --sand-accent: #edd9cc;
-  --sand-accent-light: rgba(237, 217, 204, 0.45);
-  --sand-accent-subtle: rgba(237, 217, 204, 0.25);
-  --sand-accent-border: rgba(212, 185, 165, 0.6);
-  --sand-accent-gradient: linear-gradient(135deg, #FAF2EA 0%, #EDD9CC 100%);
-  --sand-vignette: radial-gradient(circle at 50% 45%, #faf2ea 30%, #edd9cc 100%);
+  /* ── 20% Champagne Beige Section & Surface Backdrops (#E8D9C7) ── */
+  --champagne: #E8D9C7;
+  --surface-champagne: #E8D9C7;
+  --cream-surface: #E8D9C7;
+  --cream-2: #E8D9C7;
+  --cream-deep: #D9C5AF;
+  --sand-accent: #E8D9C7;
+  --sand-accent-light: rgba(232, 217, 199, 0.45);
+  --sand-accent-subtle: rgba(232, 217, 199, 0.25);
+  --sand-accent-border: rgba(193, 161, 106, 0.4);
+  --sand-accent-gradient: linear-gradient(135deg, #F6F0E7 0%, #E8D9C7 100%);
+  --sand-vignette: radial-gradient(circle at 50% 45%, #FFFFFF 30%, #E8D9C7 100%);
+  --cream-border: rgba(193, 161, 106, 0.35);
 
-  /* ── 30% Structure & Contrast: Deep Espresso & Warm Taupe ── */
-  --espresso: #3B2F2F;
-  /* Deep Espresso charcoal-brown */
-  --espresso-dark: #2A2121;
-  --espresso-deep: #1E1616;
-  --espresso-light: #524242;
+  /* ── 10% Deep Burgundy (#702F42) – Buttons, Highlights, Brand Identity ── */
+  --burgundy: #702F42;
+  --burgundy-hover: #5A2434;
+  --burgundy-active: #471C29;
+  --burgundy-light: #F7EDF1;
+  --burgundy-subtle: rgba(112, 47, 66, 0.08);
+  --burgundy-border: rgba(112, 47, 66, 0.35);
+  --burgundy-glow: rgba(112, 47, 66, 0.28);
+  --burgundy-gradient: linear-gradient(135deg, #873B52 0%, #702F42 50%, #542231 100%);
 
-  --taupe: #9E7B66;
-  /* Warm Taupe mid-tone neutral */
-  --taupe-light: rgba(158, 123, 102, 0.18);
-  --taupe-border: rgba(158, 123, 102, 0.32);
+  /* ── 5% Antique Gold (#C1A16A) – Borders, Icons & Subtle Accents ── */
+  --gold: #C1A16A;
+  --gold-antique: #C1A16A;
+  --gold-hover: #AA8C54;
+  --gold-dark: #A68751;
+  --gold-light: #DFC497;
+  --gold-pale: #F8F3EA;
+  --gold-border: rgba(193, 161, 106, 0.45);
+  --gold-border-subtle: rgba(193, 161, 106, 0.25);
+  --gold-gradient: linear-gradient(135deg, #DFC497 0%, #C1A16A 50%, #A68751 100%);
+  --gold-shimmer: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.5) 50%, transparent 100%);
 
-  --text-primary: #3B2F2F;
-  /* Deep Espresso readable text */
-  --text-secondary: #5C4B4B;
-  /* Softer charcoal espresso */
-  --text-muted: #9E7B66;
-  /* Warm Taupe */
-  --text-inverse: #FAF6F2;
-  --text-dark: #3B2F2F;
+  /* ── Espresso Brown (#382D2D) – Headings, Footer & High-Contrast Anchors ── */
+  --espresso: #382D2D;
+  --espresso-dark: #271E1E;
+  --espresso-deep: #1A1414;
+  --espresso-light: #4E3E3E;
 
-  /* ── 10% Accent: Muted Ochre for CTAs, active states, and links ── */
-  --ochre: #C58B59;
-  /* Muted Ochre warm bronze-gold */
-  --ochre-hover: #AF7644;
-  --ochre-dark: #8E5A2D;
-  --ochre-light: #DDB084;
-  --ochre-pale: #F8EDE3;
-  --ochre-border: rgba(197, 139, 89, 0.45);
-  --ochre-border-light: rgba(197, 139, 89, 0.22);
-  --ochre-gradient: linear-gradient(135deg, #D49C6B 0%, #C58B59 50%, #A87142 100%);
-  --ochre-shimmer: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.4) 50%, transparent 100%);
+  --taupe: #8A7568;
+  --taupe-light: rgba(138, 117, 104, 0.16);
+  --taupe-border: rgba(193, 161, 106, 0.35);
 
-  /* Token aliases for total backwards compatibility */
-  --teal: var(--ochre);
-  --teal-dark: var(--ochre-hover);
+  --text-primary: #382D2D; /* Espresso Brown readable text */
+  --text-secondary: #584646; /* Softer espresso */
+  --text-muted: #826E69; /* Warm taupe muted */
+  --text-inverse: #FFFFFF;
+  --text-dark: #382D2D;
+
+  /* ── Token Aliases for Total Backwards Compatibility ── */
+  --teal: var(--burgundy);
+  --teal-dark: var(--burgundy-hover);
   --teal-deep: var(--espresso);
-  --teal-light: var(--ochre-pale);
-  --teal-surface: var(--bg-alabaster);
-  --teal-border: var(--ochre-border);
-  --teal-border-light: var(--ochre-border-light);
-  --teal-glow: rgba(197, 139, 89, 0.22);
+  --teal-light: var(--burgundy-light);
+  --teal-surface: var(--white);
+  --teal-border: var(--burgundy-border);
+  --teal-border-light: rgba(112, 47, 66, 0.2);
+  --teal-glow: var(--burgundy-glow);
 
-  --gold: var(--ochre);
-  --gold-light: var(--ochre-light);
-  --gold-dark: var(--ochre-hover);
-  --gold-pale: var(--ochre-pale);
-  --gold-border: var(--ochre-border);
-  --gold-border-light: var(--ochre-border-light);
-  --gold-gradient: var(--ochre-gradient);
-  --gold-shimmer: var(--ochre-shimmer);
+  --ochre: var(--gold);
+  --ochre-hover: var(--gold-dark);
+  --ochre-dark: #8E5A2D;
+  --ochre-light: var(--gold-light);
+  --ochre-pale: var(--gold-pale);
+  --ochre-border: var(--gold-border);
+  --ochre-border-light: var(--gold-border-subtle);
+  --ochre-gradient: var(--gold-gradient);
+  --ochre-shimmer: var(--gold-shimmer);
 
-  /* Functional Status */
-  --star-gold: #C58B59;
-  --badge-discount: #A84936;
-  --badge-discount-bg: #FAECE9;
-  --badge-bestseller: var(--ochre);
+  /* Functional Status Tokens */
+  --star-gold: #C1A16A;
+  --badge-discount: #702F42;
+  --badge-discount-bg: #F8EDF1;
+  --badge-bestseller: var(--gold);
   --badge-new: var(--espresso);
-  --badge-success: #446E4A;
+  --badge-success: #3A6B48;
 
   /* Layout & Geometry */
   --max-w: 1340px;
   --radius-xs: 3px;
-  --radius-sm: 7px;
-  --radius-md: 12px;
-  --radius-lg: 18px;
-  --radius-xl: 26px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
   --radius-full: 9999px;
 
-  /* Warm-tinted layered shadows */
-  --shadow-subtle: 0 2px 8px -2px rgba(59, 47, 47, 0.05);
-  --shadow-card: 0 4px 20px -4px rgba(59, 47, 47, 0.08), 0 2px 6px -1px rgba(59, 47, 47, 0.03);
-  --shadow-hover: 0 16px 36px -6px rgba(59, 47, 47, 0.14), 0 6px 14px -2px rgba(59, 47, 47, 0.05);
-  --shadow-drawer: -12px 0 48px -10px rgba(59, 47, 47, 0.35);
-  --shadow-gold: 0 6px 22px -4px rgba(197, 139, 89, 0.38);
+  /* Layered Luxury Shadows */
+  --shadow-subtle: 0 2px 8px -2px rgba(56, 45, 45, 0.05);
+  --shadow-card: 0 4px 18px -4px rgba(56, 45, 45, 0.07), 0 2px 6px -1px rgba(56, 45, 45, 0.03);
+  --shadow-hover: 0 16px 36px -6px rgba(56, 45, 45, 0.13), 0 6px 14px -2px rgba(56, 45, 45, 0.05);
+  --shadow-drawer: -12px 0 48px -10px rgba(56, 45, 45, 0.35);
+  --shadow-gold: 0 6px 20px -4px rgba(193, 161, 106, 0.38);
+  --shadow-burgundy: 0 6px 22px -4px rgba(112, 47, 66, 0.35);
 
   /* Transitions */
   --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -269,8 +275,8 @@ ol {
   align-items: center;
   gap: 8px;
   font-family: var(--font-eyebrow);
-  font-size: 10.5px;
-  font-weight: 600;
+  font-size: 11px;
+  font-weight: 700;
   letter-spacing: 2.8px;
   text-transform: uppercase;
   color: var(--gold);
@@ -280,15 +286,15 @@ ol {
 .sec-eyebrow::before,
 .sec-eyebrow::after {
   content: '✦';
-  font-size: 9px;
-  color: var(--gold-light);
+  font-size: 9.5px;
+  color: var(--gold);
 }
 
 .sec-title {
   font-family: var(--font-display);
   font-size: 42px;
   font-weight: 600;
-  color: var(--teal-deep);
+  color: var(--espresso);
   text-align: center;
   letter-spacing: 0.5px;
   line-height: 1.12;
@@ -304,7 +310,7 @@ ol {
 
 .sec-subtitle {
   font-family: var(--font-body);
-  font-size: 14px;
+  font-size: 14.5px;
   color: var(--text-muted);
   text-align: center;
   margin-bottom: 0;
@@ -316,6 +322,7 @@ ol {
   letter-spacing: 0.1px;
 }
 
+/* Primary Luxury CTA Button (Deep Burgundy #702F42) */
 .btn-view-more {
   display: inline-flex;
   align-items: center;
@@ -323,18 +330,18 @@ ol {
   gap: 10px;
   width: fit-content;
   margin: 40px auto 0;
-  background: var(--teal);
-  color: var(--text-inverse);
+  background: var(--burgundy);
+  color: #FFFFFF;
   font-family: var(--font-body);
   font-size: 11.5px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 1.8px;
   text-transform: uppercase;
   padding: 14px 42px;
   border-radius: var(--radius-full);
-  border: 1px solid var(--ochre-border);
+  border: 1px solid var(--burgundy-border);
   cursor: pointer;
-  box-shadow: 0 4px 16px -2px rgba(197, 139, 89, 0.35);
+  box-shadow: var(--shadow-burgundy);
   transition: all var(--transition-normal);
   text-decoration: none;
   position: relative;
@@ -342,10 +349,10 @@ ol {
 }
 
 .btn-view-more:hover {
-  background: var(--ochre-hover);
+  background: var(--burgundy-hover);
   transform: translateY(-2px);
-  box-shadow: 0 10px 28px -4px rgba(175, 118, 68, 0.45);
-  color: var(--text-inverse);
+  box-shadow: 0 10px 28px -4px rgba(90, 36, 52, 0.45);
+  color: #FFFFFF;
 }
 
 .btn-view-more:active {
@@ -358,17 +365,17 @@ ol {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  background: var(--gold-gradient);
-  color: #ffffff;
+  background: var(--burgundy);
+  color: #FFFFFF;
   font-family: var(--font-body);
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 1.8px;
   text-transform: uppercase;
   padding: 14px 38px;
   border-radius: var(--radius-full);
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  box-shadow: var(--shadow-gold);
+  border: 1.5px solid rgba(193, 161, 106, 0.5);
+  box-shadow: var(--shadow-burgundy);
   cursor: pointer;
   transition: all var(--transition-normal);
   position: relative;
@@ -377,8 +384,11 @@ ol {
 }
 
 .btn-gold:hover {
+  background: var(--burgundy-hover);
+  border-color: var(--gold);
   transform: translateY(-2px);
-  box-shadow: 0 10px 28px -2px rgba(184, 137, 30, 0.5);
+  box-shadow: 0 10px 28px -2px rgba(112, 47, 66, 0.45);
+  color: #FFFFFF;
 }
 
 .btn-gold:active {
@@ -392,23 +402,24 @@ ol {
   justify-content: center;
   gap: 8px;
   background: transparent;
-  color: var(--teal);
+  color: var(--burgundy);
   font-family: var(--font-body);
   font-size: 11.5px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 1.8px;
   text-transform: uppercase;
   padding: 13px 34px;
   border-radius: var(--radius-full);
-  border: 1.5px solid var(--teal);
+  border: 1.5px solid var(--burgundy);
   cursor: pointer;
   transition: all var(--transition-normal);
 }
 
 .btn-outline-teal:hover {
-  background: var(--teal);
-  color: #ffffff;
+  background: var(--burgundy);
+  color: #FFFFFF;
   transform: translateY(-2px);
+  box-shadow: var(--shadow-burgundy);
 }
 
 /* Accessible focus visible */
@@ -424,16 +435,16 @@ ol {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--cream-surface);
+  background: var(--champagne);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--taupe);
+  background: var(--gold);
   border-radius: 999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--ochre);
+  background: var(--burgundy);
 }
 
 /* ── Sticky Navbar Responsive Height Variables ── */

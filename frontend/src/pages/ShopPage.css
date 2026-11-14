@@ -78,7 +78,7 @@
   font-size: 44px;
   font-weight: 600;
   font-style: italic;
-  color: var(--teal-deep);
+  color: var(--espresso, #382D2D);
   margin: 0 0 6px;
   letter-spacing: 0.3px;
   line-height: 1.1;
@@ -95,16 +95,16 @@
 .shop-header-count {
   font-family: 'Montserrat', sans-serif;
   font-size: 13.5px;
-  color: var(--espresso);
+  color: var(--espresso, #382D2D);
   white-space: nowrap;
-  background: var(--sand-accent, #edd9cc);
-  border: 1px solid rgba(197, 139, 89, 0.35);
+  background: var(--surface-champagne, #E8D9C7);
+  border: 1px solid rgba(193, 161, 106, 0.45);
   padding: 6px 14px;
   border-radius: 20px;
 }
 
 .shop-header-count strong {
-  color: var(--teal-dark);
+  color: var(--burgundy, #702F42);
 }
 
 /* ── 3. Top Control Bar (Search & Sort) ── */
@@ -376,15 +376,15 @@
 }
 
 .category-filter-item:hover {
-  background: rgba(237, 217, 204, 0.45);
+  background: rgba(232, 217, 199, 0.45);
   color: var(--espresso);
 }
 
 .category-filter-item.active {
-  background: var(--sand-accent, #edd9cc);
-  color: var(--espresso);
+  background: var(--surface-champagne, #E8D9C7);
+  color: var(--burgundy, #702F42);
   font-weight: 700;
-  border-left: 3px solid var(--ochre);
+  border-left: 3px solid var(--burgundy, #702F42);
 }
 
 .cat-name {
@@ -398,7 +398,7 @@
 }
 
 .category-filter-item.active .cat-count {
-  color: var(--teal);
+  color: var(--burgundy, #702F42);
 }
 
 /* Subcategories */
@@ -406,7 +406,7 @@
   list-style: none;
   padding: 4px 0 6px 14px;
   margin: 0 0 4px 6px;
-  border-left: 2px solid rgba(45, 115, 121, 0.2);
+  border-left: 2px solid rgba(193, 161, 106, 0.4);
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -430,14 +430,14 @@
 }
 
 .subcategory-filter-item:hover {
-  color: var(--teal);
-  background: var(--cream-2);
+  color: var(--burgundy, #702F42);
+  background: rgba(232, 217, 199, 0.35);
 }
 
 .subcategory-filter-item.active {
-  color: var(--teal-dark);
+  color: var(--burgundy, #702F42);
   font-weight: 700;
-  background: var(--teal-light);
+  background: var(--burgundy-light, #F8EDF1);
 }
 
 .sub-bullet {

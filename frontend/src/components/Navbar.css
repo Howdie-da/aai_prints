@@ -1,8 +1,8 @@
 .navbar {
-  background: var(--bg-primary, rgba(250, 242, 234, 0.94));
+  background: rgba(246, 240, 231, 0.94);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--taupe-border);
+  border-bottom: 1px solid var(--gold-border-subtle, rgba(193, 161, 106, 0.35));
   position: -webkit-sticky;
   position: sticky;
   top: 0;
@@ -10,7 +10,7 @@
   right: 0;
   width: 100%;
   z-index: 1000;
-  box-shadow: 0 4px 20px -4px rgba(59, 47, 47, 0.08);
+  box-shadow: 0 4px 20px -4px rgba(56, 45, 45, 0.08);
   transition: all var(--transition-normal);
 }
 
@@ -168,7 +168,7 @@
   position: absolute;
   top: 2px;
   right: 2px;
-  background: var(--gold-gradient);
+  background: var(--burgundy, #702F42);
   color: #ffffff;
   font-family: 'Montserrat', sans-serif;
   font-size: 9.5px;
@@ -181,7 +181,7 @@
   justify-content: center;
   padding: 0 3px;
   pointer-events: none;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 5px rgba(112, 47, 66, 0.35);
   border: 1.5px solid #ffffff;
 }
 

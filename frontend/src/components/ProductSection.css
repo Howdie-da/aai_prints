@@ -3,8 +3,12 @@
    ============================================== */
 .prod-section {
   padding: 70px 0 60px;
-  background: var(--bg-primary, #FAF6F2);
+  background: var(--bg-primary, #F6F0E7);
   border-bottom: 1px solid var(--cream-border);
+}
+
+.prod-section#new-comer {
+  background: var(--surface-champagne, #E8D9C7);
 }
 
 .prod-grid {
@@ -16,8 +20,8 @@
 /* Museum Product Card */
 .prod-card {
   position: relative;
-  background: var(--cream-card, #FAF6F2);
-  border: 1px solid var(--taupe-border);
+  background: var(--white, #FFFFFF);
+  border: 1px solid rgba(193, 161, 106, 0.35);
   border-radius: var(--radius-md, 12px);
   overflow: hidden;
   display: flex;
@@ -31,14 +35,14 @@
 
 .prod-card:hover {
   transform: translateY(-6px);
-  border-color: var(--gold);
+  border-color: var(--gold, #C1A16A);
   box-shadow: var(--shadow-hover);
 }
 
 /* Highlight flash when scrolled to from search */
 .prod-card-highlight {
   outline: 2px solid var(--gold) !important;
-  box-shadow: 0 0 25px rgba(197, 155, 39, 0.45) !important;
+  box-shadow: 0 0 25px rgba(193, 161, 106, 0.45) !important;
   transform: translateY(-6px);
   transition: all 0.3s ease;
 }
@@ -67,8 +71,8 @@
   padding: 4px 10px;
   color: #ffffff;
   border-radius: 4px;
-  background: var(--teal-deep);
-  border: 1px solid rgba(197, 155, 39, 0.35);
+  background: var(--espresso, #382D2D);
+  border: 1px solid rgba(193, 161, 106, 0.45);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   text-transform: uppercase;
   white-space: nowrap;
@@ -77,12 +81,13 @@
 }
 
 .prod-tag--best-seller {
-  background: var(--gold-gradient);
-  color: #0e2a2d;
+  background: var(--burgundy, #702F42);
+  color: #ffffff;
+  border-color: var(--gold, #C1A16A);
 }
 
 .prod-tag--new-arrival {
-  background: var(--teal);
+  background: var(--burgundy, #702F42);
   color: #ffffff;
 }
 
@@ -95,9 +100,9 @@
   letter-spacing: 0.8px;
   padding: 3px 8px;
   border-radius: 4px;
-  background: #fef2f2;
-  color: #dc2626;
-  border: 1px solid rgba(220, 38, 38, 0.2);
+  background: #F8EDF1;
+  color: var(--burgundy, #702F42);
+  border: 1px solid rgba(112, 47, 66, 0.28);
   display: inline-block;
   width: fit-content;
   white-space: nowrap;
@@ -111,9 +116,9 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: var(--white, #FAF7F2);
-  border: 1px solid rgba(197, 155, 39, 0.28);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  background: #FFFFFF;
+  border: 1px solid rgba(193, 161, 106, 0.35);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -125,10 +130,10 @@
 }
 
 .prod-wishlist-btn:hover {
-  background: var(--sand-accent, #edd9cc);
+  background: var(--surface-champagne, #E8D9C7);
   transform: scale(1.12);
-  box-shadow: 0 4px 14px rgba(197, 139, 89, 0.35);
-  border-color: var(--gold, #c59b27);
+  box-shadow: 0 4px 14px rgba(193, 161, 106, 0.35);
+  border-color: var(--gold, #C1A16A);
 }
 
 .prod-wishlist-btn:active {
@@ -136,9 +141,9 @@
 }
 
 .prod-wishlist-btn.is-active {
-  background: var(--white, #FAF7F2);
-  border-color: #fca5a5;
-  box-shadow: 0 2px 10px rgba(220, 38, 38, 0.2);
+  background: #FFFFFF;
+  border-color: var(--burgundy, #702F42);
+  box-shadow: 0 2px 10px rgba(112, 47, 66, 0.25);
 }
 
 .prod-wishlist-heart {
@@ -217,7 +222,7 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  background: var(--cream-card, #FAF6F2);
+  background: var(--white, #FFFFFF);
 }
 
 .prod-cat-crumb {
@@ -226,7 +231,7 @@
   font-weight: 600;
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  color: var(--gold-dark);
+  color: var(--gold-dark, #A68751);
   margin-bottom: 4px;
 }
 
@@ -235,7 +240,7 @@
   font-size: 17px;
   font-weight: 600;
   line-height: 1.35;
-  color: var(--teal-deep);
+  color: var(--espresso, #382D2D);
   margin: 0 0 8px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -251,7 +256,7 @@
 }
 
 .prod-name a:hover {
-  color: var(--gold-dark);
+  color: var(--burgundy, #702F42);
 }
 
 /* Star Rating */
@@ -264,17 +269,17 @@
 
 .stars {
   display: flex;
-  color: #d1d5db;
+  color: var(--surface-champagne, #E8D9C7);
   font-size: 13px;
   line-height: 1;
 }
 
 .star-full {
-  color: var(--star-gold);
+  color: var(--star-gold, #C1A16A);
 }
 
 .star-half {
-  color: var(--star-gold);
+  color: var(--star-gold, #C1A16A);
 }
 
 .rating-score {
@@ -309,7 +314,7 @@
   font-family: 'Montserrat', sans-serif;
   font-size: 19px;
   font-weight: 700;
-  color: var(--teal-deep);
+  color: var(--espresso, #382D2D);
   letter-spacing: -0.2px;
 }
 
@@ -324,44 +329,44 @@
   font-family: 'Montserrat', sans-serif;
   font-size: 11px;
   font-weight: 600;
-  color: var(--badge-success);
-  background: #f0faf5;
+  color: var(--burgundy, #702F42);
+  background: var(--burgundy-light, #F8EDF1);
   padding: 2px 7px;
   border-radius: 4px;
 }
 
-/* Add to Cart Button */
+/* Add to Cart Button (Deep Burgundy #702F42) */
 .prod-cart-btn {
   width: 100%;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: var(--teal);
+  background: var(--burgundy, #702F42);
   color: #ffffff;
   font-family: 'Montserrat', sans-serif;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 1.5px;
   text-transform: uppercase;
   padding: 12px 18px;
   border-radius: var(--radius-full);
-  border: 1px solid var(--teal-border);
-  box-shadow: 0 2px 8px rgba(197, 139, 89, 0.28);
+  border: 1px solid rgba(193, 161, 106, 0.4);
+  box-shadow: 0 4px 14px rgba(112, 47, 66, 0.28);
   cursor: pointer;
   transition: all var(--transition-normal);
 }
 
 .prod-cart-btn:hover {
-  background: var(--teal-dark);
-  box-shadow: 0 6px 18px rgba(175, 118, 68, 0.38);
+  background: var(--burgundy-hover, #5A2434);
+  box-shadow: 0 6px 18px rgba(90, 36, 52, 0.38);
   transform: translateY(-1px);
 }
 
 .prod-cart-btn.added {
-  background: var(--badge-success);
-  border-color: var(--badge-success);
-  box-shadow: 0 4px 12px rgba(21, 128, 61, 0.3);
+  background: var(--burgundy, #702F42);
+  border-color: var(--gold, #C1A16A);
+  box-shadow: 0 4px 14px rgba(112, 47, 66, 0.35);
 }
 
 .sec-view-more-wrap {

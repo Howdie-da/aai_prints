@@ -265,9 +265,22 @@ function App() {
     navigateTo('product', slug);
   };
 
-  // Find active product for PDP via product service layer
-  const currentProduct =
-    getProductBySlugOrId(activeProductSlug) || allProducts[0];
+  // Find active product for PDP via live products state
+  const currentProduct = useMemo(() => {
+    if (!activeProductSlug && allProducts.length > 0) return allProducts[0];
+    const targetSlug = String(activeProductSlug || '').toLowerCase().trim();
+    return (
+      allProducts.find(
+        (p) =>
+          (p.slug && p.slug.toLowerCase() === targetSlug) ||
+          String(p.id) === targetSlug ||
+          String(p._id) === targetSlug
+      ) ||
+      getProductBySlugOrId(activeProductSlug) ||
+      allProducts[0] ||
+      null
+    );
+  }, [activeProductSlug, allProducts]);
 
   return (
     <AuthProvider>

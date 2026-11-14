@@ -1,10 +1,10 @@
 /* ==============================================
-   Luxury Announcement Bar
+   Luxury Announcement Bar – Aai Prints
    ============================================== */
 .ann-bar {
-  background: linear-gradient(90deg, #2A2121 0%, #3B2F2F 50%, #2A2121 100%);
-  color: var(--text-inverse);
-  border-bottom: 1px solid rgba(237, 217, 204, 0.35);
+  background: linear-gradient(90deg, #271E1E 0%, #382D2D 50%, #271E1E 100%);
+  color: #FFFFFF;
+  border-bottom: 1px solid rgba(193, 161, 106, 0.4);
   font-family: 'Montserrat', sans-serif;
   font-size: 12px;
   font-weight: 400;
@@ -49,9 +49,9 @@
 }
 
 .ann-diamond {
-  color: var(--gold-light);
+  color: var(--gold, #C1A16A);
   font-size: 10px;
-  opacity: 0.85;
+  opacity: 0.95;
 }
 
 .ann-tag {
@@ -59,18 +59,18 @@
   font-size: 9.5px;
   font-weight: 700;
   letter-spacing: 1.8px;
-  color: var(--gold-light);
-  background: rgba(197, 155, 39, 0.15);
-  padding: 2px 8px;
+  color: #FFFFFF;
+  background: var(--burgundy, #702F42);
+  padding: 2.5px 9px;
   border-radius: 4px;
-  border: 1px solid rgba(197, 155, 39, 0.3);
+  border: 1px solid rgba(193, 161, 106, 0.4);
   text-transform: uppercase;
 }
 
 .ann-text {
   font-size: 12.5px;
-  font-weight: 450;
-  color: #f2f5f6;
+  font-weight: 500;
+  color: #F6F0E7;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -81,17 +81,17 @@
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 1.5px;
-  color: var(--teal-deep);
-  background: var(--gold-gradient);
+  color: #382D2D;
+  background: var(--gold-gradient, linear-gradient(135deg, #DFC497 0%, #C1A16A 100%));
   padding: 2px 9px;
   border-radius: 4px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
 }
 
 .ann-btn {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(193, 161, 106, 0.25);
+  color: rgba(246, 240, 231, 0.85);
   width: 24px;
   height: 24px;
   border-radius: 50%;
@@ -104,9 +104,9 @@
 }
 
 .ann-btn:hover {
-  background: rgba(197, 155, 39, 0.2);
+  background: var(--burgundy, #702F42);
   color: #ffffff;
-  border-color: var(--gold-border);
+  border-color: var(--gold, #C1A16A);
   transform: scale(1.08);
 }
 
@@ -114,9 +114,9 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: linear-gradient(135deg, rgba(184, 137, 30, 0.22) 0%, rgba(212, 168, 75, 0.12) 100%);
-  border: 1px solid var(--gold-border);
-  color: var(--gold-light);
+  background: rgba(232, 217, 199, 0.15);
+  border: 1px solid rgba(193, 161, 106, 0.45);
+  color: var(--gold-light, #DFC497);
   font-family: var(--font-eyebrow, 'Cinzel', serif);
   font-size: 10.5px;
   font-weight: 700;
@@ -132,11 +132,11 @@
 }
 
 .ann-b2b-link:hover {
-  background: var(--gold-gradient);
-  color: var(--teal-deep);
-  border-color: var(--gold-light);
+  background: var(--burgundy, #702F42);
+  color: #FFFFFF;
+  border-color: var(--gold, #C1A16A);
   transform: translateY(-1px);
-  box-shadow: var(--shadow-gold);
+  box-shadow: var(--shadow-burgundy);
 }
 
 @media (max-width: 640px) {

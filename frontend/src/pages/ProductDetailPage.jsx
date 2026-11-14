@@ -154,12 +154,22 @@ export default function ProductDetailPage({
   }, [product?.price, product?.originalPrice]);
 
   if (!product) {
+    if (allProducts.length === 0) {
+      return (
+        <div className="pdp-loading" style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '60px 20px', background: 'var(--bg-primary, #F6F0E7)' }}>
+          <div style={{ textAlign: 'center' }}>
+            <span style={{ fontFamily: 'Cinzel, serif', fontSize: '11px', letterSpacing: '2px', color: 'var(--gold, #C1A16A)', textTransform: 'uppercase' }}>AAI PRINTS</span>
+            <h2 style={{ fontFamily: 'Cormorant, serif', fontStyle: 'italic', fontSize: '28px', color: 'var(--espresso, #382D2D)', margin: '8px 0' }}>Loading Art Piece...</h2>
+          </div>
+        </div>
+      );
+    }
     return (
-      <div className="pdp-not-found">
-        <div className="pdp-container">
-          <h2>Product Not Found</h2>
-          <p>We couldn't find the product you're looking for.</p>
-          <button type="button" className="btn-primary" onClick={() => onNavigateShop && onNavigateShop('All')}>
+      <div className="pdp-not-found" style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '60px 20px', background: 'var(--bg-primary, #F6F0E7)' }}>
+        <div className="pdp-container" style={{ textAlign: 'center' }}>
+          <h2 style={{ fontFamily: 'Cormorant, serif', fontStyle: 'italic', fontSize: '32px', color: 'var(--espresso, #382D2D)', marginBottom: '8px' }}>Product Not Found</h2>
+          <p style={{ color: 'var(--text-muted)', marginBottom: '20px' }}>We couldn't find the product you're looking for.</p>
+          <button type="button" className="btn-view-more" onClick={() => onNavigateShop && onNavigateShop('All')}>
             Back to Shop
           </button>
         </div>

@@ -58,13 +58,13 @@
   max-width: 480px;
   width: 100%;
   min-height: 485px;
-  background: rgba(250, 242, 234, 0.95);
+  background: rgba(246, 240, 231, 0.96);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   padding: 36px 40px;
   border-radius: var(--radius-lg);
-  border: 1px solid rgba(212, 185, 165, 0.65);
-  box-shadow: 0 16px 45px -8px rgba(59, 47, 47, 0.28), 0 0 0 1px rgba(237, 217, 204, 0.6), 0 4px 12px rgba(59, 47, 47, 0.08);
+  border: 1px solid rgba(193, 161, 106, 0.45);
+  box-shadow: 0 16px 45px -8px rgba(56, 45, 45, 0.22), 0 0 0 1px rgba(232, 217, 199, 0.6), 0 4px 12px rgba(56, 45, 45, 0.08);
   position: relative;
   overflow: hidden;
   box-sizing: border-box;
@@ -93,8 +93,8 @@
   text-transform: uppercase;
   color: var(--gold-dark);
   margin-bottom: 14px;
-  background: rgba(237, 217, 204, 0.7);
-  border: 1px solid rgba(197, 139, 89, 0.35);
+  background: rgba(232, 217, 199, 0.7);
+  border: 1px solid rgba(193, 161, 106, 0.45);
   padding: 4px 12px;
   border-radius: var(--radius-full);
   width: fit-content;
@@ -174,8 +174,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: rgba(237, 217, 204, 0.45);
-  color: var(--teal-dark);
+  background: rgba(232, 217, 199, 0.45);
+  color: var(--espresso);
   font-family: 'Montserrat', sans-serif;
   font-size: 11.5px;
   font-weight: 600;
@@ -183,15 +183,15 @@
   text-transform: uppercase;
   padding: 12px 22px;
   border-radius: var(--radius-full);
-  border: 1.5px solid rgba(158, 123, 102, 0.35);
+  border: 1.5px solid rgba(193, 161, 106, 0.45);
   transition: all var(--transition-normal);
   text-decoration: none;
 }
 
 .hero-secondary-cta:hover {
-  background: var(--sand-accent, #edd9cc);
-  border-color: var(--teal);
-  color: var(--teal-deep);
+  background: var(--burgundy, #702F42);
+  border-color: var(--gold);
+  color: #FFFFFF;
   transform: translateY(-1px);
 }
 
@@ -202,10 +202,10 @@
   transform: translateY(-50%);
   width: 44px;
   height: 44px;
-  background: rgba(250, 242, 234, 0.94);
+  background: rgba(246, 240, 231, 0.94);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border: 1.5px solid #edd9cc;
+  border: 1.5px solid rgba(193, 161, 106, 0.45);
   border-radius: 50%;
   color: var(--espresso);
   display: flex;
@@ -214,7 +214,7 @@
   cursor: pointer;
   z-index: 15;
   transition: all var(--transition-normal);
-  box-shadow: 0 4px 12px rgba(59, 47, 47, 0.15);
+  box-shadow: 0 4px 12px rgba(56, 45, 45, 0.15);
 }
 
 .hero-prev {

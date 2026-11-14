@@ -3,9 +3,9 @@
    ============================================== */
 .testimonials-section {
   padding: 80px 0;
-  background: linear-gradient(180deg, var(--bg-primary-solid, #faf2ea) 0%, rgba(237, 217, 204, 0.45) 50%, var(--bg-primary-solid, #faf2ea) 100%);
-  border-top: 1px solid var(--cream-border);
-  border-bottom: 1px solid var(--cream-border);
+  background: var(--surface-champagne, #E8D9C7);
+  border-top: 1px solid rgba(193, 161, 106, 0.35);
+  border-bottom: 1px solid rgba(193, 161, 106, 0.35);
 }
 
 .reviews-grid {
@@ -15,10 +15,10 @@
 }
 
 .review-card {
-  background: var(--cream-card, #FAF6F2);
+  background: var(--white, #FFFFFF);
   border-radius: var(--radius-md);
   padding: 26px 24px;
-  border: 1px solid var(--taupe-border);
+  border: 1px solid rgba(193, 161, 106, 0.35);
   box-shadow: var(--shadow-card);
   display: flex;
   flex-direction: column;
@@ -29,7 +29,7 @@
 
 .review-card:hover {
   transform: translateY(-6px);
-  border-color: var(--gold);
+  border-color: var(--gold, #C1A16A);
   box-shadow: var(--shadow-hover);
 }
 
@@ -101,7 +101,7 @@
   width: 42px;
   height: 42px;
   border-radius: 50%;
-  background: var(--gold-gradient);
+  background: var(--burgundy, #702F42);
   color: #ffffff;
   display: flex;
   align-items: center;
@@ -110,7 +110,8 @@
   font-size: 16px;
   font-weight: 700;
   flex-shrink: 0;
-  box-shadow: var(--shadow-gold);
+  border: 1.5px solid var(--gold, #C1A16A);
+  box-shadow: var(--shadow-burgundy);
 }
 
 .review-author-meta {
@@ -122,7 +123,7 @@
   font-family: 'Montserrat', sans-serif;
   font-size: 14px;
   font-weight: 700;
-  color: var(--teal-deep);
+  color: var(--espresso, #382D2D);
   margin: 0;
 }
 
