@@ -237,9 +237,9 @@
   height: auto;
   max-height: 105px;
   object-fit: contain;
-  object-position: center;
+  object-position: left;
   display: block;
-  margin: 0 auto 18px auto;
+  margin: 0 0 18px 0;
 }
 
 /* Bottom Bar */

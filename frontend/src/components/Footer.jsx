@@ -161,7 +161,7 @@ export default function Footer({ onNavigate }) {
         {/* ── Payment Badges & Copyright Bottom Bar ── */}
         <div className="footer-bottom">
           <p className="footer-copy">
-            © {new Date().getFullYear()} <strong>Aai Prints</strong> (Ananta Art International).  in India. All Rights Reserved.
+            © {new Date().getFullYear()} <strong>Aai Prints</strong> (A Subsidiary of Our Online Decor). Crafted in India. All Rights Reserved.
           </p>
         </div>
       </div>
