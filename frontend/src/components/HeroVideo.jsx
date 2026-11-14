@@ -11,6 +11,12 @@ export default function HeroVideo() {
     const ambient = ambientVideoRef.current;
     if (!main || !ambient) return;
 
+    // Strict autoplay requirement for deployed environments (iOS/Safari/Chrome)
+    main.muted = true;
+    main.defaultMuted = true;
+    ambient.muted = true;
+    ambient.defaultMuted = true;
+
     const syncTime = () => {
       if (Math.abs(ambient.currentTime - main.currentTime) > 0.15) {
         ambient.currentTime = main.currentTime;
@@ -45,9 +51,15 @@ export default function HeroVideo() {
           autoPlay
           loop
           muted
+          defaultMuted
           playsInline
           preload="auto"
           tabIndex="-1"
+          poster="/new-images/dummy_hero_21x9_source.png"
+          onLoadedData={(e) => {
+            e.currentTarget.muted = true;
+            e.currentTarget.play().catch(() => {});
+          }}
         >
           <source src="/videos/dummy_hero_21x9_60fps.mp4" type="video/mp4" />
           <source src="/dummy_hero_21x9_60fps.mp4" type="video/mp4" />
@@ -63,8 +75,14 @@ export default function HeroVideo() {
           autoPlay
           loop
           muted
+          defaultMuted
           playsInline
           preload="auto"
+          poster="/new-images/dummy_hero_21x9_source.png"
+          onLoadedData={(e) => {
+            e.currentTarget.muted = true;
+            e.currentTarget.play().catch(() => {});
+          }}
         >
           <source src="/videos/dummy_hero_21x9_60fps.mp4" type="video/mp4" />
           <source src="/dummy_hero_21x9_60fps.mp4" type="video/mp4" />

@@ -7,10 +7,14 @@ package-lock.json
 .env
 backend/.env
 
-# Large media files
-*.mp4
+# Large media files (exclude production web assets needed for deployment)
 *.mov
 *.avi
+*.mp4
+!frontend/public/videos/dummy_hero_21x9_60fps.mp4
+!frontend/public/dummy_hero_21x9_60fps.mp4
+!frontend/public/videos/artzilla_hero_2to1_60fps.mp4
+!frontend/public/artzilla_hero_2to1_60fps.mp4
 
 # Logs
 logs/
