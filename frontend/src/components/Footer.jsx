@@ -73,9 +73,13 @@ export default function Footer({ onNavigate }) {
             <p className="footer-desc">
               Handcrafted devotional frames, illuminated backlit LED frames, and contemporary wall art designed to bring elegance, serenity, and premium aesthetics into every home and vehicle.
             </p>
-            <div className="footer-badge">
-              <Sparkles size={13} style={{ color: 'var(--gold, #d4af37)' }} />
-              <span>100% Handcrafted in India</span>
+            <div className="footer-venture-img-wrap">
+              <img
+                src="/our-online-decor-logo.png?v=3"
+                alt="OurONLINE Decor - Corporate Gifts, Home Decor, Personalised Gifts, Promotional Products - अपनों के लिए कुछ खास"
+                className="footer-venture-img"
+                loading="lazy"
+              />
             </div>
             <div className="footer-socials" aria-label="Connect with us">
               <a href="#" className="social-link" aria-label="Chat with Customer Support" onClick={(e) => e.preventDefault()} title="Customer Support">
@@ -156,35 +160,11 @@ export default function Footer({ onNavigate }) {
           </div>
         </div>
 
-        {/* ── Venture & Corporate Gifting Spotlight ── */}
-        <div className="footer-venture-strip">
-          <div className="footer-venture-card">
-            <span className="footer-venture-badge">Corporate Gifting &amp; Decor Venture</span>
-            <div className="footer-venture-img-wrap">
-              <img
-                src="/our-online-decor-logo.png?v=3"
-                alt="OurONLINE Decor - Corporate Gifts, Home Decor, Personalised Gifts, Promotional Products - अपनों के लिए कुछ खास"
-                className="footer-venture-img"
-                loading="lazy"
-              />
-            </div>
-          </div>
-        </div>
-
         {/* ── Payment Badges & Copyright Bottom Bar ── */}
         <div className="footer-bottom">
           <p className="footer-copy">
             © {new Date().getFullYear()} <strong>Aai Prints</strong> (Ananta Art International). Handcrafted in India. All Rights Reserved.
           </p>
-
-          <div className="footer-payment-strip">
-            <span className="payment-pill">UPI</span>
-            <span className="payment-pill">Visa</span>
-            <span className="payment-pill">Mastercard</span>
-            <span className="payment-pill">RuPay</span>
-            <span className="payment-pill">NetBanking</span>
-            <span className="payment-pill">Cash on Delivery</span>
-          </div>
         </div>
       </div>
 
