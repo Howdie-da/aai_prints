@@ -131,7 +131,7 @@ export default function CartPage({
             </div>
             <h2 className="cart-empty-title">Your Cart Is Empty</h2>
             <p className="cart-empty-desc">
-              You haven't added any home decor pieces to your cart yet. Explore our handcrafted spiritual idols, illuminated frames, and artisan wall art.
+              You haven't added any home decor pieces to your cart yet. Explore our  spiritual idols, illuminated frames, and artisan wall art.
             </p>
             <button
               type="button"
@@ -382,7 +382,7 @@ export default function CartPage({
                   </div>
                   <div className="cart-trust-item">
                     <ShieldCheck size={15} />
-                    <span>Artisan Handcrafted Quality Guarantee</span>
+                    <span>Artisan  Quality Guarantee</span>
                   </div>
                 </div>
               </div>

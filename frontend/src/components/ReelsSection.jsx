@@ -389,10 +389,6 @@ export default function ReelsSection({ onSelectProduct }) {
         {/* Section Header */}
         <div className="reels-header">
           <div className="reels-header-left">
-            <span className="reels-eyebrow">
-              <Sparkles size={13} className="reels-eyebrow-icon" />
-              WATCH &amp; SHOP
-            </span>
             <h2 className="reels-title">Our Products as Stories</h2>
             <p className="reels-subtitle">
               Experience the warm ambient glow of our products in motion.

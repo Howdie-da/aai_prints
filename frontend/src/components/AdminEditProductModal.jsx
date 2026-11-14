@@ -22,7 +22,7 @@ import {
 import { api } from '../services/api';
 import './AdminEditProductModal.css';
 
-const PRESET_BADGES = ['Bestseller', 'New Launch', 'Devotional', 'Handcrafted', 'Sale', 'Trending'];
+const PRESET_BADGES = ['Bestseller', 'New Launch', 'Devotional', '', 'Sale', 'Trending'];
 
 const DISPATCH_PRESETS = [
   'Ready to Dispatch within 24-48 Hours',
@@ -81,8 +81,8 @@ export default function AdminEditProductModal({
     const list = Array.isArray(product.images) && product.images.length > 0
       ? product.images
       : product.image
-      ? [product.image]
-      : [];
+        ? [product.image]
+        : [];
     return list.map((item) => {
       const url = typeof item === 'string' ? item : item.url;
       const match = url?.match(/\/upload\/(?:v\d+\/)?([^\.]+)/);
@@ -392,19 +392,19 @@ export default function AdminEditProductModal({
 
     const formattedVariants = hasVariants
       ? variants
-          .filter((v) => v.name && v.name.trim())
-          .map((v) => ({
-            name: v.name.trim(),
-            label: v.name.trim(),
-            attributes: {
-              size: v.size?.trim() || undefined,
-              material: v.material?.trim() || undefined
-            },
-            price: Number(v.price) || Number(basePrice),
-            originalPrice: v.originalPrice ? Number(v.originalPrice) : null,
-            stock: Number(v.stock) || 10,
-            inStock: (Number(v.stock) || 10) > 0
-          }))
+        .filter((v) => v.name && v.name.trim())
+        .map((v) => ({
+          name: v.name.trim(),
+          label: v.name.trim(),
+          attributes: {
+            size: v.size?.trim() || undefined,
+            material: v.material?.trim() || undefined
+          },
+          price: Number(v.price) || Number(basePrice),
+          originalPrice: v.originalPrice ? Number(v.originalPrice) : null,
+          stock: Number(v.stock) || 10,
+          inStock: (Number(v.stock) || 10) > 0
+        }))
       : [];
 
     const finalImageUrls = images.map((img) => (typeof img === 'string' ? img : img.url));
@@ -611,7 +611,7 @@ export default function AdminEditProductModal({
                     id="edit-name"
                     type="text"
                     className="admin-modal-input"
-                    placeholder="e.g. Divine Lord Shiva Handcrafted Wooden Wall Art"
+                    placeholder="e.g. Divine Lord Shiva  Wooden Wall Art"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     required

@@ -152,7 +152,7 @@ export default function CartDrawer({ onSelectProduct, onNavigateShop, onNavigate
                   </div>
                   <h3 className="cart-empty-title">Your cart is empty</h3>
                   <p className="cart-empty-desc">
-                    Explore our illuminated backlit frames, handcrafted brass idols, and designer wall art.
+                    Explore our illuminated backlit frames,  brass idols, and designer wall art.
                   </p>
                   <button
                     type="button"

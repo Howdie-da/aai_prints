@@ -426,7 +426,7 @@ export default function B2BPortalPage({
             <span className="wholesale-pill-badge">WHOLESALE / BULK STORE</span>
             <h1 className="wholesale-hero-title">Factory-Direct Wholesale Store</h1>
             <p className="wholesale-hero-subtitle">
-              Order handcrafted devotional wall hangings, brass idols, and home decor at factory wholesale rates. Minimum order quantities with variable volume discounts, secure checkout, and direct delivery.
+              Order  devotional wall hangings, brass idols, and home decor at factory wholesale rates. Minimum order quantities with variable volume discounts, secure checkout, and direct delivery.
             </p>
 
             <div className="wholesale-hero-actions">

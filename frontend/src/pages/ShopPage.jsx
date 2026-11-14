@@ -417,8 +417,8 @@ export default function ShopPage({
             <h1 className="shop-title">{displayTitle}</h1>
             <p className="shop-subtitle">
               {activeCategory === 'All'
-                ? 'Explore authentic devotional idols, handcrafted wall hangings, and designer decor for your home and car.'
-                : `Handcrafted ${displayTitle.toLowerCase()} collection with authentic artisanal finishes.`}
+                ? 'Explore authentic devotional idols,  wall hangings, and designer decor for your home and car.'
+                : ` ${displayTitle.toLowerCase()} collection with authentic artisanal finishes.`}
             </p>
           </div>
           <div className="shop-header-count">
@@ -723,7 +723,7 @@ export default function ShopPage({
                   </div>
                   <h3 className="no-results-title">Collection In Preparation</h3>
                   <p className="no-results-desc">
-                    Our collection of handcrafted devotional artworks, illuminated frames, and decor pieces is currently being updated.
+                    Our collection of  devotional artworks, illuminated frames, and decor pieces is currently being updated.
                     New creations will appear here shortly.
                   </p>
                   {user?.role === 'admin' ? (

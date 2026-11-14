@@ -401,14 +401,14 @@ export default function ProductDetailPage({
                 <span>
                   {product.availability === 'in_stock'
                     ? 'In Stock – Ready to Dispatch within 24–48 Hours'
-                    : 'Available – Handcrafted on order'}
+                    : 'Available –  on order'}
                 </span>
               </div>
 
               {/* Description */}
               <p className="pdp-short-desc">
                 {product.description ||
-                  'Thoughtfully handcrafted by Aai Prints artisans. Perfect for spiritual corners, living rooms, work desks, and car dashboards.'}
+                  'Thoughtfully  by Aai Prints artisans. Perfect for spiritual corners, living rooms, work desks, and car dashboards.'}
               </p>
 
               {/* Variants Selector (only rendered when real options exist) */}
@@ -517,7 +517,7 @@ export default function ProductDetailPage({
                   <Truck size={18} />
                   <div>
                     <strong>Standard Dispatch</strong>
-                    <span>Handcrafted and dispatched within 24–48 hours</span>
+                    <span> and dispatched within 24–48 hours</span>
                   </div>
                 </div>
 
@@ -691,7 +691,7 @@ export default function ProductDetailPage({
         <section className="pdp-related-section">
           <div className="pdp-container">
             <h2 className="pdp-related-title">You May Also Like</h2>
-            <p className="pdp-related-subtitle">Carefully matched pieces from our handcrafted decor collection</p>
+            <p className="pdp-related-subtitle">Carefully matched pieces from our  decor collection</p>
 
             <div className="pdp-related-grid">
               {relatedProducts.map((rel) => {

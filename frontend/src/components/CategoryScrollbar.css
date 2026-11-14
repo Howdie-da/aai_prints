@@ -1,75 +1,106 @@
 /* ==============================================
-   Category Scrollbar
+   Category Bar – Luxury Endless Marquee Loop
+   Background: Reversed Gradient (Darker on Sides -> Bright in Middle)
+   Sides: Dark Yellow (#B37D22) | Center: Bright Luminous Cream (#FFFDF8)
+   Circle: Antique Gold Ring & Shadow (#C1A16A)
    ============================================== */
+
 .catbar-wrap {
-  background: linear-gradient(180deg, var(--bg-primary-solid, #faf2ea) 0%, rgba(237, 217, 204, 0.35) 50%, var(--bg-primary-solid, #faf2ea) 100%);
-  border-bottom: 1px solid var(--cream-border);
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  cursor: grab;
-  user-select: none;
-  touch-action: pan-y;
+  background: linear-gradient(90deg, #B37D22 0%, #D8A84E 20%, #FFFDF8 50%, #D8A84E 80%, #B37D22 100%);
+  border-top: 1px solid rgba(193, 161, 106, 0.35);
+  border-bottom: 1.5px solid rgba(193, 161, 106, 0.45);
+  overflow: hidden;
   position: relative;
+  width: 100%;
+  padding: 22px 0 26px;
+  user-select: none;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-.catbar-wrap::-webkit-scrollbar {
-  display: none;
+/* Subtle Left & Right Luxury Edge Vignettes matching the darker sides */
+.catbar-wrap::before,
+.catbar-wrap::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 64px;
+  z-index: 5;
+  pointer-events: none;
 }
 
-.catbar-wrap.is-dragging {
-  cursor: grabbing;
+.catbar-wrap::before {
+  left: 0;
+  background: linear-gradient(to right, #B37D22 0%, rgba(179, 125, 34, 0) 100%);
 }
 
-.catbar-inner {
+.catbar-wrap::after {
+  right: 0;
+  background: linear-gradient(to left, #B37D22 0%, rgba(179, 125, 34, 0) 100%);
+}
+
+/* ── Continuous Endless Loop Track ── */
+.catbar-track {
+  display: flex;
+  width: max-content;
+  animation: catbarMarquee 38s linear infinite;
+  will-change: transform;
+}
+
+/* Pause smoothly when user hovers or taps to select */
+.catbar-wrap:hover .catbar-track,
+.catbar-wrap:active .catbar-track {
+  animation-play-state: paused;
+}
+
+.catbar-marquee-group {
   display: flex;
   align-items: flex-start;
-  justify-content: flex-start;
-  padding: 24px 28px 28px;
-  gap: 16px;
-  width: max-content;
-  min-width: 100%;
-  box-sizing: border-box;
+  gap: 18px;
+  padding-right: 18px;
+  flex-shrink: 0;
 }
 
+/* ── Individual Category Item ── */
 .catbar-item {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 12px;
-  padding: 8px 12px;
+  padding: 6px 10px;
   text-decoration: none;
-  width: 160px;
-  flex: 0 0 160px;
+  width: 155px;
+  flex: 0 0 155px;
   box-sizing: border-box;
-  transition: transform var(--transition-normal), opacity var(--transition-normal);
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .catbar-item:hover {
   transform: translateY(-4px);
 }
 
-/* Double Halo Circular Frame */
+/* ── Circular Frame with Antique Gold Ring & Shadow (#C1A16A) ── */
 .catbar-circle {
-  width: 130px;
-  height: 130px;
+  width: 128px;
+  height: 128px;
   box-sizing: border-box;
-  padding: 4px;
+  padding: 3.5px;
   border-radius: 50%;
   overflow: hidden;
-  border: 2px solid var(--ochre-border);
-  background: var(--sand-vignette, radial-gradient(circle at center, #faf2ea 30%, #edd9cc 100%));
+  border: 2px solid #C1A16A;
+  background: #F6F0E7;
   flex-shrink: 0;
-  box-shadow: 0 4px 16px -2px rgba(59, 47, 47, 0.08), 0 0 0 3px #edd9cc, 0 0 0 5px rgba(237, 217, 204, 0.4);
-  transition: all var(--transition-smooth);
+  /* Antique Gold ring around the circle along with the warm gold shadow */
+  box-shadow: 0 0 0 3px #C1A16A, 0 6px 20px rgba(193, 161, 106, 0.55), 0 0 14px rgba(193, 161, 106, 0.4);
+  transition: all 0.35s ease;
   position: relative;
 }
 
 .catbar-item:hover .catbar-circle {
-  border-color: var(--gold);
-  box-shadow: 0 8px 25px -4px rgba(197, 139, 89, 0.35), 0 0 0 3.5px #edd9cc, 0 0 0 6px var(--ochre-border-light);
-  transform: scale(1.04);
+  border-color: #FFFFFF;
+  box-shadow: 0 0 0 3.5px #D4AF37, 0 10px 30px rgba(193, 161, 106, 0.8), 0 0 22px rgba(193, 161, 106, 0.6);
+  transform: scale(1.05);
 }
 
 .catbar-img {
@@ -86,43 +117,110 @@
   transform: scale(1.08);
 }
 
+/* ── Base Typography (Dark Espresso for Cream & Darkcream zones) ── */
 .catbar-label {
   display: block;
   text-align: center;
   font-family: 'Montserrat', sans-serif;
   font-size: 13px;
-  font-weight: 600;
-  color: var(--teal-deep);
-  letter-spacing: 0.6px;
+  font-weight: 700;
+  color: #382D2D;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.3px;
   line-height: 1.3;
   margin: 0;
   white-space: normal;
   max-width: 130px;
-  transition: color var(--transition-fast);
+  transition: color 0.2s ease;
 }
 
 .catbar-item:hover .catbar-label {
-  color: var(--gold-dark);
+  color: #702F42;
 }
 
+/* ── Overlay Layer: Masked over the Red Center with Pure White Typography ── */
+.catbar-layer-overlay {
+  position: absolute;
+  top: 22px;
+  left: 0;
+  right: 0;
+  bottom: 26px;
+  pointer-events: none;
+  z-index: 3;
+  /* Smooth horizontal mask matching the red center swell */
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, transparent 26%, black 42%, black 58%, transparent 74%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0%, transparent 26%, black 42%, black 58%, transparent 74%, transparent 100%);
+}
+
+/* Hide circles in overlay so only the text smoothly transitions */
+.catbar-layer-overlay .catbar-circle {
+  visibility: hidden;
+}
+
+/* Dark Espresso typography for the Bright Center overlay */
+.catbar-layer-overlay .catbar-label {
+  color: #24181B;
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.7);
+}
+
+/* ── Seamless Keyframe Marquee ── */
+@keyframes catbarMarquee {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+/* ── Mobile & Tablet Responsiveness ── */
 @media (max-width: 768px) {
-  .catbar-inner {
-    padding: 16px 14px 20px;
-    gap: 8px;
+  .catbar-wrap {
+    padding: 16px 0 20px;
+  }
+
+  .catbar-layer-overlay {
+    top: 16px;
+    bottom: 20px;
+  }
+
+  .catbar-wrap::before,
+  .catbar-wrap::after {
+    width: 32px;
+  }
+
+  .catbar-marquee-group {
+    gap: 12px;
+    padding-right: 12px;
   }
 
   .catbar-item {
-    width: 125px;
-    flex: 0 0 125px;
+    width: 115px;
+    flex: 0 0 115px;
+    gap: 8px;
+    padding: 4px 6px;
   }
 
   .catbar-circle {
-    width: 100px;
-    height: 100px;
+    width: 96px;
+    height: 96px;
+    padding: 2.5px;
+    box-shadow: 0 0 0 2.5px #C1A16A, 0 4px 14px rgba(193, 161, 106, 0.45), 0 0 10px rgba(193, 161, 106, 0.3);
   }
 
   .catbar-label {
-    font-size: 11.5px;
-    max-width: 100px;
+    font-size: 11px;
+    max-width: 105px;
+    letter-spacing: 0.2px;
+  }
+
+  .catbar-track {
+    animation-duration: 28s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .catbar-track {
+    animation-play-state: paused;
   }
 }

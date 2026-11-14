@@ -6,7 +6,7 @@ const features = [
   {
     icon: <ShieldCheck size={24} strokeWidth={2} />,
     title: 'Artisan Quality',
-    desc: 'Handcrafted with precision',
+    desc: ' with precision',
   },
   {
     icon: <Truck size={24} strokeWidth={2} />,

@@ -153,7 +153,7 @@ export default function ProductGrid() {
         <div className="section-header">
           <span className="section-label">Our Collection</span>
           <h2 className="section-title">Featured Products</h2>
-          <p className="section-desc">Handcrafted devotional and wall decor pieces loved by thousands of happy customers.</p>
+          <p className="section-desc"> devotional and wall decor pieces loved by thousands of happy customers.</p>
         </div>
         <div className="products-grid">
           {products.map((product) => (

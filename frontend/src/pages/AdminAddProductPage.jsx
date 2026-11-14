@@ -24,7 +24,7 @@ import { fetchAllProducts } from '../services/productService';
 import AdminEditProductModal from '../components/AdminEditProductModal';
 import './AdminAddProductPage.css';
 
-const PRESET_BADGES = ['Bestseller', 'New Launch', 'Devotional', 'Handcrafted', 'Sale', 'Trending'];
+const PRESET_BADGES = ['Bestseller', 'New Launch', 'Devotional', '', 'Sale', 'Trending'];
 
 export default function AdminAddProductPage({
   onNavigateHome,
@@ -313,19 +313,19 @@ export default function AdminAddProductPage({
 
     const formattedVariants = hasVariants
       ? variants
-          .filter((v) => v.name && v.name.trim())
-          .map((v) => ({
-            name: v.name.trim(),
-            label: v.name.trim(),
-            attributes: {
-              size: v.size?.trim() || undefined,
-              material: v.material?.trim() || undefined,
-            },
-            price: Number(v.price) || Number(basePrice),
-            originalPrice: v.originalPrice ? Number(v.originalPrice) : null,
-            stock: Number(v.stock) || 10,
-            inStock: (Number(v.stock) || 10) > 0,
-          }))
+        .filter((v) => v.name && v.name.trim())
+        .map((v) => ({
+          name: v.name.trim(),
+          label: v.name.trim(),
+          attributes: {
+            size: v.size?.trim() || undefined,
+            material: v.material?.trim() || undefined,
+          },
+          price: Number(v.price) || Number(basePrice),
+          originalPrice: v.originalPrice ? Number(v.originalPrice) : null,
+          stock: Number(v.stock) || 10,
+          inStock: (Number(v.stock) || 10) > 0,
+        }))
       : [];
 
     const finalImageUrls = images.map((img) => (typeof img === 'string' ? img : img.url));

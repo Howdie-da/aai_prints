@@ -26,7 +26,7 @@ const policyContents = {
   },
   'Terms of Service': {
     title: 'Terms of Service',
-    body: 'Welcome to Aai Prints (Ananta Art International). All catalog prices, specifications, and product descriptions represent authentic handcrafted goods. Orders are subject to standard verification and dispatch schedules.',
+    body: 'Welcome to Aai Prints (Ananta Art International). All catalog prices, specifications, and product descriptions represent authentic  goods. Orders are subject to standard verification and dispatch schedules.',
   },
 };
 
@@ -71,7 +71,7 @@ export default function Footer({ onNavigate }) {
               <span className="footer-logo-text">Aai Prints</span>
             </div>
             <p className="footer-desc">
-              Handcrafted devotional frames, illuminated backlit LED frames, and contemporary wall art designed to bring elegance, serenity, and premium aesthetics into every home and vehicle.
+              Devotional frames, illuminated backlit LED frames, and contemporary wall art designed to bring elegance, serenity, and premium aesthetics into every home and vehicle.
             </p>
             <div className="footer-venture-img-wrap">
               <img
@@ -163,7 +163,7 @@ export default function Footer({ onNavigate }) {
         {/* ── Payment Badges & Copyright Bottom Bar ── */}
         <div className="footer-bottom">
           <p className="footer-copy">
-            © {new Date().getFullYear()} <strong>Aai Prints</strong> (Ananta Art International). Handcrafted in India. All Rights Reserved.
+            © {new Date().getFullYear()} <strong>Aai Prints</strong> (Ananta Art International).  in India. All Rights Reserved.
           </p>
         </div>
       </div>

@@ -27,7 +27,7 @@ async function seedReels() {
         title: 'Divine Sanctum • Ambient LED Light Frame',
         videoUrl: '/videos/reel-1.mp4',
         thumbnailUrl: products[0]?.image || 'https://images.unsplash.com/photo-1582560475093-ba66accbc424?w=800&auto=format&fit=crop&q=80',
-        caption: 'Handcrafted spiritual devotion with warm ambient glow. Perfect for your home mandir or living space.',
+        caption: ' spiritual devotion with warm ambient glow. Perfect for your home mandir or living space.',
         duration: 25,
         aspectRatio: '9:16',
         order: 1,

@@ -141,7 +141,7 @@ export default function WishlistDrawer({
                   </div>
                   <h3 className="wishlist-empty-title">Your wishlist is empty</h3>
                   <p className="wishlist-empty-desc">
-                    Explore our handcrafted devotional, car &amp; wall decor items and click the heart icon on any product to save your favorites here.
+                    Explore our  devotional, car &amp; wall decor items and click the heart icon on any product to save your favorites here.
                   </p>
                   <motion.button
                     whileHover={{ scale: 1.04 }}

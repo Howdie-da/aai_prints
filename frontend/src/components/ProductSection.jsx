@@ -105,7 +105,7 @@ export default function ProductSection({
                 className="prod-card"
                 aria-label={p.name}
               >
-                {/* Floating Tags (New Arrival, Best Seller, Handcrafted) */}
+                {/* Floating Tags (New Arrival, Best Seller, ) */}
                 <div className="prod-badge-dock">
                   {p.tag && (
                     <span className={`prod-tag prod-tag--${p.tag.replace(/\s+/g, '-').toLowerCase()}`}>

@@ -4,8 +4,10 @@
    ======================================================== */
 
 .style-section {
-  padding: 56px 0 64px;
-  background: linear-gradient(180deg, transparent 0%, rgba(237, 217, 204, 0.38) 50%, transparent 100%);
+  padding: 64px 0 72px;
+  background: var(--surface-champagne, #E8D9C7);
+  border-top: 1px solid rgba(193, 161, 106, 0.35);
+  border-bottom: 1px solid rgba(193, 161, 106, 0.35);
   position: relative;
 }
 

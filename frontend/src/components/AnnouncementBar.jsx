@@ -15,7 +15,7 @@ const announcements = [
   },
   {
     prefix: 'PERSONALISED GIFTS',
-    text: 'Handcrafted Artworks Creating Emotional Connections • Custom Framing Available',
+    text: ' Artworks Creating Emotional Connections • Custom Framing Available',
   },
   {
     prefix: 'SPECIAL OFFER',

@@ -106,7 +106,7 @@ export default function WishlistPage({
               </span>
             </div>
             <p className="wishlist-subtitle">
-              Your saved favourites and handcrafted decor pieces.
+              Your saved favourites and  decor pieces.
             </p>
           </div>
 
@@ -138,7 +138,7 @@ export default function WishlistPage({
             </div>
             <h2 className="wishlist-empty-heading">Your Wishlist Is Empty</h2>
             <p className="wishlist-empty-description">
-              You haven't saved any items yet. Explore our handcrafted devotional idols,
+              You haven't saved any items yet. Explore our  devotional idols,
               backlit LED frames, and designer car &amp; wall decor to build your personal wishlist.
             </p>
             <div className="wishlist-empty-actions">

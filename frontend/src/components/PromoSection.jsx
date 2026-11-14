@@ -46,7 +46,7 @@ export default function PromoSection() {
             <h2 className="promo-title promo-title-dark">Enrich Your Home With Serenity</h2>
             <p className="promo-desc promo-desc-dark">
               Bring timeless grace and inspiring warmth into your living room, temple, and workplace
-              with our handcrafted decor collection.
+              with our  decor collection.
             </p>
             <div className="promo-price-block">
               <span className="promo-sale-price">₹899</span>

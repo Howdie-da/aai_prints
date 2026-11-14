@@ -3,9 +3,8 @@
    ============================================== */
 .testimonials-section {
   padding: 80px 0;
-  background: var(--surface-champagne, #E8D9C7);
-  border-top: 1px solid rgba(193, 161, 106, 0.35);
-  border-bottom: 1px solid rgba(193, 161, 106, 0.35);
+  background: linear-gradient(180deg, transparent 0%, rgba(237, 217, 204, 0.38) 50%, transparent 100%);
+  position: relative;
 }
 
 .reviews-grid {

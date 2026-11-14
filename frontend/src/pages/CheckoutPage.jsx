@@ -431,7 +431,7 @@ export default function CheckoutPage({
             <span className="success-eyebrow">ORDER CONFIRMED</span>
             <h1 className="success-title">Thank You for Your Order!</h1>
             <p className="success-subtitle">
-              Your handcrafted piece from Ananta Art International is being carefully prepared for secure transit.
+              Your  piece from Ananta Art International is being carefully prepared for secure transit.
             </p>
 
             {/* Order Reference Box */}
@@ -622,7 +622,7 @@ export default function CheckoutPage({
             </div>
             <h1 className="checkout-empty-title">Your Cart is Empty</h1>
             <p className="checkout-empty-desc">
-              You do not have any items in your cart to checkout. Browse our handcrafted spiritual idols, illuminated frames, and wall decor to start shopping.
+              You do not have any items in your cart to checkout. Browse our  spiritual idols, illuminated frames, and wall decor to start shopping.
             </p>
             <button
               type="button"
@@ -756,7 +756,7 @@ export default function CheckoutPage({
                   <div className="checkout-step-title-box">
                     <h2 className="checkout-step-title">Delivery Address</h2>
                     <span className="checkout-step-sub">
-                      Where should we deliver your handcrafted piece?
+                      Where should we deliver your  piece?
                     </span>
                   </div>
                 </div>
@@ -944,9 +944,8 @@ export default function CheckoutPage({
                 <div className="checkout-radio-group">
                   {/* Standard Delivery */}
                   <label
-                    className={`checkout-radio-card ${
-                      shippingMethod === 'standard' ? 'is-selected' : ''
-                    }`}
+                    className={`checkout-radio-card ${shippingMethod === 'standard' ? 'is-selected' : ''
+                      }`}
                   >
                     <input
                       type="radio"
@@ -977,9 +976,8 @@ export default function CheckoutPage({
 
                   {/* Express Courier */}
                   <label
-                    className={`checkout-radio-card ${
-                      shippingMethod === 'express' ? 'is-selected' : ''
-                    }`}
+                    className={`checkout-radio-card ${shippingMethod === 'express' ? 'is-selected' : ''
+                      }`}
                   >
                     <input
                       type="radio"
@@ -1021,9 +1019,8 @@ export default function CheckoutPage({
                 <div className="checkout-radio-group">
                   {/* Cash on Delivery */}
                   <label
-                    className={`checkout-radio-card ${
-                      paymentMethod === 'cod' ? 'is-selected' : ''
-                    }`}
+                    className={`checkout-radio-card ${paymentMethod === 'cod' ? 'is-selected' : ''
+                      }`}
                   >
                     <input
                       type="radio"
@@ -1048,9 +1045,8 @@ export default function CheckoutPage({
 
                   {/* UPI & Online Payment */}
                   <label
-                    className={`checkout-radio-card ${
-                      paymentMethod === 'online' ? 'is-selected' : ''
-                    }`}
+                    className={`checkout-radio-card ${paymentMethod === 'online' ? 'is-selected' : ''
+                      }`}
                   >
                     <input
                       type="radio"
@@ -1292,7 +1288,7 @@ export default function CheckoutPage({
               <div className="checkout-trust-box">
                 <div className="checkout-trust-item">
                   <ShieldCheck size={16} className="checkout-trust-icon" />
-                  <span>100% Authentic Handcrafted Artworks</span>
+                  <span>100% Authentic  Artworks</span>
                 </div>
                 <div className="checkout-trust-item">
                   <Truck size={16} className="checkout-trust-icon" />

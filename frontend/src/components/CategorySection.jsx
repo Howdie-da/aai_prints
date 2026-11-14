@@ -40,7 +40,7 @@ const categories = [
     count: '95+ Masterpieces',
     image: '/new-images/cat-framed-wall-art.jpg',
     href: '#/shop?category=Framed%20Wall%20Art',
-    tag: 'Handcrafted',
+    tag: '',
   },
   {
     id: 'cat-6',
@@ -66,7 +66,7 @@ export default function CategorySection() {
           <span className="sec-eyebrow">FEATURED COLLECTIONS</span>
           <h2 className="sec-title">Shop by Category</h2>
           <p className="sec-subtitle">
-            Explore handcrafted devotional artwork, illuminated LED frames, and artisan home decor designed for modern living.
+            Explore  devotional artwork, illuminated LED frames, and artisan home decor designed for modern living.
           </p>
         </motion.div>
 

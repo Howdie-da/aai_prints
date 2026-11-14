@@ -3,10 +3,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import AnnouncementBar from './components/AnnouncementBar';
 import Navbar from './components/Navbar';
 import CategoryScrollbar from './components/CategoryScrollbar';
-import HeroSlider from './components/HeroSlider';
+import HeroVideo from './components/HeroVideo';
 import ReelsSection from './components/ReelsSection';
 import ProductSection from './components/ProductSection';
-import StyleCollection from './components/StyleCollection';
+import HeroSlider from './components/HeroSlider';
 import Testimonials from './components/Testimonials';
 import PromoBanner from './components/PromoBanner';
 import Footer from './components/Footer';
@@ -411,15 +411,15 @@ function App() {
               />
             ) : (
               <main>
-                {/* Hero banner slider */}
-                <HeroSlider onSelectCategory={(cat) => navigateTo('shop', cat)} />
+                {/* Brand Cinema Video Hero (artzillaaaaa) */}
+                <HeroVideo />
 
                 {/* 1. Trending Now product section (all products marked with trending: on) */}
                 {trendingProducts.length > 0 && (
                   <ProductSection
                     sectionId="trending"
                     title="Trending Now"
-                    subtitle="Most popular and trending handcrafted artworks chosen by our collectors"
+                    subtitle="Most popular and trending  artworks chosen by our collectors"
                     products={trendingProducts}
                     onSelectProduct={handleSelectProduct}
                     onViewMore={() => navigateTo('shop', 'All')}
@@ -430,7 +430,7 @@ function App() {
                 <ProductSection
                   sectionId="new-comer"
                   title="Newcomer"
-                  subtitle="Fresh handcrafted additions, contemporary designs & newly released artisan decor"
+                  subtitle="Fresh  additions, contemporary designs & newly released artisan decor"
                   products={newComerProducts}
                   onSelectProduct={handleSelectProduct}
                   onViewMore={() => navigateTo('shop', 'All')}
@@ -447,7 +447,7 @@ function App() {
                         Collection In Preparation
                       </h2>
                       <p style={{ color: 'var(--text-muted)', fontSize: '14px', lineHeight: '1.65', maxWidth: '520px', margin: '0 auto 20px' }}>
-                        Our handcrafted devotional artworks, illuminated frames, and decor pieces are currently being updated.
+                        Our  devotional artworks, illuminated frames, and decor pieces are currently being updated.
                       </p>
                       <button
                         type="button"
@@ -463,11 +463,11 @@ function App() {
                 {/* Whatmore-style Short Videos / Reels Showcase (Homepage only) */}
                 <ReelsSection onSelectProduct={handleSelectProduct} />
 
+                {/* Curated Gallery Showcase (2:1 visual slider) */}
+                <HeroSlider onSelectCategory={(cat) => navigateTo('shop', cat)} />
+
                 {/* Customer reviews section (resolves REVIEWS navbar link) */}
                 <Testimonials />
-
-                {/* "Your Style, Your Collection" horizontal scroll */}
-                <StyleCollection onSelectCategory={(cat) => navigateTo('shop', cat)} />
 
                 {/* Full-width promo strip (Free Shipping + ₹100 OFF) */}
                 <PromoBanner onNavigateShop={() => navigateTo('shop', 'All')} />

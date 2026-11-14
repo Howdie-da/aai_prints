@@ -93,7 +93,7 @@ Every product object in the catalogue strictly conforms to the following schema:
     "lighting": "12V Warm White LED Strip with 1.5m Power Adapter",
     "mounting": "Wall-mountable bracket pre-installed + Tabletop Kickstand",
     "care": "Wipe gently with a soft dry microfiber cloth.",
-    "origin": "Proudly Handcrafted in India"
+    "origin": "Proudly  in India"
   }
 }
 ```

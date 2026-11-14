@@ -98,7 +98,7 @@ const seedData = async () => {
     const catWallDecor = await Category.create({
       name: 'Wall Decor',
       slug: 'wall-decor',
-      description: 'Handcrafted wall art, laser-cut metal sculptures, and clocks',
+      description: ' wall art, laser-cut metal sculptures, and clocks',
       order: 3
     });
 
@@ -128,7 +128,7 @@ const seedData = async () => {
       {
         name: 'Wall Hangings',
         slug: 'wall-hangings',
-        description: 'Handcrafted wall hangings collection with authentic artisanal finishes',
+        description: ' wall hangings collection with authentic artisanal finishes',
         parentCategory: catDevotional._id,
         order: 3
       },
