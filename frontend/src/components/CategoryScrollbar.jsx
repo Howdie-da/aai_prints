@@ -21,87 +21,74 @@ const categories = [
 const marqueeGroup = [...categories, ...categories];
 
 export default function CategoryScrollbar({ onSelectCategory }) {
-  const handleItemClick = (e, label) => {
+  const handleItemClick = (e, category) => {
     if (onSelectCategory) {
       e.preventDefault();
-      onSelectCategory(label);
+      onSelectCategory(category.label);
     }
   };
 
-  const renderTrack = (isOverlay = false) => (
-    <div className={`catbar-track ${isOverlay ? 'catbar-track-overlay' : ''}`}>
-      {/* Primary Marquee Group */}
-      <div className="catbar-marquee-group">
-        {marqueeGroup.map((category, index) => (
-          <a
-            key={`primary-${category.label}-${index}`}
-            href={category.href}
-            className="catbar-item"
-            title={category.label}
-            tabIndex={isOverlay ? -1 : 0}
-            onClick={(e) => handleItemClick(e, category.label)}
-          >
-            <motion.div
-              whileHover={{ scale: 1.07 }}
-              whileTap={{ scale: 0.95 }}
-              transition={{ type: 'spring', stiffness: 400, damping: 22 }}
-              className="catbar-circle"
-            >
-              <img
-                src={category.img}
-                alt={category.label}
-                className="catbar-img"
-                loading="lazy"
-                draggable="false"
-              />
-            </motion.div>
-            <span className="catbar-label">{category.label}</span>
-          </a>
-        ))}
-      </div>
-
-      {/* Identical Cloned Group for 100% Seamless Infinite Looping */}
-      <div className="catbar-marquee-group" aria-hidden="true">
-        {marqueeGroup.map((category, index) => (
-          <a
-            key={`clone-${category.label}-${index}`}
-            href={category.href}
-            className="catbar-item"
-            title={category.label}
-            tabIndex={-1}
-            onClick={(e) => handleItemClick(e, category.label)}
-          >
-            <motion.div
-              whileHover={{ scale: 1.07 }}
-              whileTap={{ scale: 0.95 }}
-              transition={{ type: 'spring', stiffness: 400, damping: 22 }}
-              className="catbar-circle"
-            >
-              <img
-                src={category.img}
-                alt={category.label}
-                className="catbar-img"
-                loading="lazy"
-                draggable="false"
-              />
-            </motion.div>
-            <span className="catbar-label">{category.label}</span>
-          </a>
-        ))}
-      </div>
-    </div>
-  );
-
   return (
     <div className="catbar-wrap" aria-label="Browse categories marquee">
-      {/* Base Layer: Dark Espresso text for Cream & Darkcream ends */}
-      <div className="catbar-layer-base">
-        {renderTrack(false)}
-      </div>
+      <div className="catbar-track">
+        {/* Primary Marquee Group */}
+        <div className="catbar-marquee-group">
+          {marqueeGroup.map((category, index) => (
+            <a
+              key={`primary-${category.label}-${index}`}
+              href={category.href}
+              className="catbar-item"
+              title={category.label}
+              onClick={(e) => handleItemClick(e, category)}
+            >
+              <motion.div
+                whileHover={{ scale: 1.07 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 22 }}
+                className="catbar-circle"
+              >
+                <img
+                  src={category.img}
+                  alt={category.label}
+                  className="catbar-img"
+                  loading="lazy"
+                  draggable="false"
+                />
+              </motion.div>
+              <span className="catbar-label">{category.label}</span>
+            </a>
+          ))}
+        </div>
 
-      {/* Overlay Layer: Smoothly masked over the Red Center with Pure White text */}
-      <div className="catbar-layer-overlay" aria-hidden="true">
-        {renderTrack(true)}
+        {/* Identical Cloned Group for Seamless 100% Infinite Looping */}
+        <div className="catbar-marquee-group" aria-hidden="true">
+          {marqueeGroup.map((category, index) => (
+            <a
+              key={`clone-${category.label}-${index}`}
+              href={category.href}
+              className="catbar-item"
+              title={category.label}
+              tabIndex={-1}
+              onClick={(e) => handleItemClick(e, category)}
+            >
+              <motion.div
+                whileHover={{ scale: 1.07 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 22 }}
+                className="catbar-circle"
+              >
+                <img
+                  src={category.img}
+                  alt={category.label}
+                  className="catbar-img"
+                  loading="lazy"
+                  draggable="false"
+                />
+              </motion.div>
+              <span className="catbar-label">{category.label}</span>
+            </a>
+          ))}
+        </div>
       </div>
     </div>
   );

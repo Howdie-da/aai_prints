@@ -15,6 +15,7 @@
   padding: 22px 0 26px;
   user-select: none;
   box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.08);
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Subtle Left & Right Luxury Edge Vignettes matching the darker sides */
@@ -91,7 +92,6 @@
   border: 2px solid #C1A16A;
   background: #F6F0E7;
   flex-shrink: 0;
-  /* Antique Gold ring around the circle along with the warm gold shadow */
   box-shadow: 0 0 0 3px #C1A16A, 0 6px 20px rgba(193, 161, 106, 0.55), 0 0 14px rgba(193, 161, 106, 0.4);
   transition: all 0.35s ease;
   position: relative;
@@ -117,15 +117,15 @@
   transform: scale(1.08);
 }
 
-/* ── Base Typography (Dark Espresso for Cream & Darkcream zones) ── */
+/* ── Crisp, High-Contrast Typography Across All Background Tones ── */
 .catbar-label {
   display: block;
   text-align: center;
   font-family: 'Montserrat', sans-serif;
   font-size: 13px;
   font-weight: 700;
-  color: #382D2D;
-  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+  color: #24181B;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.65);
   letter-spacing: 0.3px;
   line-height: 1.3;
   margin: 0;
@@ -136,31 +136,6 @@
 
 .catbar-item:hover .catbar-label {
   color: #702F42;
-}
-
-/* ── Overlay Layer: Masked over the Red Center with Pure White Typography ── */
-.catbar-layer-overlay {
-  position: absolute;
-  top: 22px;
-  left: 0;
-  right: 0;
-  bottom: 26px;
-  pointer-events: none;
-  z-index: 3;
-  /* Smooth horizontal mask matching the red center swell */
-  -webkit-mask-image: linear-gradient(90deg, transparent 0%, transparent 26%, black 42%, black 58%, transparent 74%, transparent 100%);
-  mask-image: linear-gradient(90deg, transparent 0%, transparent 26%, black 42%, black 58%, transparent 74%, transparent 100%);
-}
-
-/* Hide circles in overlay so only the text smoothly transitions */
-.catbar-layer-overlay .catbar-circle {
-  visibility: hidden;
-}
-
-/* Dark Espresso typography for the Bright Center overlay */
-.catbar-layer-overlay .catbar-label {
-  color: #24181B;
-  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.7);
 }
 
 /* ── Seamless Keyframe Marquee ── */
@@ -177,11 +152,6 @@
 @media (max-width: 768px) {
   .catbar-wrap {
     padding: 16px 0 20px;
-  }
-
-  .catbar-layer-overlay {
-    top: 16px;
-    bottom: 20px;
   }
 
   .catbar-wrap::before,
